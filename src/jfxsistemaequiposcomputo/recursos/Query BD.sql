@@ -1,6 +1,6 @@
-CREATE DATABASE gestionequipos;
+CREATE DATABASE IF NOT EXISTS gestionequipos;
 
-CREATE USER 'adminSEC'@'localhost' IDENTIFIED BY 'adminSEC090523';
+CREATE USER IF NOT EXISTS 'adminSEC'@'localhost' IDENTIFIED BY 'adminSEC090523';
 GRANT ALL PRIVILEGES ON gestionequipos . * TO 'adminSEC'@'localhost';
 
 USE gestionequipos;
@@ -80,7 +80,6 @@ CREATE TABLE refacciones (
     idTipoRefaccion INT,
     PRIMARY KEY (idRefaccion)
 );
-<<<<<<< HEAD
 
 CREATE TABLE tipoRefacciones(
 	idTipoRefaccion INT AUTO_INCREMENT NOT NULL,
@@ -92,8 +91,6 @@ ALTER TABLE refacciones ADD CONSTRAINT FK_Refaccion_TipoRefaccion
 FOREIGN KEY(idTipoRefaccion)
 REFERENCES tipoRefacciones(idTipoRefaccion) ON DELETE CASCADE;
 
-=======
->>>>>>> 2586a979aded5918b2953b81e308e8877b15d289
 CREATE TABLE refaccionesmantenimientos (
 	idRefaccionMantenimiento INT AUTO_INCREMENT NOT NULL,
     idMantenimiento INT,
