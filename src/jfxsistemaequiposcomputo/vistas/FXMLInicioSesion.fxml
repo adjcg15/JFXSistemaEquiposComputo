@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.FXMLInicioSesionController">
+   <children>
+      <ImageView fitHeight="595.0" fitWidth="655.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/undraw_data_input_fxv2%201.png" />
+         </image></ImageView>
+      <Pane layoutX="512.0" layoutY="126.0" prefHeight="353.0" prefWidth="367.0" style="-fx-background-color: #F3F2F1;">
+         <children>
+            <Label layoutX="92.0" layoutY="33.0" text="Bienvenido">
+               <font>
+                  <Font name="Calibri" size="40.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfCorreo" layoutX="41.0" layoutY="129.0" prefHeight="39.0" prefWidth="289.0" promptText="ejemplo@ejemplo.com" style="-fx-border-color: a5a5a5;" />
+            <Button layoutX="234.0" layoutY="300.0" mnemonicParsing="false" onAction="#clicIngresar" prefHeight="39.0" prefWidth="96.0" style="-fx-background-color: #0775A4;" text="Ingresar" textFill="#fffefe">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="41.0" layoutY="101.0" text="Correo">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="41.0" layoutY="198.0" text="Contraseña">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="pswContraseña" layoutX="41.0" layoutY="232.0" prefHeight="39.0" prefWidth="289.0" promptText="123456" style="-fx-border-color: a5a5a5;" />
+            <Label fx:id="lbErrorCorreo" layoutX="41.0" layoutY="166.0" prefHeight="21.0" prefWidth="289.0" textFill="#f20000" />
+            <Label fx:id="lbErrorContrasenia" layoutX="41.0" layoutY="271.0" prefHeight="21.0" prefWidth="289.0" textFill="#ff0101" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
