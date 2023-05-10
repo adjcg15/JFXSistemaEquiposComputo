@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -17,11 +19,27 @@ import javafx.scene.control.Label;
  */
 public class FXMLMenuPrincipalController implements Initializable {
     @FXML
-    private Label label;
+    private Pane paneModuloPrivilegiado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void clicCerrarSesion(MouseEvent event) {
+    }
+
+    @FXML
+    private void clicRedirigirSolicitarMantenimiento(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicRedirigirGenerarDiagnostico(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicRedirigirGestionarMantenimiento(ActionEvent event) {
+    }
     
 }

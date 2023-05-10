@@ -1,13 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jfxsistemaequiposcomputo.controladores.FXMLMenuPrincipalController">
-    <children>
-        <Label fx:id="label" layoutX="14.0" layoutY="14.0" minHeight="16" minWidth="69" text="Bienvenido al menú principal" />
-    </children>
+<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.FXMLMenuPrincipalController">
+   <children>
+      <Pane prefHeight="596.0" prefWidth="80.0" style="-fx-background-color: #161417;">
+         <children>
+            <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="23.0" layoutY="31.0" onMouseClicked="#clicCerrarSesion" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@../recursos/SignOut.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="80.0" prefHeight="596.0" prefWidth="18.0" style="-fx-background-color: #0775A4;" />
+      <Label layoutX="134.0" layoutY="33.0" prefHeight="36.0" prefWidth="765.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Sistema de gestión de equipos de cómputo">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Pane layoutX="134.0" layoutY="106.0" prefHeight="200.0" prefWidth="233.0" style="-fx-border-color: #161417; -fx-border-radius: 4;">
+         <children>
+            <Label layoutX="41.0" layoutY="41.0" text="Módulo de clientes">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="38.0" layoutY="87.0" mnemonicParsing="false" onAction="#clicRedirigirSolicitarMantenimiento" style="-fx-background-color: #161417; -fx-border-color: 161417; -fx-border-radius: 4; -fx-padding: 10 16; -fx-cursor: hand;" text="Solicitar mantenimiento" textFill="WHITE" />
+         </children>
+      </Pane>
+      <Pane fx:id="paneModuloPrivilegiado" layoutX="414.0" layoutY="106.0" prefHeight="200.0" prefWidth="233.0" style="-fx-border-color: #161417; -fx-border-radius: 4;">
+         <children>
+            <Label layoutX="41.0" layoutY="37.0" text="Módulo de gestión">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="33.0" layoutY="78.0" mnemonicParsing="false" onAction="#clicRedirigirGenerarDiagnostico" prefHeight="37.0" prefWidth="167.0" style="-fx-background-color: #161417; -fx-border-color: 161417; -fx-border-radius: 4; -fx-padding: 10 16; -fx-cursor: hand;" text="Generar diagnóstico" textFill="WHITE" />
+            <Button layoutX="33.0" layoutY="127.0" mnemonicParsing="false" onAction="#clicRedirigirGestionarMantenimiento" style="-fx-background-color: #161417; -fx-border-color: 161417; -fx-border-radius: 4; -fx-padding: 10 16; -fx-cursor: hand;" text="Gestionar mantenimiento" textFill="WHITE" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
