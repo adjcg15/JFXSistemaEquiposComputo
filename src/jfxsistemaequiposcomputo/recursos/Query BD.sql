@@ -14,6 +14,7 @@ CREATE TABLE usuarios (
     direccion VARCHAR(45),
     correo VARCHAR(45),
     contrasenia VARCHAR(20),
+    privilegiado BOOLEAN,
     PRIMARY KEY (idUsuario)
 );
 
@@ -28,6 +29,9 @@ CREATE TABLE equiposDeComputo (
     procesador VARCHAR(20),
     memoria VARCHAR(45),
     marca VARCHAR(45),
+    fechaRegistro DATE,
+    fotoDelEquipo BLOB,
+    usuarioSO VARCHAR(45),
     idUsuario INT,
     idSolicitudDiagnostico INT,
     PRIMARY KEY (idEquipoDeComputo)
@@ -73,10 +77,9 @@ REFERENCES estados(idEstado) ON DELETE CASCADE;
 
 CREATE TABLE diagnosticos (
 	idDiagnostico INT AUTO_INCREMENT NOT NULL,
-    tipo VARCHAR(45),
-    fechaAyencion DATE,
+    tipoDeMantenimiento VARCHAR(45),
+    fechaAtencion DATE,
     diagnosticoPreliminar LONGTEXT,
-    observaciones LONGTEXT,
     fechaSolicitud DATE,
     costoEstimado DOUBLE,
     propuestaSolucion LONGTEXT,

@@ -16,6 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxsistemaequiposcomputo.DAO.SesionDAO;
+import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
 
@@ -65,8 +66,8 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
     
-    private void validarInformacionUsuario(String usuario, String password){
-        /*Usuario usuarioRespuesta = SesionDAO.verificarUsuarioSesion(usuario, password);
+    private void validarInformacionUsuario(String correo, String password){
+        Usuario usuarioRespuesta = SesionDAO.verificarUsuarioSesion(correo, password);
         System.out.println("Respuesta: " + usuarioRespuesta.getCodigoRespuesta());
         
         switch (usuarioRespuesta.getCodigoRespuesta()){
@@ -84,6 +85,9 @@ public class FXMLInicioSesionController implements Initializable {
             break;
             case Constantes.OPERACION_EXITOSA:
                 if(usuarioRespuesta.getIdUsuario()>0){
+                    Utilidades.mostrarDialogoSimple("Bienvenido(a)", 
+                            "Bienvenido(a)"+usuarioRespuesta.toString()+ "al sistema",
+                    Alert.AlertType.INFORMATION);
                     redirigirMenuPrincipal(); 
                 }else{
                     Utilidades.mostrarDialogoSimple("Informacion incorrecta",
@@ -95,13 +99,13 @@ public class FXMLInicioSesionController implements Initializable {
             default:
                 Utilidades.mostrarDialogoSimple("Error de petición",
                         "El sistema no se encuentra disponible por el momento",
-                        Alert.AlertType.NONE);
-        }*/
+                        Alert.AlertType.WARNING);
+        }
     }
     
     private void redirigirMenuPrincipal(){
         Stage escenarioBase = (Stage) tfCorreo.getScene().getWindow();
-       escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLPrincipal.fxml"));
+       escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLMenuPrincipal.fxml"));
        escenarioBase.setTitle("Menú Principal");
        escenarioBase.show();
     }
