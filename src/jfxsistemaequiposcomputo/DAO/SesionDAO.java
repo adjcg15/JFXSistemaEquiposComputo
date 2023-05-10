@@ -34,8 +34,7 @@ public class SesionDAO {
                     usuarioVerificado.setNombre(resultado.getString("nombre"));
                     usuarioVerificado.setApellidoPaterno(resultado.getString("apellidoPaterno"));
                     usuarioVerificado.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                    usuarioVerificado.setUsername(resultado.getString("username"));
-                    usuarioVerificado.setPassword(resultado.getString("passwordd"));
+                    usuarioVerificado.setContrasenia(resultado.getString("contrasenia"));
                 }
                 conexion.close();
                 
