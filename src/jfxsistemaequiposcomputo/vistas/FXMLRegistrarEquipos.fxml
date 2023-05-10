@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jfxsistemaequiposcomputo.vistas.RegistrarEquipoController">
+   <children>
+      <Label layoutX="86.0" layoutY="115.0" prefHeight="36.0" prefWidth="307.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Información técnica">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="85.0" layoutY="158.0" text="Tipo de equipo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbTipoEquipo" layoutX="85.0" layoutY="193.0" prefHeight="31.0" prefWidth="161.0" />
+      <Label layoutX="300.0" layoutY="158.0" text="Cargador incluído">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="rbSi" layoutX="300.0" layoutY="198.0" mnemonicParsing="false" text="Si" />
+      <RadioButton fx:id="rbNo" layoutX="371.0" layoutY="198.0" mnemonicParsing="false" text="No" />
+      <Label layoutX="85.0" layoutY="240.0" text="Marca">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="240.0" text="Modelo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfMarca" layoutX="85.0" layoutY="267.0" />
+      <TextField fx:id="tfModelo" layoutX="299.0" layoutY="267.0" />
+      <Label layoutX="85.0" layoutY="309.0" text="Tamaño de pantalla">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="309.0" text="Procesador">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfTamañoPantalla" layoutX="85.0" layoutY="336.0" />
+      <TextField fx:id="tfProcesador" layoutX="299.0" layoutY="336.0" />
+      <Label layoutX="87.0" layoutY="379.0" text="Memoria RAM">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="299.0" layoutY="379.0" text="Sistema operativo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfMemoriaRAM" layoutX="87.0" layoutY="406.0" />
+      <TextField fx:id="tfSO" layoutX="299.0" layoutY="406.0" />
+      <Label layoutX="88.0" layoutY="448.0" text="Usuario del equipo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="448.0" text="Contraseña del equipo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfUsuarioSO" layoutX="87.0" layoutY="475.0" />
+      <TextField fx:id="tfContraseniaSO" layoutX="299.0" layoutY="475.0" />
+      <Label layoutX="535.0" layoutY="115.0" prefHeight="36.0" prefWidth="342.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Solicitud de diagnóstico">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="535.0" layoutY="158.0" text="Descripción de la problemática">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfDescripcionProblema" layoutX="535.0" layoutY="198.0" prefHeight="150.0" prefWidth="350.0" />
+      <Label layoutX="535.0" layoutY="350.0" prefHeight="36.0" prefWidth="342.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Imagen">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="545.0" layoutY="411.0" mnemonicParsing="false" onAction="#clicBtnSeleccionarImagen" text="Seleccionar Imagen" />
+      <Button layoutX="800.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4;" text="Guardar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Button layoutX="676.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnCancelar" style="-fx-background-color: F61C1C;" text="Cancelar" textFill="#fffafa">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Pane prefHeight="82.0" prefWidth="942.0" style="-fx-background-color: #0775A4;">
+         <children>
+            <Label layoutX="90.0" layoutY="33.0" text="Equipo de Cómputo" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="67.0" fitWidth="76.0" layoutX="7.0" layoutY="8.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
