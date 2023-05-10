@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import jfxsistemaequiposcomputo.pojo.Usuario;
+import jfxsistemaequiposcomputo.pojo.UsuarioRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 
 /**
@@ -15,8 +17,8 @@ import jfxsistemaequiposcomputo.utils.Constantes;
  * @author dnava
  */
 public class SesionDAO {
-    public static usuario verificarUsuarioSesion(String correo, String password){
-        usuario usuarioVerificado = new usuario();
+    public static UsuarioRespuesta verificarUsuarioSesion(String correo, String password){
+        UsuarioRespuesta usuarioVerificado = new UsuarioRespuesta();
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null){
             try {
