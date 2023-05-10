@@ -25,7 +25,7 @@ import jfxsistemaequiposcomputo.utils.Utilidades;
  *
  * @author dnava
  */
-public class FXMLInicioSesionController implements Initializable {
+public class InicioSesionController implements Initializable {
 
     @FXML
     private TextField tfCorreo;
