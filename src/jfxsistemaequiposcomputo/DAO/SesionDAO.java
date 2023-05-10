@@ -10,22 +10,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import jfxsistemaequiposcomputo.modelo.ConexionBD;
 import jfxsistemaequiposcomputo.pojo.Usuario;
-import jfxsistemaequiposcomputo.pojo.UsuarioRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 
 public class SesionDAO {
     public static Usuario verificarUsuarioSesion(String correo, String password){
         Usuario usuarioVerificado = new Usuario();
-        UsuarioRespuesta mensajeUsuario = new UsuarioRespuesta();
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null){
             try {
-                String consulta = "SELECT * FROM usuario WHERE correo = ? AND passwordd = ?";
+                String consulta = "SELECT * FROM usuarios WHERE correo = ? AND contrasenia = ?";
                 PreparedStatement prepararSentencia = conexion.prepareStatement(consulta);
                 prepararSentencia.setString(1,correo);
                 prepararSentencia.setString(2, password);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                mensajeUsuario.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+                usuarioVerificado.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
                 
                 if(resultado.next()){
                     usuarioVerificado.setIdUsuario(resultado.getInt("idUsuario"));
@@ -34,7 +32,7 @@ public class SesionDAO {
                     usuarioVerificado.setApellidoMaterno(resultado.getString("apellidoMaterno"));
                     usuarioVerificado.setTelefono(resultado.getString("telefono"));
                     usuarioVerificado.setDirección(resultado.getString("direccion"));
-                    usuarioVerificado.setCorreo(resultado.getString("coreo"));
+                    usuarioVerificado.setCorreo(resultado.getString("correo"));
                     usuarioVerificado.setContrasenia(resultado.getString("contrasenia"));
                     
                     
@@ -42,10 +40,10 @@ public class SesionDAO {
                 conexion.close();
                 
             } catch (SQLException ex) {
-                mensajeUsuario.setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
+                usuarioVerificado.setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
             }          
         }else{
-            mensajeUsuario.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+            usuarioVerificado.setCodigoRespuesta(Constantes.ERROR_CONEXION);
         }
         return usuarioVerificado;
     }
