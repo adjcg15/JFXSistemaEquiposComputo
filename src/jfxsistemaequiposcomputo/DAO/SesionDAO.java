@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
 
 /**
@@ -15,8 +16,9 @@ import jfxsistemaequiposcomputo.utils.Constantes;
  * @author dnava
  */
 public class SesionDAO {
-    public static usuario verificarUsuarioSesion(String correo, String password){
-        usuario usuarioVerificado = new usuario();
+    public static Usuario verificarUsuarioSesion(String correo, String password){
+        return new Usuario();
+        /*Usuario usuarioVerificado = new Usuario();
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null){
             try {
@@ -32,8 +34,7 @@ public class SesionDAO {
                     usuarioVerificado.setNombre(resultado.getString("nombre"));
                     usuarioVerificado.setApellidoPaterno(resultado.getString("apellidoPaterno"));
                     usuarioVerificado.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                    usuarioVerificado.setUsername(resultado.getString("username"));
-                    usuarioVerificado.setPassword(resultado.getString("passwordd"));
+                    usuarioVerificado.setContrasenia(resultado.getString("contrasenia"));
                 }
                 conexion.close();
                 
@@ -43,6 +44,6 @@ public class SesionDAO {
         }else{
             usuarioVerificado.setCodigoRespuesta(Constantes.ERROR_CONEXION);
         }
-        return usuarioVerificado;
+        return usuarioVerificado;*/
     }
 }

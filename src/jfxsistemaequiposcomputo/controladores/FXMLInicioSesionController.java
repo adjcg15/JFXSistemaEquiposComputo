@@ -66,7 +66,7 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     private void validarInformacionUsuario(String usuario, String password){
-        usuario usuarioRespuesta = SesionDAO.verificarUsuarioSesion(usuario, password);
+        /*Usuario usuarioRespuesta = SesionDAO.verificarUsuarioSesion(usuario, password);
         System.out.println("Respuesta: " + usuarioRespuesta.getCodigoRespuesta());
         
         switch (usuarioRespuesta.getCodigoRespuesta()){
@@ -96,7 +96,7 @@ public class FXMLInicioSesionController implements Initializable {
                 Utilidades.mostrarDialogoSimple("Error de petición",
                         "El sistema no se encuentra disponible por el momento",
                         Alert.AlertType.NONE);
-        }
+        }*/
     }
     
     private void redirigirMenuPrincipal(){
