@@ -3,6 +3,8 @@ package jfxsistemaequiposcomputo.pojo;
 public class Usuario {
     private int idUsuario;
     private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
     private String telefono;
     private String dirección;
     private String correo;
@@ -12,15 +14,34 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String telefono, String dirección, String correo, String contrasenia, boolean privilegiado) {
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String dirección, String correo, String contrasenia, boolean privilegiado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.dirección = dirección;
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.privilegiado = privilegiado;
     }
+
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
 
     public int getIdUsuario() {
         return idUsuario;

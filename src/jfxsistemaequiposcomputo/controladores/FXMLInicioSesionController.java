@@ -16,6 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxsistemaequiposcomputo.DAO.SesionDAO;
+import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.pojo.UsuarioRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
@@ -67,10 +68,11 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     private void validarInformacionUsuario(String usuario, String password){
-        UsuarioRespuesta usuarioBD = SesionDAO.verificarUsuarioSesion(usuario, password);
-        System.out.println("Respuesta: " + usuarioBD.getCodigoRespuesta());
+        Usuario usuarioBD = SesionDAO.verificarUsuarioSesion(usuario, password);
+        UsuarioRespuesta usuarioRespuesta = new UsuarioRespuesta();
+        System.out.println("Respuesta: " + usuarioRespuesta.getCodigoRespuesta());
         
-        switch (usuarioBD.getCodigoRespuesta()){
+        switch (usuarioRespuesta.getCodigoRespuesta()){
             case Constantes.ERROR_CONEXION:
                Utilidades.mostrarDialogoSimple("Error de conexión",
                        "Por el momento no hay conexión a la base de datos,"
