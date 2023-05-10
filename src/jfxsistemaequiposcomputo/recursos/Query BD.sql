@@ -102,10 +102,20 @@ REFERENCES diagnosticos(idDiagnostico) ON DELETE CASCADE;
 CREATE TABLE refacciones (
 	idRefaccion INT AUTO_INCREMENT NOT NULL,
     stock INT,
-    tipo VARCHAR(45),
     nombre VARCHAR(45),
+    idTipoRefaccion INT,
     PRIMARY KEY (idRefaccion)
 );
+
+CREATE TABLE tipoRefacciones(
+	idTipoRefaccion INT AUTO_INCREMENT NOT NULL,
+    nombre VARCHAR(100),
+    PRIMARY KEY(idTipoRefaccion)
+);
+
+ALTER TABLE refacciones ADD CONSTRAINT FK_Refaccion_TipoRefaccion
+FOREIGN KEY(idTipoRefaccion)
+REFERENCES tipoRefacciones(idTipoRefaccion) ON DELETE CASCADE;
 
 CREATE TABLE refaccionesmantenimientos (
 	idRefaccionMantenimiento INT AUTO_INCREMENT NOT NULL,
