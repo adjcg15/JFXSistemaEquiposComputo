@@ -43,7 +43,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     private void clicRedirigirSolicitarMantenimiento(ActionEvent event) {
         Stage escenarioSolicitudMantenimiento = new Stage();
         escenarioSolicitudMantenimiento.setScene(
-            Utilidades.inicializarEscena("vistas/FXMLRegistrarEquipo.fxml")
+            Utilidades.inicializarEscena("vistas/FXMLRegistrarEquipos.fxml")
         );
         escenarioSolicitudMantenimiento.setTitle("Solicitar mantenimiento");
         escenarioSolicitudMantenimiento.initModality(Modality.APPLICATION_MODAL);
