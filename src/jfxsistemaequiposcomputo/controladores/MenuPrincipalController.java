@@ -1,15 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
- */
 package jfxsistemaequiposcomputo.controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -45,13 +45,32 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clicRedirigirSolicitarMantenimiento(ActionEvent event) {
-        Stage escenarioSolicitudMantenimiento = new Stage();
-        escenarioSolicitudMantenimiento.setScene(
-            Utilidades.inicializarEscena("vistas/FXMLRegistrarEquipos.fxml")
-        );
-        escenarioSolicitudMantenimiento.setTitle("Solicitar mantenimiento");
-        escenarioSolicitudMantenimiento.initModality(Modality.APPLICATION_MODAL);
-        escenarioSolicitudMantenimiento.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass()
+                    .getResource("/jfxsistemaequiposcomputo/vistas/FXMLRegistrarEquipo.fxml")
+            );
+            Parent root = loader.load();
+            RegistrarEquipoController registrarEquipoController 
+                = loader.getController();
+
+            registrarEquipoController.setUsuario(usuario);
+            
+            Stage nuevoEscenario = new Stage();
+            Scene nuevaEscena = new Scene(root);
+            nuevoEscenario.setScene(nuevaEscena);
+            nuevoEscenario.setTitle("Solicitar mantenimiento");
+            nuevoEscenario.initModality(Modality.APPLICATION_MODAL);
+            nuevoEscenario.showAndWait();
+
+        } catch (IOException e) {
+            Utilidades.mostrarDialogoSimple(
+                "Error en la redirección",
+                "Por el momento no se puede ingresar al módulo"
+                + ", intente más tarde",
+                Alert.AlertType.ERROR
+            );
+        }
     }
 
     @FXML

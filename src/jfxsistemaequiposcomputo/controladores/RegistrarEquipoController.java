@@ -1,6 +1,7 @@
 package jfxsistemaequiposcomputo.controladores;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -19,21 +20,17 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
 import jfxsistemaequiposcomputo.pojo.SolicitudMantenimiento;
+import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
-import jfxsistemaequiposcomputo.pojo.SolicitudMantenimiento;
-import jfxsistemaequiposcomputo.utils.Constantes;
 
 /**
  * FXML Controller class
@@ -44,6 +41,7 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private ComboBox<String> cbTipoEquipo;
+    @FXML
     ObservableList<String> listaTiposEquipos;
     @FXML
     private RadioButton rbSi;
@@ -69,19 +67,26 @@ public class RegistrarEquipoController implements Initializable {
     private TextField tfContraseniaSO;
     @FXML
     private TextField tfDescripcionProblema;
-    
-    private boolean cargadorIncluido;
     @FXML
     private ImageView ivImagenEquipo;
+    
+    private boolean cargadorIncluido;
+    private SolicitudMantenimiento solicitud = new SolicitudMantenimiento();
+    private Usuario usuario;
+    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println("Inicializando vista");
         listaTiposEquipos = FXCollections.observableArrayList(Constantes.TIPOS_EQUIPOS);
+        System.out.println("Lista de equipos seteada");
         configurarComboBox();
+        System.out.println("Combo configurado");
         configurarCambioCargador();
+        System.out.println("Cargador configurado");
     }    
     
     private void configurarComboBox (){
@@ -89,27 +94,33 @@ public class RegistrarEquipoController implements Initializable {
     }
     
     private void configurarCambioCargador(){
-        tgCargador.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if(rbSi.isSelected()){
-                   cargadorIncluido = true;
-                }else if(rbNo.isSelected()){
-                   cargadorIncluido = false;
+        tgCargador
+            .selectedToggleProperty()
+            .addListener(new ChangeListener<Toggle>(){
+                @Override
+                public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                    if(rbSi.isSelected()){
+                       cargadorIncluido = true;
+                    }else if(rbNo.isSelected()){
+                       cargadorIncluido = false;
+                    }
                 }
-            }            
-        });
+            });
     }
     
     @FXML
     private void clicBtnSeleccionarImagen(ActionEvent event) {
         FileChooser seleccionImagen = new FileChooser();
-        seleccionImagen.setTitle("Selecciona una imagen");
         FileChooser.ExtensionFilter filtroDialogo = 
                 new FileChooser.ExtensionFilter("Archivos PNG (*.png)", "*.PNG");
+        
+        seleccionImagen.setTitle("Selecciona una imagen");
         seleccionImagen.getExtensionFilters().add(filtroDialogo);
-        Stage escenarioPrincipal = (Stage) tfDescripcionProblema.getScene().getWindow();
-        File archivoSeleccionado = seleccionImagen.showOpenDialog(escenarioPrincipal);
+        
+        Stage escenarioPrincipal = 
+            (Stage) tfDescripcionProblema.getScene().getWindow();
+        File archivoSeleccionado = 
+            seleccionImagen.showOpenDialog(escenarioPrincipal);
         visualizarImagen(archivoSeleccionado);
     }
     
@@ -117,20 +128,33 @@ public class RegistrarEquipoController implements Initializable {
         if(imgSeleccionada != null){
             try {
                 BufferedImage bufferImg = ImageIO.read(imgSeleccionada);
-                Image imagenDecodificada = SwingFXUtils.toFXImage(bufferImg, null);
+                Image imagenDecodificada = 
+                    SwingFXUtils.toFXImage(bufferImg, null);
+                
                 ivImagenEquipo.setImage(imagenDecodificada);
                 
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ImageIO.write(bufferImg, "jpg", outputStream);
+                byte[] bytesImagen = outputStream.toByteArray();
+                solicitud.setImagen(bytesImagen);
            } catch (IOException ex) {
-                Utilidades.mostrarDialogoSimple("Error", "No fue "
-                        + "posible cargar la imagen, intente más tarde", Alert.AlertType.ERROR);
+                Utilidades.mostrarDialogoSimple(
+                    "Error", 
+                    "No fue posible cargar la imagen, intente más tarde", 
+                    Alert.AlertType.ERROR
+                );
             }
-            
         }
     }
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        SolicitudMantenimiento solicitud = new SolicitudMantenimiento();
+       establecerSolicitud();
+       int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
+       System.out.println(respuestaCreación);
+    }
+    
+    private void establecerSolicitud() {
         solicitud.setTipo(cbTipoEquipo.getValue());
         solicitud.setIncluyeCargador(cargadorIncluido);
         solicitud.setMarca(tfMarca.getText());
@@ -142,6 +166,7 @@ public class RegistrarEquipoController implements Initializable {
         solicitud.setUsuarioSO(tfUsuarioSO.getText());
         solicitud.setContraeniaSO(tfContraseniaSO.getText());
         solicitud.setObservaciones(tfDescripcionProblema.getText());
+        solicitud.setIdUsuario(usuario.getIdUsuario());
     }
 
     @FXML

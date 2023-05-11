@@ -10,7 +10,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(45),
     apellidoPaterno VARCHAR(45),
     apellidoMaterno VARCHAR(45),
-    telefono VARCHAR(45),
+    telefono CHAR(10),
     direccion VARCHAR(45),
     correo VARCHAR(45),
     contrasenia VARCHAR(20),
@@ -21,16 +21,16 @@ CREATE TABLE usuarios (
 CREATE TABLE equiposDeComputo (
 	idEquipoDeComputo INT AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(15),
-    incluyeCargador VARCHAR(5),
+    incluyeCargador BOOLEAN,
     modelo VARCHAR(45),
-    so VARCHAR(45),
-    tamanioPantalla DOUBLE,
+    sistemaOperativo VARCHAR(45),
+    tamanioPantalla VARCHAR(45),
     contraseniaEquipo VARCHAR(20),
     procesador VARCHAR(20),
     memoria VARCHAR(45),
     marca VARCHAR(45),
     fechaRegistro DATE,
-    fotoDelEquipo BLOB,
+    fotoEquipo LONGBLOB,
     usuarioSO VARCHAR(45),
     idUsuario INT,
     idSolicitudDiagnostico INT,
@@ -40,8 +40,14 @@ CREATE TABLE equiposDeComputo (
 CREATE TABLE solicitudesDiagnostico (
 	idSolicitudDiagnostico INT AUTO_INCREMENT NOT NULL,
     observaciones LONGTEXT,
+    idUsuario INT,
     PRIMARY KEY (idSolicitudDiagnostico)
 );
+
+ALTER TABLE solicitudesDiagnostico ADD CONSTRAINT FK_Solicitud_Usuario
+FOREIGN KEY(idUsuario)
+REFERENCES usuarios(idUsuario) ON DELETE CASCADE;
+
 CREATE TABLE estados (
 	idEstado INT AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(15),
@@ -131,3 +137,4 @@ REFERENCES refacciones(idRefaccion) ON DELETE CASCADE;
 
 INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, telefono, direccion, correo, contrasenia, privilegiado)
 VALUES ('pedro', 'lopez', 'Gomez', 2281814657, 'centro', 'pedro@gmail.com', 123456, true);
+INSERT INTO estados (nombre) VALUES ('PENDIENTE'), ('ACEPTADA'), ('RECHAZADA');

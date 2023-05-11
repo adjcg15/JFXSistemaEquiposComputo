@@ -1,10 +1,11 @@
 package jfxsistemaequiposcomputo.pojo;
 
 public class SolicitudMantenimiento {
+    private int idUsuario;
     private String contraeniaSO;
     private String fechaRegistro;
     private int idEquipoComputo;
-    private String imagen;
+    private byte[] imagen;
     private boolean incluyeCargador;
     private String marca;
     private String memoriaRAM;
@@ -19,7 +20,7 @@ public class SolicitudMantenimiento {
     public SolicitudMantenimiento() {
     }
 
-    public SolicitudMantenimiento(String contraeniaSO, String fechaRegistro, int idEquipoComputo, String imagen, boolean incluyeCargador, String marca, String memoriaRAM, String modelo, String observaciones, String procesador, String sistemaOperativo, String tamanioPantalla, String tipo, String usuarioSO) {
+    public SolicitudMantenimiento(int idUsuario, String contraeniaSO, String fechaRegistro, int idEquipoComputo, byte[] imagen, boolean incluyeCargador, String marca, String memoriaRAM, String modelo, String observaciones, String procesador, String sistemaOperativo, String tamanioPantalla, String tipo, String usuarioSO) {
         this.contraeniaSO = contraeniaSO;
         this.fechaRegistro = fechaRegistro;
         this.idEquipoComputo = idEquipoComputo;
@@ -34,6 +35,11 @@ public class SolicitudMantenimiento {
         this.tamanioPantalla = tamanioPantalla;
         this.tipo = tipo;
         this.usuarioSO = usuarioSO;
+        this.idUsuario = idUsuario;
+    }
+    
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
     public String getContraeniaSO() {
@@ -60,11 +66,15 @@ public class SolicitudMantenimiento {
         this.idEquipoComputo = idEquipoComputo;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
+    
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
