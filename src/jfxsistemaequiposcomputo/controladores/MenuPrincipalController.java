@@ -21,10 +21,14 @@ import jfxsistemaequiposcomputo.utils.Utilidades;
  *
  * @author ANGEL
  */
-public class FXMLMenuPrincipalController implements Initializable {
+public class MenuPrincipalController implements Initializable {
     @FXML
     private Pane paneModuloPrivilegiado;
     private Usuario usuario;
+    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

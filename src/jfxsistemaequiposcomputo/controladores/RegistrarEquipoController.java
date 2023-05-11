@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package jfxsistemaequiposcomputo.controladores;
 
 import java.net.URL;
@@ -18,6 +14,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import jfxsistemaequiposcomputo.pojo.SolicitudMantenimiento;
 import jfxsistemaequiposcomputo.utils.Constantes;
@@ -58,6 +55,8 @@ public class RegistrarEquipoController implements Initializable {
     private TextField tfDescripcionProblema;
     
     private boolean cargadorIncluido;
+    @FXML
+    private ImageView ivImagenEquipo;
 
     /**
      * Initializes the controller class.

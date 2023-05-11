@@ -93,7 +93,7 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <ImageView fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="ivImagenEquipo" fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="545.0" layoutY="411.0" mnemonicParsing="false" onAction="#clicBtnSeleccionarImagen" text="Seleccionar Imagen" />
       <Button layoutX="800.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4;" text="Guardar" textFill="WHITE">
          <font>

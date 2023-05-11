@@ -9,7 +9,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -25,7 +28,7 @@ import jfxsistemaequiposcomputo.utils.Utilidades;
  *
  * @author dnava
  */
-public class FXMLInicioSesionController implements Initializable {
+public class InicioSesionController implements Initializable {
 
     @FXML
     private TextField tfCorreo;
@@ -35,8 +38,8 @@ public class FXMLInicioSesionController implements Initializable {
     private Label lbErrorCorreo;
     @FXML
     private Label lbErrorContrasenia;
-
     
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -88,7 +91,7 @@ public class FXMLInicioSesionController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Bienvenido(a)", 
                             "Bienvenido(a)"+usuarioRespuesta.toString()+ "al sistema",
                     Alert.AlertType.INFORMATION);
-                    redirigirMenuPrincipal(); 
+                    redirigirMenuPrincipal(usuarioRespuesta); 
                 }else{
                     Utilidades.mostrarDialogoSimple("Informacion incorrecta",
                         "El usuario y/o contraseña no son correctos, "
@@ -103,12 +106,27 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
     
-    private void redirigirMenuPrincipal(){
-        Stage escenarioBase = (Stage) tfCorreo.getScene().getWindow();
-       escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLMenuPrincipal.fxml"));
-       escenarioBase.setTitle("Menú Principal");
-       escenarioBase.show();
+    private void redirigirMenuPrincipal(Usuario usuarioRespuesta){
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass()
+                    .getResource("/jfxsistemaequiposcomputo/vistas/FXMLMenuPrincipal.fxml")
+            );
+            Parent root = loader.load();
+            MenuPrincipalController menuController = loader.getController();
+
+            menuController.setUsuario(usuarioRespuesta);
+
+            Stage escenarioBase = (Stage) tfCorreo.getScene().getWindow();
+            Scene currentScene = escenarioBase.getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            Utilidades.mostrarDialogoSimple(
+                "Error en la redirección",
+                "Por el momento no se puede ingresar al sistema"
+                + ", intente más tarde",
+                Alert.AlertType.ERROR
+            );
+        }
     }
-    
-    
 }
