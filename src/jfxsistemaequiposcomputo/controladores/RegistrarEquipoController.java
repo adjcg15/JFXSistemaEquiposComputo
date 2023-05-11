@@ -1,19 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package jfxsistemaequiposcomputo.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import jfxsistemaequiposcomputo.pojo.SolicitudMantenimiento;
+import jfxsistemaequiposcomputo.utils.Constantes;
 
 /**
  * FXML Controller class
@@ -23,11 +27,14 @@ import javafx.scene.input.MouseEvent;
 public class RegistrarEquipoController implements Initializable {
 
     @FXML
-    private ComboBox<?> cbTipoEquipo;
+    private ComboBox<String> cbTipoEquipo;
+    ObservableList<String> listaTiposEquipos;
     @FXML
     private RadioButton rbSi;
     @FXML
     private RadioButton rbNo;
+    @FXML
+    private ToggleGroup tgCargador;
     @FXML
     private TextField tfMarca;
     @FXML
@@ -46,6 +53,8 @@ public class RegistrarEquipoController implements Initializable {
     private TextField tfContraseniaSO;
     @FXML
     private TextField tfDescripcionProblema;
+    
+    private boolean cargadorIncluido;
     @FXML
     private ImageView ivImagenEquipo;
 
@@ -54,15 +63,46 @@ public class RegistrarEquipoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        listaTiposEquipos = FXCollections.observableArrayList(Constantes.TIPOS_EQUIPOS);
+        configurarComboBox();
+        configurarCambioCargador();
     }    
-
+    
+    private void configurarComboBox (){
+        cbTipoEquipo.setItems(listaTiposEquipos);
+    }
+    
+    private void configurarCambioCargador(){
+        tgCargador.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if(rbSi.isSelected()){
+                   cargadorIncluido = true;
+                }else if(rbNo.isSelected()){
+                   cargadorIncluido = false;
+                }
+            }            
+        });
+    }
+    
     @FXML
     private void clicBtnSeleccionarImagen(ActionEvent event) {
     }
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
+        SolicitudMantenimiento solicitud = new SolicitudMantenimiento();
+        solicitud.setTipo(cbTipoEquipo.getValue());
+        solicitud.setIncluyeCargador(cargadorIncluido);
+        solicitud.setMarca(tfMarca.getText());
+        solicitud.setModelo(tfModelo.getText());
+        solicitud.setTamanioPantalla(tfTamañoPantalla.getText());
+        solicitud.setProcesador(tfProcesador.getText());
+        solicitud.setMemoriaRAM(tfMemoriaRAM.getText());
+        solicitud.setSistemaOperativo(tfSO.getText());
+        solicitud.setUsuarioSO(tfUsuarioSO.getText());
+        solicitud.setContraeniaSO(tfContraseniaSO.getText());
+        solicitud.setObservaciones(tfDescripcionProblema.getText());
     }
 
     @FXML
