@@ -26,6 +26,10 @@ public class MenuPrincipalController implements Initializable {
     private Pane paneModuloPrivilegiado;
     private Usuario usuario;
     
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
