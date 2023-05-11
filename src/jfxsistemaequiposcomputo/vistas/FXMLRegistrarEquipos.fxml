@@ -9,8 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jfxsistemaequiposcomputo.controladores.RegistrarEquipoController">
+<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.RegistrarEquipoController">
    <children>
       <Label layoutX="86.0" layoutY="115.0" prefHeight="36.0" prefWidth="307.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Información técnica">
          <font>
