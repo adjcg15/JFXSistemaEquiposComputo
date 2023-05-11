@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -45,6 +46,8 @@ public class RegistrarEquipoController implements Initializable {
     private TextField tfContraseniaSO;
     @FXML
     private TextField tfDescripcionProblema;
+    @FXML
+    private ImageView ivImagenEquipo;
 
     /**
      * Initializes the controller class.

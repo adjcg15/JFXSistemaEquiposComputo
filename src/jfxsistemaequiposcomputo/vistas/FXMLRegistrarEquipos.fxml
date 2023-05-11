@@ -9,8 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jfxsistemaequiposcomputo.controladores.RegistrarEquipoController">
+<AnchorPane id="AnchorPane" prefHeight="596.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.RegistrarEquipoController">
    <children>
       <Label layoutX="86.0" layoutY="115.0" prefHeight="36.0" prefWidth="307.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Información técnica">
          <font>
@@ -94,7 +93,7 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <ImageView fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="ivImagenEquipo" fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="545.0" layoutY="411.0" mnemonicParsing="false" onAction="#clicBtnSeleccionarImagen" text="Seleccionar Imagen" />
       <Button layoutX="800.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4;" text="Guardar" textFill="WHITE">
          <font>
