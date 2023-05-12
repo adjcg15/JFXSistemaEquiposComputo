@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
@@ -69,8 +70,28 @@ public class RegistrarEquipoController implements Initializable {
     private TextField tfDescripcionProblema;
     @FXML
     private ImageView ivImagenEquipo;
+    @FXML
+    private Label lbSinEquipo;
+    @FXML
+    private Label lbSinCargador;
+    @FXML
+    private Label lbSinMarca;
+    @FXML
+    private Label lbSinModelo;
+    
+    @FXML
+    private Label lbSinSO;
+    @FXML
+    private Label lbSinUsuario;
+    @FXML
+    private Label lbSinContrasenia;
+    @FXML
+    private Label lbSinDescripcion;
+    @FXML
+    private Label lbSinImagen;
     
     private boolean cargadorIncluido;
+    
     private SolicitudMantenimiento solicitud = new SolicitudMantenimiento();
     private Usuario usuario;
     
@@ -149,9 +170,21 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-       establecerSolicitud();
-       int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
-       System.out.println(respuestaCreación);
+        if (validarRespuestas()) {
+            establecerSolicitud();
+            int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
+            System.out.println(respuestaCreación);
+            Utilidades.mostrarDialogoSimple("Confirmación",
+                    "Solicitud registrada", Alert.AlertType.INFORMATION);
+            Stage escenarioPrincipal = (Stage) tfDescripcionProblema.getScene().getWindow();
+            escenarioPrincipal.close();
+        } else {
+            Utilidades.mostrarDialogoSimple(
+                "Error", 
+                "Debe completar todos los campos faltantes", 
+                Alert.AlertType.WARNING
+            );
+        } 
     }
     
     private void establecerSolicitud() {
@@ -180,5 +213,29 @@ public class RegistrarEquipoController implements Initializable {
         Stage escenarioPrincipal = (Stage) tfDescripcionProblema.getScene().getWindow();
         escenarioPrincipal.close();
     }
+    private boolean validarRespuestas() {
+    boolean campoValido = true;
     
+    lbSinEquipo.setText(cbTipoEquipo.getValue() == null ? "*" : "");
+    lbSinCargador.setText((!rbSi.isSelected() && !rbNo.isSelected()) ? "*" : "");
+    lbSinMarca.setText(tfMarca.getText().isEmpty() ? "*" : "");
+    lbSinModelo.setText(tfModelo.getText().isEmpty() ? "*" : "");
+    lbSinSO.setText(tfSO.getText().isEmpty() ? "*" : "");
+    lbSinUsuario.setText(tfUsuarioSO.getText().isEmpty() ? "*" : "");
+    lbSinContrasenia.setText(tfContraseniaSO.getText().isEmpty() ? "*" : "");
+    lbSinDescripcion.setText(tfDescripcionProblema.getText().isEmpty() ? "*" : "");
+    lbSinImagen.setText(ivImagenEquipo.getImage() == null ? "*" : "");
+    
+    campoValido = campoValido && (cbTipoEquipo.getValue() != null);
+    campoValido = campoValido && (rbSi.isSelected() || rbNo.isSelected());
+    campoValido = campoValido && !tfMarca.getText().isEmpty();
+    campoValido = campoValido && !tfModelo.getText().isEmpty();
+    campoValido = campoValido && !tfSO.getText().isEmpty();
+    campoValido = campoValido && !tfUsuarioSO.getText().isEmpty();
+    campoValido = campoValido && !tfContraseniaSO.getText().isEmpty();
+    campoValido = campoValido && !tfDescripcionProblema.getText().isEmpty();
+    campoValido = campoValido && (ivImagenEquipo.getImage() != null);
+    
+    return campoValido;
+    }
 }

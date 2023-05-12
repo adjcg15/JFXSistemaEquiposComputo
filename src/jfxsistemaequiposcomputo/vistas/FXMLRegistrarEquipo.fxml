@@ -122,5 +122,55 @@
             </ImageView>
          </children>
       </Pane>
+      <Label fx:id="lbSinEquipo" layoutX="222.0" layoutY="161.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinCargador" layoutX="454.0" layoutY="161.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinMarca" layoutX="148.0" layoutY="243.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinModelo" layoutX="372.0" layoutY="243.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinMemoria" layoutX="205.0" layoutY="382.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinSO" layoutX="442.0" layoutY="382.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinUsuario" layoutX="240.0" layoutY="451.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinContrasenia" layoutX="486.0" layoutY="451.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinDescripcion" layoutX="783.0" layoutY="161.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSinImagen" layoutX="620.0" layoutY="358.0" textFill="RED">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
