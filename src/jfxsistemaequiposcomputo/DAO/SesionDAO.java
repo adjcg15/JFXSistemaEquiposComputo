@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jfxsistemaequiposcomputo.DAO;
 
 import java.sql.Connection;
@@ -25,7 +21,6 @@ public class SesionDAO {
                 prepararSentencia.setString(1,correo);
                 prepararSentencia.setString(2, password);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                usuarioRespuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
                 Usuario usuarioVerificado = new Usuario();
                 if(resultado.next()){
                     usuarioVerificado.setIdUsuario(resultado.getInt("idUsuario"));
