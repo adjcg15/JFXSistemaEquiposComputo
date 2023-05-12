@@ -6,7 +6,7 @@ GRANT ALL PRIVILEGES ON gestionequipos . * TO 'adminSEC'@'localhost';
 USE gestionequipos;
 
 CREATE TABLE usuarios (
-	idUsuario INT AUTO_INCREMENT NOT NULL,
+	idUsuario INT AUTO_INCREMENT ,
     nombre VARCHAR(45),
     apellidoPaterno VARCHAR(45),
     apellidoMaterno VARCHAR(45),
@@ -20,18 +20,18 @@ CREATE TABLE usuarios (
 
 CREATE TABLE equiposDeComputo (
 	idEquipoDeComputo INT AUTO_INCREMENT NOT NULL,
-    tipo VARCHAR(15),
-    incluyeCargador BOOLEAN,
-    modelo VARCHAR(45),
-    sistemaOperativo VARCHAR(45),
+    tipo VARCHAR(15) NOT NULL,
+    incluyeCargador BOOLEAN NOT NULL,
+    modelo VARCHAR(45) NOT NULL,
+    sistemaOperativo VARCHAR(45) NOT NULL,
     tamanioPantalla VARCHAR(45),
-    contraseniaEquipo VARCHAR(20),
+    contraseniaEquipo VARCHAR(20) NOT NULL,
     procesador VARCHAR(20),
     memoria VARCHAR(45),
-    marca VARCHAR(45),
+    marca VARCHAR(45) NOT NULL,
     fechaRegistro DATE,
-    fotoEquipo LONGBLOB,
-    usuarioSO VARCHAR(45),
+    fotoEquipo LONGBLOB NOT NULL,
+    usuarioSO VARCHAR(45) NOT NULL,
     idUsuario INT,
     idSolicitudDiagnostico INT,
     PRIMARY KEY (idEquipoDeComputo)
