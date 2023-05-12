@@ -172,16 +172,38 @@ public class RegistrarEquipoController implements Initializable {
     private void clicBtnGuardar(ActionEvent event) {
         if (validarRespuestas()) {
             establecerSolicitud();
+            
             int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
-            System.out.println(respuestaCreación);
-            Utilidades.mostrarDialogoSimple("Confirmación",
-                    "Solicitud registrada", Alert.AlertType.INFORMATION);
-            Stage escenarioPrincipal = (Stage) tfDescripcionProblema.getScene().getWindow();
-            escenarioPrincipal.close();
+            switch(respuestaCreación) {
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error de conexión",
+                        "Ocurrió un error al guardar los datos, intente más tarde", 
+                        Alert.AlertType.INFORMATION
+                    );
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error en la creación",
+                        "Ocurrió un error al guardar los datos, intente más tarde", 
+                        Alert.AlertType.INFORMATION
+                    );
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Solicitud enviada",
+                        "Su solicitud se ha enviado correctamente", 
+                        Alert.AlertType.INFORMATION
+                    );
+                    Stage escenarioPrincipal = 
+                        (Stage) tfDescripcionProblema.getScene().getWindow();
+                    escenarioPrincipal.close();
+                    break;
+            }
         } else {
             Utilidades.mostrarDialogoSimple(
-                "Error", 
-                "Debe completar todos los campos faltantes", 
+                "Campos inválidos", 
+                "Por favor complete los campos indicados", 
                 Alert.AlertType.WARNING
             );
         } 
@@ -213,29 +235,30 @@ public class RegistrarEquipoController implements Initializable {
         Stage escenarioPrincipal = (Stage) tfDescripcionProblema.getScene().getWindow();
         escenarioPrincipal.close();
     }
+    
     private boolean validarRespuestas() {
-    boolean campoValido = true;
-    
-    lbSinEquipo.setText(cbTipoEquipo.getValue() == null ? "*" : "");
-    lbSinCargador.setText((!rbSi.isSelected() && !rbNo.isSelected()) ? "*" : "");
-    lbSinMarca.setText(tfMarca.getText().isEmpty() ? "*" : "");
-    lbSinModelo.setText(tfModelo.getText().isEmpty() ? "*" : "");
-    lbSinSO.setText(tfSO.getText().isEmpty() ? "*" : "");
-    lbSinUsuario.setText(tfUsuarioSO.getText().isEmpty() ? "*" : "");
-    lbSinContrasenia.setText(tfContraseniaSO.getText().isEmpty() ? "*" : "");
-    lbSinDescripcion.setText(tfDescripcionProblema.getText().isEmpty() ? "*" : "");
-    lbSinImagen.setText(ivImagenEquipo.getImage() == null ? "*" : "");
-    
-    campoValido = campoValido && (cbTipoEquipo.getValue() != null);
-    campoValido = campoValido && (rbSi.isSelected() || rbNo.isSelected());
-    campoValido = campoValido && !tfMarca.getText().isEmpty();
-    campoValido = campoValido && !tfModelo.getText().isEmpty();
-    campoValido = campoValido && !tfSO.getText().isEmpty();
-    campoValido = campoValido && !tfUsuarioSO.getText().isEmpty();
-    campoValido = campoValido && !tfContraseniaSO.getText().isEmpty();
-    campoValido = campoValido && !tfDescripcionProblema.getText().isEmpty();
-    campoValido = campoValido && (ivImagenEquipo.getImage() != null);
-    
-    return campoValido;
+        boolean campoValido = true;
+
+        lbSinEquipo.setText(cbTipoEquipo.getValue() == null ? "*" : "");
+        lbSinCargador.setText((!rbSi.isSelected() && !rbNo.isSelected()) ? "*" : "");
+        lbSinMarca.setText(tfMarca.getText().isEmpty() ? "*" : "");
+        lbSinModelo.setText(tfModelo.getText().isEmpty() ? "*" : "");
+        lbSinSO.setText(tfSO.getText().isEmpty() ? "*" : "");
+        lbSinUsuario.setText(tfUsuarioSO.getText().isEmpty() ? "*" : "");
+        lbSinContrasenia.setText(tfContraseniaSO.getText().isEmpty() ? "*" : "");
+        lbSinDescripcion.setText(tfDescripcionProblema.getText().isEmpty() ? "*" : "");
+        lbSinImagen.setText(ivImagenEquipo.getImage() == null ? "*" : "");
+
+        campoValido = campoValido && (cbTipoEquipo.getValue() != null);
+        campoValido = campoValido && (rbSi.isSelected() || rbNo.isSelected());
+        campoValido = campoValido && !tfMarca.getText().isEmpty();
+        campoValido = campoValido && !tfModelo.getText().isEmpty();
+        campoValido = campoValido && !tfSO.getText().isEmpty();
+        campoValido = campoValido && !tfUsuarioSO.getText().isEmpty();
+        campoValido = campoValido && !tfContraseniaSO.getText().isEmpty();
+        campoValido = campoValido && !tfDescripcionProblema.getText().isEmpty();
+        campoValido = campoValido && (ivImagenEquipo.getImage() != null);
+
+        return campoValido;
     }
 }

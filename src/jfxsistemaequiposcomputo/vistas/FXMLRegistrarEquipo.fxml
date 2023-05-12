@@ -90,32 +90,32 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="tfDescripcionProblema" layoutX="535.0" layoutY="198.0" prefHeight="150.0" prefWidth="350.0" />
-      <Label layoutX="535.0" layoutY="350.0" prefHeight="36.0" prefWidth="342.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Imagen">
+      <TextField fx:id="tfDescripcionProblema" layoutX="535.0" layoutY="198.0" prefHeight="103.0" prefWidth="350.0" />
+      <Label layoutX="535.0" layoutY="309.0" prefHeight="36.0" prefWidth="350.0" style="-fx-border-color: #161417; -fx-border-width: 0 0 1 0;" text="Imagen">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <ImageView fx:id="ivImagenEquipo" fitHeight="82.0" fitWidth="151.0" layoutX="734.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true" />
-      <Button layoutX="545.0" layoutY="411.0" mnemonicParsing="false" onAction="#clicBtnSeleccionarImagen" text="Seleccionar Imagen" />
-      <Button layoutX="800.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4;" text="Guardar" textFill="WHITE">
+      <ImageView fx:id="ivImagenEquipo" fitHeight="150.0" fitWidth="217.0" layoutX="670.0" layoutY="357.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="535.0" layoutY="349.0" mnemonicParsing="false" onAction="#clicBtnSeleccionarImagen" style="-fx-background-color: #161417; -fx-cursor: hand;" text="Seleccionar Imagen" textFill="WHITE" />
+      <Button layoutX="802.0" layoutY="527.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4; -fx-cursor: hand;" text="Guardar" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="676.0" layoutY="502.0" mnemonicParsing="false" onAction="#clicBtnCancelar" style="-fx-background-color: F61C1C;" text="Cancelar" textFill="#fffafa">
+      <Button layoutX="696.0" layoutY="527.0" mnemonicParsing="false" onAction="#clicBtnCancelar" style="-fx-background-color: F61C1C; -fx-cursor: hand;" text="Cancelar" textFill="#fffafa">
          <font>
-            <Font name="System Bold" size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Button>
       <Pane prefHeight="82.0" prefWidth="942.0" style="-fx-background-color: #0775A4;">
          <children>
-            <Label layoutX="90.0" layoutY="33.0" text="Equipo de Cómputo" textFill="WHITE">
+            <Label layoutX="84.0" layoutY="24.0" text="Equipo de Cómputo" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ImageView fitHeight="67.0" fitWidth="76.0" layoutX="7.0" layoutY="8.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="36.0" fitWidth="38.0" layoutX="28.0" layoutY="23.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                <image>
                   <Image url="@../recursos/flecha-hacia-atras.png" />
                </image>
@@ -167,7 +167,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lbSinImagen" layoutX="620.0" layoutY="358.0" textFill="RED">
+      <Label fx:id="lbSinImagen" layoutX="659.0" layoutY="348.0" prefHeight="26.0" prefWidth="5.0" textFill="RED">
          <font>
             <Font size="17.0" />
          </font>

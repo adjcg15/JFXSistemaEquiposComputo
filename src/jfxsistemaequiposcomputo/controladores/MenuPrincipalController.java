@@ -31,9 +31,7 @@ public class MenuPrincipalController implements Initializable {
     }
     
     public void inicializarOpcionesAdmin(boolean esAdministrador) {
-        if(!esAdministrador) {
-            paneModuloPrivilegiado.setVisible(false);
-        }
+        paneModuloPrivilegiado.setVisible(esAdministrador);
     }
     
     @Override
@@ -46,7 +44,9 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clicCerrarSesion(MouseEvent event) {
-        
+        Stage escenarioPrincipal = 
+            (Stage) paneModuloPrivilegiado.getScene().getWindow();
+        escenarioPrincipal.close();
     }
 
     @FXML

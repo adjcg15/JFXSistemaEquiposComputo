@@ -20,12 +20,12 @@ public class SolicitudesDAO {
                     + "(observaciones, idUsuario) "
                     + "VALUES (?, ?)";
                 
-                PreparedStatement crearSolicitudSentendiaPreparada = 
+                PreparedStatement crearSolicitudSentenciaPreparada = 
                     conexionBD.prepareStatement(crearSolicitud);
-                crearSolicitudSentendiaPreparada.setString(1, solicitud.getObservaciones());
-                crearSolicitudSentendiaPreparada.setInt(2, solicitud.getIdUsuario());
+                crearSolicitudSentenciaPreparada.setString(1, solicitud.getObservaciones());
+                crearSolicitudSentenciaPreparada.setInt(2, solicitud.getIdUsuario());
                 
-                int solicitudesAfectadas = crearSolicitudSentendiaPreparada.executeUpdate();
+                int solicitudesAfectadas = crearSolicitudSentenciaPreparada.executeUpdate();
                 if(solicitudesAfectadas != 1) {
                     respuesta = Constantes.ERROR_CONSULTA;
                     conexionBD.close();
@@ -79,18 +79,18 @@ public class SolicitudesDAO {
                     + "(fechaInicio, activo, idSolicitudDiagnostico, idEstado) "
                     + "VALUES (?, ?, ?, ?)";
                 
-                PreparedStatement asociarEstadoSentendiaPreparada = 
+                PreparedStatement asociarEstadoSentenciaPreparada = 
                     conexionBD.prepareStatement(crearEstadoSolicitud);
-                asociarEstadoSentendiaPreparada.setString(
+                asociarEstadoSentenciaPreparada.setString(
                     1, 
                     Utilidades.fechaActualFormatoMySQL()
                 );
-                asociarEstadoSentendiaPreparada.setBoolean(2, true);
-                asociarEstadoSentendiaPreparada.setInt(3, idNuevaSolicitud);
-                asociarEstadoSentendiaPreparada.setInt(4, idEstadoAsociado);
+                asociarEstadoSentenciaPreparada.setBoolean(2, true);
+                asociarEstadoSentenciaPreparada.setInt(3, idNuevaSolicitud);
+                asociarEstadoSentenciaPreparada.setInt(4, idEstadoAsociado);
                 
                 int estadosSolicitudAfectados 
-                    = crearSolicitudSentendiaPreparada.executeUpdate();
+                    = asociarEstadoSentenciaPreparada.executeUpdate();
                 if(estadosSolicitudAfectados != 1) {
                     respuesta = Constantes.ERROR_CONSULTA;
                     conexionBD.close();
@@ -105,25 +105,25 @@ public class SolicitudesDAO {
                     + "usuarioSO, idUsuario, idSolicitudDiagnostico) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 
-                PreparedStatement crearEquipoSentendiaPreparada = 
+                PreparedStatement crearEquipoSentenciaPreparada = 
                     conexionBD.prepareStatement(crearEquipo);
-                crearEquipoSentendiaPreparada.setString(1, solicitud.getTipo());
-                crearEquipoSentendiaPreparada.setBoolean(2, solicitud.isIncluyeCargador());
-                crearEquipoSentendiaPreparada.setString(3, solicitud.getModelo());
-                crearEquipoSentendiaPreparada.setString(4, solicitud.getSistemaOperativo());
-                crearEquipoSentendiaPreparada.setString(5, solicitud.getTamanioPantalla());
-                crearEquipoSentendiaPreparada.setString(6, solicitud.getContraeniaSO());
-                crearEquipoSentendiaPreparada.setString(7, solicitud.getProcesador());
-                crearEquipoSentendiaPreparada.setString(8, solicitud.getMemoriaRAM());
-                crearEquipoSentendiaPreparada.setString(9, solicitud.getMarca());
-                crearEquipoSentendiaPreparada.setString(10, Utilidades.fechaActualFormatoMySQL());
-                crearEquipoSentendiaPreparada.setBytes(11, solicitud.getImagen());
-                crearEquipoSentendiaPreparada.setString(12, solicitud.getUsuarioSO());
-                crearEquipoSentendiaPreparada.setInt(13, solicitud.getIdUsuario());
-                crearEquipoSentendiaPreparada.setInt(14, idNuevaSolicitud);
+                crearEquipoSentenciaPreparada.setString(1, solicitud.getTipo());
+                crearEquipoSentenciaPreparada.setBoolean(2, solicitud.isIncluyeCargador());
+                crearEquipoSentenciaPreparada.setString(3, solicitud.getModelo());
+                crearEquipoSentenciaPreparada.setString(4, solicitud.getSistemaOperativo());
+                crearEquipoSentenciaPreparada.setString(5, solicitud.getTamanioPantalla());
+                crearEquipoSentenciaPreparada.setString(6, solicitud.getContraeniaSO());
+                crearEquipoSentenciaPreparada.setString(7, solicitud.getProcesador());
+                crearEquipoSentenciaPreparada.setString(8, solicitud.getMemoriaRAM());
+                crearEquipoSentenciaPreparada.setString(9, solicitud.getMarca());
+                crearEquipoSentenciaPreparada.setString(10, Utilidades.fechaActualFormatoMySQL());
+                crearEquipoSentenciaPreparada.setBytes(11, solicitud.getImagen());
+                crearEquipoSentenciaPreparada.setString(12, solicitud.getUsuarioSO());
+                crearEquipoSentenciaPreparada.setInt(13, solicitud.getIdUsuario());
+                crearEquipoSentenciaPreparada.setInt(14, idNuevaSolicitud);
                 
                 int equiposAfectados 
-                    = crearEquipoSentendiaPreparada.executeUpdate();
+                    = crearEquipoSentenciaPreparada.executeUpdate();
                 if(equiposAfectados != 1) {
                     respuesta = Constantes.ERROR_CONSULTA;
                     conexionBD.close();
