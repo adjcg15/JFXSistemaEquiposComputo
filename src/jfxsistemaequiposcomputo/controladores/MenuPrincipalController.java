@@ -30,6 +30,12 @@ public class MenuPrincipalController implements Initializable {
         this.usuario = usuario;
     }
     
+    public void inicializarOpcionesAdmin(boolean esAdministrador) {
+        if(!esAdministrador) {
+            paneModuloPrivilegiado.setVisible(false);
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }

@@ -113,6 +113,9 @@ public class InicioSesionController implements Initializable {
             MenuPrincipalController menuController = loader.getController();
 
             menuController.setUsuario(usuarioRespuesta);
+            menuController.inicializarOpcionesAdmin(
+                usuarioRespuesta.isPrivilegiado()
+            );
 
             Stage escenarioBase = (Stage) tfCorreo.getScene().getWindow();
             Scene currentScene = escenarioBase.getScene();
