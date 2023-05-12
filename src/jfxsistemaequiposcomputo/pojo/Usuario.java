@@ -10,13 +10,11 @@ public class Usuario {
     private String correo;
     private String contrasenia;
     private boolean privilegiado;
-    private int codigoRespuesta;
 
     public Usuario() {
     }
 
-
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String dirección, String correo, String contrasenia, boolean privilegiado, int codigoRespuesta) {
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String dirección, String correo, String contrasenia, boolean privilegiado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -26,15 +24,6 @@ public class Usuario {
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.privilegiado = privilegiado;
-        this.codigoRespuesta = codigoRespuesta;
-    }
-
-    public int getCodigoRespuesta() {
-        return codigoRespuesta;
-    }
-
-    public void setCodigoRespuesta(int codigoRespuesta) {
-        this.codigoRespuesta = codigoRespuesta;
     }
 
     public String getApellidoPaterno() {

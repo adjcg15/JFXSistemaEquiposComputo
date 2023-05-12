@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package jfxsistemaequiposcomputo.controladores;
 
 import java.io.IOException;
@@ -20,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxsistemaequiposcomputo.DAO.SesionDAO;
 import jfxsistemaequiposcomputo.pojo.Usuario;
+import jfxsistemaequiposcomputo.pojo.UsuarioRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
 
@@ -70,7 +67,7 @@ public class InicioSesionController implements Initializable {
     }
     
     private void validarInformacionUsuario(String correo, String password){
-        Usuario usuarioRespuesta = SesionDAO.verificarUsuarioSesion(correo, password);
+        UsuarioRespuesta usuarioRespuesta = SesionDAO.verificarUsuarioSesion(correo, password);
         System.out.println("Respuesta: " + usuarioRespuesta.getCodigoRespuesta());
         
         switch (usuarioRespuesta.getCodigoRespuesta()){
@@ -87,11 +84,11 @@ public class InicioSesionController implements Initializable {
                         Alert.AlertType.ERROR);
             break;
             case Constantes.OPERACION_EXITOSA:
-                if(usuarioRespuesta.getIdUsuario()>0){
+                if(usuarioRespuesta.getUsuario().getIdUsuario()>0){
                     Utilidades.mostrarDialogoSimple("Bienvenido(a)", 
-                            "Bienvenido(a)"+usuarioRespuesta.toString()+ "al sistema",
+                            "Bienvenido(a) "+usuarioRespuesta.getUsuario().toString()+ "al sistema",
                     Alert.AlertType.INFORMATION);
-                    redirigirMenuPrincipal(usuarioRespuesta); 
+                    redirigirMenuPrincipal(usuarioRespuesta.getUsuario()); 
                 }else{
                     Utilidades.mostrarDialogoSimple("Informacion incorrecta",
                         "El usuario y/o contraseña no son correctos, "

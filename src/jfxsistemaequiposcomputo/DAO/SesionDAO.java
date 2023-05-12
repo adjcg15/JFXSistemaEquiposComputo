@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jfxsistemaequiposcomputo.DAO;
 
 import java.sql.Connection;
@@ -10,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import jfxsistemaequiposcomputo.modelo.ConexionBD;
 import jfxsistemaequiposcomputo.pojo.Usuario;
+import jfxsistemaequiposcomputo.pojo.UsuarioRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 
 public class SesionDAO {
-    public static Usuario verificarUsuarioSesion(String correo, String password){
-        Usuario usuarioVerificado = new Usuario();
+    public static UsuarioRespuesta verificarUsuarioSesion(String correo, String password){
+        UsuarioRespuesta usuarioRespuesta = new UsuarioRespuesta();
+        usuarioRespuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null){
             try {
@@ -23,8 +21,7 @@ public class SesionDAO {
                 prepararSentencia.setString(1,correo);
                 prepararSentencia.setString(2, password);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                usuarioVerificado.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
-                
+                Usuario usuarioVerificado = new Usuario();
                 if(resultado.next()){
                     usuarioVerificado.setIdUsuario(resultado.getInt("idUsuario"));
                     usuarioVerificado.setNombre(resultado.getString("nombre"));
@@ -34,17 +31,15 @@ public class SesionDAO {
                     usuarioVerificado.setDirección(resultado.getString("direccion"));
                     usuarioVerificado.setCorreo(resultado.getString("correo"));
                     usuarioVerificado.setContrasenia(resultado.getString("contrasenia"));
-                    
-                    
                 }
+                usuarioRespuesta.setUsuario(usuarioVerificado);
                 conexion.close();
-                
             } catch (SQLException ex) {
-                usuarioVerificado.setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
+                usuarioRespuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
             }          
         }else{
-            usuarioVerificado.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+            usuarioRespuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
         }
-        return usuarioVerificado;
+        return usuarioRespuesta;
     }
 }
