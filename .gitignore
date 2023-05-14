@@ -1,6 +1,7 @@
 # Ignorar archivos y directorios de compilación
 /target/
 /build/
+/nbproject/
 /nbproject/private/
 /dist/
 /classes/
