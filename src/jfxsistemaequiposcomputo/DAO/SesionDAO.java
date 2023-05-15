@@ -31,6 +31,7 @@ public class SesionDAO {
                     usuarioVerificado.setDirección(resultado.getString("direccion"));
                     usuarioVerificado.setCorreo(resultado.getString("correo"));
                     usuarioVerificado.setContrasenia(resultado.getString("contrasenia"));
+                    usuarioVerificado.setPrivilegiado(resultado.getBoolean("privilegiado"));
                 }
                 usuarioRespuesta.setUsuario(usuarioVerificado);
                 conexion.close();
