@@ -133,22 +133,22 @@ public class RegistrarEquipoController implements Initializable {
     private void clicBtnSeleccionarImagen(ActionEvent event) {
         FileChooser seleccionImagen = new FileChooser();
         FileChooser.ExtensionFilter filtroDialogo = 
-                new FileChooser.ExtensionFilter("Archivos PNG (*.png)", "*.PNG");
+                new FileChooser.ExtensionFilter("Imagen .jpg o .png", "*.PNG", "*.JPG");
         
         seleccionImagen.setTitle("Selecciona una imagen");
         seleccionImagen.getExtensionFilters().add(filtroDialogo);
         
         Stage escenarioPrincipal = 
             (Stage) tfDescripcionProblema.getScene().getWindow();
-        File archivoSeleccionado = 
+        File imagenSeleccionada = 
             seleccionImagen.showOpenDialog(escenarioPrincipal);
-        visualizarImagen(archivoSeleccionado);
+        mostrarImagenSeleccionada(imagenSeleccionada);
     }
     
-    private void visualizarImagen(File imgSeleccionada){
-        if(imgSeleccionada != null){
+    private void mostrarImagenSeleccionada (File imagenSeleccionada){
+        if(imagenSeleccionada != null){
             try {
-                BufferedImage bufferImg = ImageIO.read(imgSeleccionada);
+                BufferedImage bufferImg = ImageIO.read(imagenSeleccionada);
                 Image imagenDecodificada = 
                     SwingFXUtils.toFXImage(bufferImg, null);
                 
@@ -170,9 +170,10 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        if (validarRespuestas()) {
-            establecerSolicitud();
-            
+        establecerSolicitud();
+        boolean camposValidos = validarSolicitud(solicitud);
+        
+        if (camposValidos) {
             int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
             switch(respuestaCreación) {
                 case Constantes.ERROR_CONEXION:
@@ -236,29 +237,56 @@ public class RegistrarEquipoController implements Initializable {
         escenarioPrincipal.close();
     }
     
-    private boolean validarRespuestas() {
-        boolean campoValido = true;
+    private boolean validarSolicitud(SolicitudMantenimiento solicitud) {
+        
+        String tipoEquipo = solicitud.getTipo();
+        boolean incluyeCargador = solicitud.getIncluyeCargador();
+        String marca = solicitud.getMarca();
+        String modelo = solicitud.getModelo();
+        String sistemaOperativo = solicitud.getSistemaOperativo();
+        String usuarioSO = solicitud.getUsuarioSO();
+        String contraseniaSO = solicitud.getContraeniaSO();
+        String observaciones = solicitud.getObservaciones();
+        
+        boolean camposTecnicosValidos =
+        tipoEquipo != null 
+        && marca != null && !marca.isEmpty() 
+        && modelo != null && !modelo.isEmpty() 
+        && sistemaOperativo != null && !sistemaOperativo.isEmpty()
+        && usuarioSO != null && !usuarioSO.isEmpty()
+        && contraseniaSO != null && !contraseniaSO.isEmpty();
 
-        lbSinEquipo.setText(cbTipoEquipo.getValue() == null ? "*" : "");
-        lbSinCargador.setText((!rbSi.isSelected() && !rbNo.isSelected()) ? "*" : "");
-        lbSinMarca.setText(tfMarca.getText().isEmpty() ? "*" : "");
-        lbSinModelo.setText(tfModelo.getText().isEmpty() ? "*" : "");
-        lbSinSO.setText(tfSO.getText().isEmpty() ? "*" : "");
-        lbSinUsuario.setText(tfUsuarioSO.getText().isEmpty() ? "*" : "");
-        lbSinContrasenia.setText(tfContraseniaSO.getText().isEmpty() ? "*" : "");
-        lbSinDescripcion.setText(tfDescripcionProblema.getText().isEmpty() ? "*" : "");
-        lbSinImagen.setText(ivImagenEquipo.getImage() == null ? "*" : "");
+  
+        boolean camposSolicitudValidos =
+        observaciones != null && !observaciones.isEmpty();
+        
+        mostrarErrores(
+        cbTipoEquipo.getValue() == null,
+        !rbSi.isSelected() && !rbNo.isSelected(),
+        tfMarca.getText().isEmpty(),
+        tfModelo.getText().isEmpty(),
+        tfSO.getText().isEmpty(),
+        tfUsuarioSO.getText().isEmpty(),
+        tfContraseniaSO.getText().isEmpty(),
+        tfDescripcionProblema.getText().isEmpty(),
+        ivImagenEquipo.getImage() == null
+    );
+    return camposTecnicosValidos && camposSolicitudValidos;
+}
 
-        campoValido = campoValido && (cbTipoEquipo.getValue() != null);
-        campoValido = campoValido && (rbSi.isSelected() || rbNo.isSelected());
-        campoValido = campoValido && !tfMarca.getText().isEmpty();
-        campoValido = campoValido && !tfModelo.getText().isEmpty();
-        campoValido = campoValido && !tfSO.getText().isEmpty();
-        campoValido = campoValido && !tfUsuarioSO.getText().isEmpty();
-        campoValido = campoValido && !tfContraseniaSO.getText().isEmpty();
-        campoValido = campoValido && !tfDescripcionProblema.getText().isEmpty();
-        campoValido = campoValido && (ivImagenEquipo.getImage() != null);
-
-        return campoValido;
-    }
+   
+    private void mostrarErrores( boolean tipoEquipoError, boolean cargadorError,
+        boolean marcaError, boolean modeloError, boolean soError, boolean usuarioError,
+        boolean contraseniaError, boolean descripcionError, boolean imagenError){
+        
+            lbSinEquipo.setText(tipoEquipoError ? "*" : "");
+            lbSinCargador.setText(cargadorError ? "*" : "");
+            lbSinMarca.setText(marcaError ? "*" : "");
+            lbSinModelo.setText(modeloError ? "*" : "");
+            lbSinSO.setText(soError ? "*" : "");
+            lbSinUsuario.setText(usuarioError ? "*" : "");
+            lbSinContrasenia.setText(contraseniaError ? "*" : "");
+            lbSinDescripcion.setText(descripcionError ? "*" : "");
+            lbSinImagen.setText(imagenError ? "*" : "");
+    }  
 }

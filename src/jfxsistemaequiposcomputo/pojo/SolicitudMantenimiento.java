@@ -81,6 +81,10 @@ public class SolicitudMantenimiento {
     public boolean isIncluyeCargador() {
         return incluyeCargador;
     }
+    
+    public boolean getIncluyeCargador() {
+        return incluyeCargador;
+    }
 
     public void setIncluyeCargador(boolean incluyeCargador) {
         this.incluyeCargador = incluyeCargador;
