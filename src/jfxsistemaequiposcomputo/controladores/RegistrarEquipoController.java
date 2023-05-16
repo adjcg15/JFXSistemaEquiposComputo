@@ -28,7 +28,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
-import jfxsistemaequiposcomputo.pojo.SolicitudMantenimiento;
+import jfxsistemaequiposcomputo.pojo.EquipoComputo;
+import jfxsistemaequiposcomputo.pojo.Solicitud;
+import jfxsistemaequiposcomputo.pojo.SolicitudConUsuarioYEquipo;
 import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
@@ -92,8 +94,9 @@ public class RegistrarEquipoController implements Initializable {
     
     private boolean cargadorIncluido;
     
-    private SolicitudMantenimiento solicitud = new SolicitudMantenimiento();
-    private Usuario usuario;
+    private Usuario usuario = new Usuario();
+    private Solicitud solicitud = new Solicitud();
+    private EquipoComputo equipo = new EquipoComputo();
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -101,13 +104,9 @@ public class RegistrarEquipoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("Inicializando vista");
         listaTiposEquipos = FXCollections.observableArrayList(Constantes.TIPOS_EQUIPOS);
-        System.out.println("Lista de equipos seteada");
         configurarComboBox();
-        System.out.println("Combo configurado");
         configurarCambioCargador();
-        System.out.println("Cargador configurado");
     }    
     
     private void configurarComboBox (){
@@ -157,7 +156,7 @@ public class RegistrarEquipoController implements Initializable {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 ImageIO.write(bufferImg, "jpg", outputStream);
                 byte[] bytesImagen = outputStream.toByteArray();
-                solicitud.setImagen(bytesImagen);
+                equipo.setImagen(bytesImagen);
            } catch (IOException ex) {
                 Utilidades.mostrarDialogoSimple(
                     "Error", 
@@ -170,24 +169,31 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        establecerSolicitud();
-        boolean camposValidos = validarSolicitud(solicitud);
+        desmarcarCamposObligatorios();
+        establecerSolicitudCompleta();
         
+        SolicitudConUsuarioYEquipo solicitudCompleta = new SolicitudConUsuarioYEquipo();
+        solicitudCompleta.setUsuario(usuario);
+        solicitudCompleta.setSolicitud(solicitud);
+        solicitudCompleta.setEquipo(equipo);
+        
+        boolean camposValidos = validarSolicitud(solicitudCompleta);
         if (camposValidos) {
-            int respuestaCreación = SolicitudesDAO.crearSolicitud(solicitud);
+            int respuestaCreación 
+                = SolicitudesDAO.crearSolicitudConUsuarioYEquipo(solicitudCompleta);
             switch(respuestaCreación) {
                 case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple(
                         "Error de conexión",
                         "Ocurrió un error al guardar los datos, intente más tarde", 
-                        Alert.AlertType.INFORMATION
+                        Alert.AlertType.ERROR
                     );
                     break;
                 case Constantes.ERROR_CONSULTA:
                     Utilidades.mostrarDialogoSimple(
                         "Error en la creación",
                         "Ocurrió un error al guardar los datos, intente más tarde", 
-                        Alert.AlertType.INFORMATION
+                        Alert.AlertType.WARNING
                     );
                     break;
                 case Constantes.OPERACION_EXITOSA:
@@ -202,27 +208,29 @@ public class RegistrarEquipoController implements Initializable {
                     break;
             }
         } else {
+            marcarCamposObligatorios();
             Utilidades.mostrarDialogoSimple(
-                "Campos inválidos", 
-                "Por favor complete los campos indicados", 
+                "Campos obligatorios", 
+                "Por favor complete los campos obligatorios", 
                 Alert.AlertType.WARNING
             );
         } 
     }
     
-    private void establecerSolicitud() {
-        solicitud.setTipo(cbTipoEquipo.getValue());
-        solicitud.setIncluyeCargador(cargadorIncluido);
-        solicitud.setMarca(tfMarca.getText());
-        solicitud.setModelo(tfModelo.getText());
-        solicitud.setTamanioPantalla(tfTamañoPantalla.getText());
-        solicitud.setProcesador(tfProcesador.getText());
-        solicitud.setMemoriaRAM(tfMemoriaRAM.getText());
-        solicitud.setSistemaOperativo(tfSO.getText());
-        solicitud.setUsuarioSO(tfUsuarioSO.getText());
-        solicitud.setContraeniaSO(tfContraseniaSO.getText());
+    private void establecerSolicitudCompleta() {
         solicitud.setObservaciones(tfDescripcionProblema.getText());
         solicitud.setIdUsuario(usuario.getIdUsuario());
+        
+        equipo.setTipo(cbTipoEquipo.getValue());
+        equipo.setIncluyeCargador(cargadorIncluido);
+        equipo.setMarca(tfMarca.getText());
+        equipo.setModelo(tfModelo.getText());
+        equipo.setTamanioPantalla(tfTamañoPantalla.getText());
+        equipo.setProcesador(tfProcesador.getText());
+        equipo.setMemoriaRAM(tfMemoriaRAM.getText());
+        equipo.setSistemaOperativo(tfSO.getText());
+        equipo.setUsuarioSO(tfUsuarioSO.getText());
+        equipo.setContraseniaSO(tfContraseniaSO.getText());
     }
 
     @FXML
@@ -237,56 +245,57 @@ public class RegistrarEquipoController implements Initializable {
         escenarioPrincipal.close();
     }
     
-    private boolean validarSolicitud(SolicitudMantenimiento solicitud) {
+    private boolean validarSolicitud(SolicitudConUsuarioYEquipo solicitudCompleta) {
+        Solicitud solicitud = solicitudCompleta.getSolicitud();
+        EquipoComputo equipo = solicitudCompleta.getEquipo();
         
-        String tipoEquipo = solicitud.getTipo();
-        boolean incluyeCargador = solicitud.getIncluyeCargador();
-        String marca = solicitud.getMarca();
-        String modelo = solicitud.getModelo();
-        String sistemaOperativo = solicitud.getSistemaOperativo();
-        String usuarioSO = solicitud.getUsuarioSO();
-        String contraseniaSO = solicitud.getContraeniaSO();
+        boolean incluyeCargador = equipo.isIncluyeCargador();
+        String tipoEquipo = equipo.getTipo();
+        String marca = equipo.getMarca();
+        String modelo = equipo.getModelo();
+        String sistemaOperativo = equipo.getSistemaOperativo();
+        String usuarioSO = equipo.getUsuarioSO();
+        String contraseniaSO = equipo.getContraseniaSO();
+        byte[] imagen = equipo.getImagen();
+        
         String observaciones = solicitud.getObservaciones();
         
         boolean camposTecnicosValidos =
-        tipoEquipo != null 
-        && marca != null && !marca.isEmpty() 
-        && modelo != null && !modelo.isEmpty() 
-        && sistemaOperativo != null && !sistemaOperativo.isEmpty()
-        && usuarioSO != null && !usuarioSO.isEmpty()
-        && contraseniaSO != null && !contraseniaSO.isEmpty();
+            tipoEquipo != null 
+            && marca != null && !marca.isEmpty() 
+            && modelo != null && !modelo.isEmpty() 
+            && sistemaOperativo != null && !sistemaOperativo.isEmpty()
+            && usuarioSO != null && !usuarioSO.isEmpty()
+            && contraseniaSO != null && !contraseniaSO.isEmpty()
+            && imagen != null && imagen.length != 0;
 
-  
         boolean camposSolicitudValidos =
-        observaciones != null && !observaciones.isEmpty();
+            observaciones != null && !observaciones.isEmpty();
         
-        mostrarErrores(
-        cbTipoEquipo.getValue() == null,
-        !rbSi.isSelected() && !rbNo.isSelected(),
-        tfMarca.getText().isEmpty(),
-        tfModelo.getText().isEmpty(),
-        tfSO.getText().isEmpty(),
-        tfUsuarioSO.getText().isEmpty(),
-        tfContraseniaSO.getText().isEmpty(),
-        tfDescripcionProblema.getText().isEmpty(),
-        ivImagenEquipo.getImage() == null
-    );
-    return camposTecnicosValidos && camposSolicitudValidos;
-}
+        return camposTecnicosValidos && camposSolicitudValidos;
+    }
 
-   
-    private void mostrarErrores( boolean tipoEquipoError, boolean cargadorError,
-        boolean marcaError, boolean modeloError, boolean soError, boolean usuarioError,
-        boolean contraseniaError, boolean descripcionError, boolean imagenError){
-        
-            lbSinEquipo.setText(tipoEquipoError ? "*" : "");
-            lbSinCargador.setText(cargadorError ? "*" : "");
-            lbSinMarca.setText(marcaError ? "*" : "");
-            lbSinModelo.setText(modeloError ? "*" : "");
-            lbSinSO.setText(soError ? "*" : "");
-            lbSinUsuario.setText(usuarioError ? "*" : "");
-            lbSinContrasenia.setText(contraseniaError ? "*" : "");
-            lbSinDescripcion.setText(descripcionError ? "*" : "");
-            lbSinImagen.setText(imagenError ? "*" : "");
+    private void marcarCamposObligatorios(){
+        lbSinEquipo.setText("*");
+        lbSinCargador.setText("*");
+        lbSinMarca.setText("*");
+        lbSinModelo.setText("*");
+        lbSinSO.setText("*");
+        lbSinUsuario.setText("*");
+        lbSinContrasenia.setText("*");
+        lbSinDescripcion.setText("*");
+        lbSinImagen.setText("*");
     }  
+    
+    private void desmarcarCamposObligatorios() {
+        lbSinEquipo.setText("");
+        lbSinCargador.setText("");
+        lbSinMarca.setText("");
+        lbSinModelo.setText("");
+        lbSinSO.setText("");
+        lbSinUsuario.setText("");
+        lbSinContrasenia.setText("");
+        lbSinDescripcion.setText("");
+        lbSinImagen.setText("");
+    }
 }
