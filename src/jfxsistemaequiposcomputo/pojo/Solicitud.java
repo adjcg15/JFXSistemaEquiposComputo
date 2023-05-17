@@ -5,14 +5,16 @@ public class Solicitud {
     private int idEstado;
     private int idUsuario;
     private String observaciones;
+    private String fechaInicio;
 
     public Solicitud() {
     }
 
-    public Solicitud(int idSolicitud, int idEstado, String observaciones) {
+    public Solicitud(int idSolicitud, int idEstado, String observaciones, String fechaInicio) {
         this.idSolicitud = idSolicitud;
         this.idEstado = idEstado;
         this.observaciones = observaciones;
+        this.fechaInicio = fechaInicio;
     }
 
     public int getIdSolicitud() {
@@ -30,6 +32,10 @@ public class Solicitud {
     public String getObservaciones() {
         return observaciones;
     }
+    
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
 
     public void setIdSolicitud(int idSolicitud) {
         this.idSolicitud = idSolicitud;
@@ -45,5 +51,9 @@ public class Solicitud {
     
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+    
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 }

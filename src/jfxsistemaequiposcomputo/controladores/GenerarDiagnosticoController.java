@@ -2,9 +2,12 @@ package jfxsistemaequiposcomputo.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -12,20 +15,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
+import jfxsistemaequiposcomputo.pojo.ListaSolicitudesRespuesta;
+import jfxsistemaequiposcomputo.pojo.SolicitudConUsuarioYEquipo;
 import jfxsistemaequiposcomputo.pojo.Usuario;
+import jfxsistemaequiposcomputo.utils.Constantes;
+import jfxsistemaequiposcomputo.utils.Utilidades;
 
-/**
- * FXML Controller class
- *
- * @author ANGEL
- */
 public class GenerarDiagnosticoController implements Initializable {
     @FXML
     private Pane paneDetalles;
     @FXML
     private ImageView ivFoto;
     @FXML
-    private ListView<?> lvSolicitudes;
+    private ListView<SolicitudConUsuarioYEquipo> lvSolicitudes;
     @FXML
     private TextField tfContraseniaSO;
     @FXML
@@ -72,6 +75,7 @@ public class GenerarDiagnosticoController implements Initializable {
     private Label lbTituloSeccion;
 
     private Usuario usuario;
+    private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -79,8 +83,37 @@ public class GenerarDiagnosticoController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paneDetalles.setVisible(true);
-    }    
+        cargarListaSolicitudes();
+    }
+    
+    private void cargarListaSolicitudes() {
+        listaSolicitudes = FXCollections.observableArrayList();
+        
+        ListaSolicitudesRespuesta respuestaBD 
+            = SolicitudesDAO.recuperarSolicitudesConUsuarioYEquipo();
+        switch(respuestaBD.getCodigoRespuesta()) {
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple(
+                    "Sin conexión", 
+                    "Lo sentimos, por el momento "
+                    + "no tiene conexión para acceder a la información", 
+                        Alert.AlertType.ERROR
+                );
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple(
+                    "No fue posible cargar los datos", 
+                    "Hubo un error al cargar la información"
+                    + ", por favor intente más tarde", 
+                    Alert.AlertType.ERROR
+                );
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                listaSolicitudes.addAll(respuestaBD.getSolicitudesCompletas());
+                lvSolicitudes.setItems(listaSolicitudes);
+                break;
+        }
+    }
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {

@@ -1,7 +1,6 @@
 package jfxsistemaequiposcomputo.pojo;
 
 public class SolicitudConUsuarioYEquipo {
-    private int codigoRespuesta;
     private Usuario usuario;
     private Solicitud solicitud;
     private EquipoComputo equipo;
@@ -9,15 +8,10 @@ public class SolicitudConUsuarioYEquipo {
     public SolicitudConUsuarioYEquipo() {
     }
 
-    public SolicitudConUsuarioYEquipo(int codigoRespuesta, Usuario usuario, Solicitud solicitud, EquipoComputo equipo) {
-        this.codigoRespuesta = codigoRespuesta;
+    public SolicitudConUsuarioYEquipo(Usuario usuario, Solicitud solicitud, EquipoComputo equipo) {
         this.usuario = usuario;
         this.solicitud = solicitud;
         this.equipo = equipo;
-    }
-
-    public int getCodigoRespuesta() {
-        return codigoRespuesta;
     }
 
     public Usuario getUsuario() {
@@ -32,10 +26,6 @@ public class SolicitudConUsuarioYEquipo {
         return equipo;
     }
 
-    public void setCodigoRespuesta(int codigoRespuesta) {
-        this.codigoRespuesta = codigoRespuesta;
-    }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
@@ -48,5 +38,12 @@ public class SolicitudConUsuarioYEquipo {
         this.equipo = equipo;
     }
     
-    
+    @Override
+    public String toString() {
+        if(equipo != null && !equipo.getModelo().equals("")) {
+            return "Solicitud de equipo " + equipo.getModelo().toUpperCase();
+        }
+        
+        return "Solicitud vacía";
+    }
 }

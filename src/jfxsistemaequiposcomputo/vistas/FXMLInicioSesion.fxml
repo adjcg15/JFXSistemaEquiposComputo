@@ -39,7 +39,7 @@
             </Label>
             <PasswordField fx:id="pswContraseña" layoutX="39.0" layoutY="212.0" prefHeight="39.0" prefWidth="289.0" promptText="123456" style="-fx-border-color: a5a5a5;" />
             <Label fx:id="lbErrorCorreo" layoutX="41.0" layoutY="166.0" prefHeight="21.0" prefWidth="289.0" textFill="#f20000" />
-            <Label fx:id="lbErrorContrasenia" layoutX="41.0" layoutY="271.0" prefHeight="21.0" prefWidth="289.0" textFill="#ff0101" />
+            <Label fx:id="lbErrorContrasenia" layoutX="39.0" layoutY="251.0" prefHeight="21.0" prefWidth="289.0" textFill="#ff0101" />
          </children>
       </Pane>
    </children>

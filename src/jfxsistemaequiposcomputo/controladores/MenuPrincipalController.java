@@ -90,7 +90,8 @@ public class MenuPrincipalController implements Initializable {
             nuevoEscenario.setTitle("Generar diagnóstico");
             nuevoEscenario.initModality(Modality.APPLICATION_MODAL);
             nuevoEscenario.showAndWait();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println(e);
             Utilidades.mostrarDialogoSimple(
                 "Error en la redirección",
                 "Por el momento no se puede ingresar al módulo"
