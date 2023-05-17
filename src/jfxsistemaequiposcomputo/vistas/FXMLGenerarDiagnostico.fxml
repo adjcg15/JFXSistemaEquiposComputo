@@ -8,21 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.GenerarDiagnosticoController">
+<AnchorPane id="AnchorPane" prefHeight="702.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.GenerarDiagnosticoController">
    <children>
-      <Pane fx:id="paneDetalles" layoutX="183.0" prefHeight="650.0" prefWidth="767.0">
+      <Pane fx:id="paneDetalles" layoutX="184.0" layoutY="65.0" prefHeight="637.0" prefWidth="767.0">
          <children>
             <ImageView fx:id="ivFoto" fitHeight="220.0" fitWidth="347.0" layoutX="23.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="8.0" layoutY="15.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="52.0" layoutY="17.0" text="SOLICITUD DE DIAGNÓSTICO">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
             <Label layoutX="25.0" layoutY="305.0" text="Información técnica">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -252,6 +242,16 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ListView fx:id="lvSolicitudes" layoutY="65.0" prefHeight="585.0" prefWidth="184.0" />
+      <ListView fx:id="lvSolicitudes" layoutY="65.0" prefHeight="637.0" prefWidth="184.0" />
+      <Label fx:id="lbTituloSeccion" layoutX="251.0" layoutY="21.0" text="SOLICITUD DE DIAGNÓSTICO">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="201.0" layoutY="23.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/flecha-hacia-atras.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import jfxsistemaequiposcomputo.pojo.Usuario;
 
 /**
  * FXML Controller class
@@ -19,7 +20,6 @@ import javafx.scene.layout.Pane;
  * @author ANGEL
  */
 public class GenerarDiagnosticoController implements Initializable {
-
     @FXML
     private Pane paneDetalles;
     @FXML
@@ -68,10 +68,15 @@ public class GenerarDiagnosticoController implements Initializable {
     private RadioButton rbPreventivo;
     @FXML
     private RadioButton rbCorrectivo;
+    @FXML
+    private Label lbTituloSeccion;
 
-    /**
-     * Initializes the controller class.
-     */
+    private Usuario usuario;
+    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         paneDetalles.setVisible(true);

@@ -17,10 +17,6 @@ import javafx.stage.Stage;
 import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Utilidades;
 
-/**
- *
- * @author ANGEL
- */
 public class MenuPrincipalController implements Initializable {
     @FXML
     private Pane paneModuloPrivilegiado;
@@ -36,10 +32,6 @@ public class MenuPrincipalController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
-    
-    private void cargarOpcionesUsuario() {
-        
     }
 
     @FXML
@@ -81,13 +73,31 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clicRedirigirGenerarDiagnostico(ActionEvent event) {
-        Stage escenarioDiagnostico = new Stage();
-        escenarioDiagnostico.setScene(
-            Utilidades.inicializarEscena("vistas/FXMLGenerarDiagnostico.fxml")
-        );
-        escenarioDiagnostico.setTitle("Generar diagnóstico");
-        escenarioDiagnostico.initModality(Modality.APPLICATION_MODAL);
-        escenarioDiagnostico.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass()
+                    .getResource("/jfxsistemaequiposcomputo/vistas/FXMLGenerarDiagnostico.fxml")
+            );
+            Parent root = loader.load();
+            GenerarDiagnosticoController generarDiagnosticoController 
+                = loader.getController();
+
+            generarDiagnosticoController.setUsuario(usuario);
+            
+            Stage nuevoEscenario = new Stage();
+            Scene nuevaEscena = new Scene(root);
+            nuevoEscenario.setScene(nuevaEscena);
+            nuevoEscenario.setTitle("Generar diagnóstico");
+            nuevoEscenario.initModality(Modality.APPLICATION_MODAL);
+            nuevoEscenario.showAndWait();
+        } catch (IOException e) {
+            Utilidades.mostrarDialogoSimple(
+                "Error en la redirección",
+                "Por el momento no se puede ingresar al módulo"
+                + ", intente más tarde",
+                Alert.AlertType.ERROR
+            );
+        }
     }
 
     @FXML
