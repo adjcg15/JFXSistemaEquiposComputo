@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -15,12 +13,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -44,14 +39,7 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private ComboBox<String> cbTipoEquipo;
-    @FXML
     ObservableList<String> listaTiposEquipos;
-    @FXML
-    private RadioButton rbSi;
-    @FXML
-    private RadioButton rbNo;
-    @FXML
-    private ToggleGroup tgCargador;
     @FXML
     private TextField tfMarca;
     @FXML
@@ -73,26 +61,7 @@ public class RegistrarEquipoController implements Initializable {
     @FXML
     private ImageView ivImagenEquipo;
     @FXML
-    private Label lbSinEquipo;
-    @FXML
-    private Label lbSinCargador;
-    @FXML
-    private Label lbSinMarca;
-    @FXML
-    private Label lbSinModelo;
-    
-    @FXML
-    private Label lbSinSO;
-    @FXML
-    private Label lbSinUsuario;
-    @FXML
-    private Label lbSinContrasenia;
-    @FXML
-    private Label lbSinDescripcion;
-    @FXML
-    private Label lbSinImagen;
-    
-    private boolean cargadorIncluido;
+    private CheckBox cboxIncluyeCargador;
     
     private Usuario usuario = new Usuario();
     private Solicitud solicitud = new Solicitud();
@@ -106,26 +75,10 @@ public class RegistrarEquipoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         listaTiposEquipos = FXCollections.observableArrayList(Constantes.TIPOS_EQUIPOS);
         configurarComboBox();
-        configurarCambioCargador();
     }    
     
     private void configurarComboBox (){
         cbTipoEquipo.setItems(listaTiposEquipos);
-    }
-    
-    private void configurarCambioCargador(){
-        tgCargador
-            .selectedToggleProperty()
-            .addListener(new ChangeListener<Toggle>(){
-                @Override
-                public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                    if(rbSi.isSelected()){
-                       cargadorIncluido = true;
-                    }else if(rbNo.isSelected()){
-                       cargadorIncluido = false;
-                    }
-                }
-            });
     }
     
     @FXML
@@ -169,7 +122,6 @@ public class RegistrarEquipoController implements Initializable {
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        desmarcarCamposObligatorios();
         establecerSolicitudCompleta();
         
         SolicitudConUsuarioYEquipo solicitudCompleta = new SolicitudConUsuarioYEquipo();
@@ -208,7 +160,6 @@ public class RegistrarEquipoController implements Initializable {
                     break;
             }
         } else {
-            marcarCamposObligatorios();
             Utilidades.mostrarDialogoSimple(
                 "Campos obligatorios", 
                 "Por favor complete los campos obligatorios", 
@@ -222,7 +173,7 @@ public class RegistrarEquipoController implements Initializable {
         solicitud.setIdUsuario(usuario.getIdUsuario());
         
         equipo.setTipo(cbTipoEquipo.getValue());
-        equipo.setIncluyeCargador(cargadorIncluido);
+        equipo.setIncluyeCargador(cboxIncluyeCargador.isSelected());
         equipo.setMarca(tfMarca.getText());
         equipo.setModelo(tfModelo.getText());
         equipo.setTamanioPantalla(tfTamañoPantalla.getText());
@@ -245,7 +196,7 @@ public class RegistrarEquipoController implements Initializable {
         escenarioPrincipal.close();
     }
     
-    private boolean validarSolicitud(SolicitudConUsuarioYEquipo solicitudCompleta) {
+    public static boolean validarSolicitud(SolicitudConUsuarioYEquipo solicitudCompleta) {
         Solicitud solicitud = solicitudCompleta.getSolicitud();
         EquipoComputo equipo = solicitudCompleta.getEquipo();
         
@@ -262,40 +213,16 @@ public class RegistrarEquipoController implements Initializable {
         
         boolean camposTecnicosValidos =
             tipoEquipo != null 
-            && marca != null && !marca.isEmpty() 
-            && modelo != null && !modelo.isEmpty() 
-            && sistemaOperativo != null && !sistemaOperativo.isEmpty()
-            && usuarioSO != null && !usuarioSO.isEmpty()
-            && contraseniaSO != null && !contraseniaSO.isEmpty()
-            && imagen != null && imagen.length != 0;
+            && marca != null 
+            && modelo != null 
+            && sistemaOperativo != null
+            && usuarioSO != null
+            && contraseniaSO != null
+            && imagen != null;
 
         boolean camposSolicitudValidos =
             observaciones != null && !observaciones.isEmpty();
         
-        return camposTecnicosValidos && camposSolicitudValidos;
-    }
-
-    private void marcarCamposObligatorios(){
-        lbSinEquipo.setText("*");
-        lbSinCargador.setText("*");
-        lbSinMarca.setText("*");
-        lbSinModelo.setText("*");
-        lbSinSO.setText("*");
-        lbSinUsuario.setText("*");
-        lbSinContrasenia.setText("*");
-        lbSinDescripcion.setText("*");
-        lbSinImagen.setText("*");
-    }  
-    
-    private void desmarcarCamposObligatorios() {
-        lbSinEquipo.setText("");
-        lbSinCargador.setText("");
-        lbSinMarca.setText("");
-        lbSinModelo.setText("");
-        lbSinSO.setText("");
-        lbSinUsuario.setText("");
-        lbSinContrasenia.setText("");
-        lbSinDescripcion.setText("");
-        lbSinImagen.setText("");
+    return camposTecnicosValidos && camposSolicitudValidos;
     }
 }
