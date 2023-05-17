@@ -1,9 +1,13 @@
 package jfxsistemaequiposcomputo.controladores;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,11 +16,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
+import jfxsistemaequiposcomputo.pojo.EquipoComputo;
 import jfxsistemaequiposcomputo.pojo.ListaSolicitudesRespuesta;
+import jfxsistemaequiposcomputo.pojo.Solicitud;
 import jfxsistemaequiposcomputo.pojo.SolicitudConUsuarioYEquipo;
 import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
@@ -76,6 +85,7 @@ public class GenerarDiagnosticoController implements Initializable {
 
     private Usuario usuario;
     private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
+    private EquipoComputo equipo = new EquipoComputo();
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -84,6 +94,9 @@ public class GenerarDiagnosticoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarListaSolicitudes();
+        paneDetalles.setVisible(false);
+        lvSolicitudes.setOnMouseClicked(this::clicSeleccionarSolicitud);
+        
     }
     
     private void cargarListaSolicitudes() {
@@ -117,18 +130,85 @@ public class GenerarDiagnosticoController implements Initializable {
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
+        Stage escenarioPrincipal = (Stage) tfContraseniaSO.getScene().getWindow();
+        escenarioPrincipal.close();
     }
 
     @FXML
     private void clicBtnGuardarCambios(ActionEvent event) {
+       
+         
     }
 
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
+        paneDetalles.setVisible(false);
     }
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
+       
+    }
+
+    @FXML
+    private void clicSeleccionarSolicitud(MouseEvent event) {
+        int posicion = lvSolicitudes.getSelectionModel().getSelectedIndex();
+        if(posicion != -1){
+            mostrarSolicitud(posicion);
+        }else{
+            paneDetalles.setVisible(false);
+        }
     }
     
-}
+    private void mostrarSolicitud(int posicion){
+        paneDetalles.setVisible(true);
+        EquipoComputo equipo = listaSolicitudes.get(posicion).getEquipo();
+        Usuario usuario = listaSolicitudes.get(posicion).getUsuario();
+        Solicitud solicitud = listaSolicitudes.get(posicion).getSolicitud();
+        
+        tfMarca.setText(equipo.getMarca());
+        tfModelo.setText(equipo.getModelo()); 
+        tfTamañoPantalla.setText(equipo.getTamanioPantalla()); 
+        tfProcesador.setText(equipo.getProcesador());
+        tfMemoriaRAM.setText(equipo.getMemoriaRAM());
+        tfSO.setText(equipo.getSistemaOperativo());
+        tfUsuarioSO.setText(equipo.getUsuarioSO());
+        tfUsuarioSO.setEditable(false);
+        tfContraseniaSO.setText(equipo.getContraseniaSO());
+        tfContraseniaSO.setEditable(false);
+        lbModeloEquipo.setText(equipo.getModelo());
+        
+        lbObervaciones.setText(solicitud.getObservaciones());
+        lbFechaSolicitud.setText(solicitud.getFechaInicio());
+        
+        lbNombre.setText(usuario.getNombre()+" "+usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno());
+        lbDireccion.setText(usuario.getDirección());
+        lbCorreo.setText(usuario.getCorreo());
+        lbTelefono.setText(usuario.getTelefono());
+        mostrarImagenPantalla(equipo);
+        
+    }
+    
+    private void mostrarImagenPantalla(EquipoComputo equipo){
+        if(equipo.getImagen() != null){
+           try{
+                byte[] data = equipo.getImagen();
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
+                Image imagenDecodificada = SwingFXUtils.toFXImage(img, null);
+                ivFoto.setImage(imagenDecodificada);
+           }catch(IOException ex){
+               System.out.println(ex.getMessage());
+           }
+        }else{
+            Utilidades.mostrarDialogoSimple(
+                "Error",
+                "No fue posible cargar la imagen, intente más tarde",
+                Alert.AlertType.ERROR
+            );
+            ivFoto.setImage(null);
+        }
+    }
+    
+ }
+    
+

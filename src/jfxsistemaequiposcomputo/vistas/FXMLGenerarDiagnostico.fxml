@@ -242,13 +242,13 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ListView fx:id="lvSolicitudes" layoutY="65.0" prefHeight="637.0" prefWidth="184.0" />
+      <ListView fx:id="lvSolicitudes" layoutY="65.0" onMouseClicked="#clicSeleccionarSolicitud" prefHeight="637.0" prefWidth="184.0" />
       <Label fx:id="lbTituloSeccion" layoutX="251.0" layoutY="21.0" text="SOLICITUD DE DIAGNÓSTICO">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="201.0" layoutY="23.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="201.0" layoutY="23.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
          <image>
             <Image url="@../recursos/flecha-hacia-atras.png" />
          </image>
