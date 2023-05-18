@@ -22,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import jfxsistemaequiposcomputo.DAO.EquiposComputoDAO;
 import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
 import jfxsistemaequiposcomputo.pojo.EquipoComputo;
 import jfxsistemaequiposcomputo.pojo.ListaSolicitudesRespuesta;
@@ -86,6 +87,8 @@ public class GenerarDiagnosticoController implements Initializable {
     private Usuario usuario;
     private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
     private EquipoComputo equipo = new EquipoComputo();
+    private SolicitudConUsuarioYEquipo solicitudCompletaSeleccionada 
+            = new SolicitudConUsuarioYEquipo();
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -136,10 +139,13 @@ public class GenerarDiagnosticoController implements Initializable {
 
     @FXML
     private void clicBtnGuardarCambios(ActionEvent event) {
-       
-         
+       obtenerInformacionEquipos();
+       Utilidades.mostrarDialogoSimple("Informacion Actualizada",
+               "La información se ha modificado correctamente", 
+               Alert.AlertType.INFORMATION);
+        
     }
-
+    
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
         paneDetalles.setVisible(false);
@@ -162,9 +168,13 @@ public class GenerarDiagnosticoController implements Initializable {
     
     private void mostrarSolicitud(int posicion){
         paneDetalles.setVisible(true);
+        
         EquipoComputo equipo = listaSolicitudes.get(posicion).getEquipo();
         Usuario usuario = listaSolicitudes.get(posicion).getUsuario();
         Solicitud solicitud = listaSolicitudes.get(posicion).getSolicitud();
+        solicitudCompletaSeleccionada.setEquipo(equipo);
+        solicitudCompletaSeleccionada.setSolicitud(solicitud);
+        solicitudCompletaSeleccionada.setUsuario(usuario);
         
         tfMarca.setText(equipo.getMarca());
         tfModelo.setText(equipo.getModelo()); 
@@ -173,15 +183,15 @@ public class GenerarDiagnosticoController implements Initializable {
         tfMemoriaRAM.setText(equipo.getMemoriaRAM());
         tfSO.setText(equipo.getSistemaOperativo());
         tfUsuarioSO.setText(equipo.getUsuarioSO());
-        tfUsuarioSO.setEditable(false);
+        tfUsuarioSO.setEditable(true);
         tfContraseniaSO.setText(equipo.getContraseniaSO());
-        tfContraseniaSO.setEditable(false);
+        tfContraseniaSO.setEditable(true);
         lbModeloEquipo.setText(equipo.getModelo());
-        
         lbObervaciones.setText(solicitud.getObservaciones());
         lbFechaSolicitud.setText(solicitud.getFechaInicio());
         
-        lbNombre.setText(usuario.getNombre()+" "+usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno());
+        lbNombre.setText(usuario.getNombre()+" "+usuario.getApellidoPaterno()
+                +" "+usuario.getApellidoMaterno());
         lbDireccion.setText(usuario.getDirección());
         lbCorreo.setText(usuario.getCorreo());
         lbTelefono.setText(usuario.getTelefono());
@@ -209,6 +219,30 @@ public class GenerarDiagnosticoController implements Initializable {
         }
     }
     
- }
+    private void obtenerInformacionEquipos(){
+        EquipoComputo nuevoEquipoComputo = new EquipoComputo();
+        EquipoComputo equipoRecuperado = solicitudCompletaSeleccionada.getEquipo();
+        
+        nuevoEquipoComputo.setTipo(equipoRecuperado.getTipo());
+        nuevoEquipoComputo.setIncluyeCargador(equipoRecuperado.isIncluyeCargador());
+        nuevoEquipoComputo.setModelo(tfModelo.getText());
+        nuevoEquipoComputo.setSistemaOperativo(tfSO.getText());
+        nuevoEquipoComputo.setTamanioPantalla(tfTamañoPantalla.getText());
+        nuevoEquipoComputo.setContraseniaSO(tfContraseniaSO.getText());
+        nuevoEquipoComputo.setProcesador(tfProcesador.getText());
+        nuevoEquipoComputo.setMemoriaRAM(tfMemoriaRAM.getText());
+        nuevoEquipoComputo.setMarca(tfMarca.getText());
+        nuevoEquipoComputo.setFechaRegistro(equipoRecuperado.getFechaRegistro());
+        nuevoEquipoComputo.setImagen(equipoRecuperado.getImagen());
+        nuevoEquipoComputo.setUsuarioSO(tfUsuarioSO.getText());
+        int idSolicitudDiagnostico = 
+                solicitudCompletaSeleccionada.getSolicitud().getIdSolicitud();
+        int idUsuario = 
+                solicitudCompletaSeleccionada.getUsuario().getIdUsuario();
+        EquiposComputoDAO.crearEquipoComputo(nuevoEquipoComputo, idUsuario, idSolicitudDiagnostico);
+    
+        }
+    
+    }
     
 
