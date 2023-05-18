@@ -219,8 +219,11 @@
                <font>
                   <Font size="14.0" />
                </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="tgTipoMantenimiento" />
+               </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="rbCorrectivo" layoutX="395.0" layoutY="609.0" mnemonicParsing="false" text="Correctivo">
+            <RadioButton fx:id="rbCorrectivo" layoutX="395.0" layoutY="609.0" mnemonicParsing="false" text="Correctivo" toggleGroup="$tgTipoMantenimiento">
                <font>
                   <Font size="14.0" />
                </font>
@@ -235,6 +238,16 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
+            <Label layoutX="551.0" layoutY="337.0" text="*" textFill="RED" />
+            <Label layoutX="551.0" layoutY="416.0" text="*" textFill="RED" />
+            <Label layoutX="505.0" layoutY="506.0" text="*" textFill="RED" />
+            <Label layoutX="695.0" layoutY="505.0" text="*" textFill="RED" />
+            <Label layoutX="554.0" layoutY="567.0" text="*" textFill="RED" />
+            <Label layoutX="607.0" layoutY="573.0" text="*Campos obligatorios" textFill="RED">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Label layoutX="26.0" layoutY="20.0" text="Solicitudes">
