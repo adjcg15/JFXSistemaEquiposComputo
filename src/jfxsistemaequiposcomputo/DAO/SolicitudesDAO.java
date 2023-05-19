@@ -119,9 +119,18 @@ public class SolicitudesDAO {
                     + "equiposdecomputo.marca, equiposdecomputo.fechaRegistro, "
                     + "equiposdecomputo.fotoEquipo, equiposdecomputo.usuarioSO "
                     + "FROM solicitudesdiagnostico "
-                    + "INNER JOIN solicitudestados ON solicitudesdiagnostico.idSolicitudDiagnostico = solicitudestados.idSolicitudEstado "
+                    + "INNER JOIN ( "
+                    + "SELECT idSolicitudDiagnostico, MAX(idEquipoDeComputo) AS ultimoequipo "
+                    + "FROM equiposdecomputo "
+                    + "GROUP BY idSolicitudDiagnostico "
+                    + ") AS ultimosequipos ON solicitudesdiagnostico.idSolicitudDiagnostico "
+                    + "= ultimosequipos.idSolicitudDiagnostico "
+                    + "INNER JOIN equiposdecomputo ON equiposdecomputo.idSolicitudDiagnostico "
+                    + "= ultimosequipos.idSolicitudDiagnostico "
+                    + "AND equiposdecomputo.idEquipoDeComputo = ultimosequipos.ultimoequipo "
+                    + "INNER JOIN solicitudestados ON solicitudesdiagnostico.idSolicitudDiagnostico = " 
+                    + "solicitudestados.idSolicitudEstado "
                     + "INNER JOIN usuarios ON solicitudesdiagnostico.idUsuario = usuarios.idUsuario "
-                    + "INNER JOIN equiposdecomputo ON solicitudesdiagnostico.idSolicitudDiagnostico = equiposdecomputo.idSolicitudDiagnostico "
                     + "WHERE solicitudestados.activo = TRUE";
                 
                 PreparedStatement sentenciaPreparada 
@@ -175,6 +184,7 @@ public class SolicitudesDAO {
                 listaSolicitudesRespuesta.setSolicitudesCompletas(listaSolicitudes);
                 conexion.close();
             } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
                 listaSolicitudesRespuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
             }          
         }else{
