@@ -24,10 +24,10 @@ CREATE TABLE equiposDeComputo (
     incluyeCargador BOOLEAN NOT NULL,
     modelo VARCHAR(45) NOT NULL,
     sistemaOperativo VARCHAR(45) NOT NULL,
-    tamanioPantalla VARCHAR(45),
+    tamanioPantalla FLOAT,
     contraseniaEquipo VARCHAR(20) NOT NULL,
     procesador VARCHAR(20),
-    memoria VARCHAR(45),
+    memoria INT,
     marca VARCHAR(45) NOT NULL,
     fechaRegistro DATE,
     fotoEquipo LONGBLOB NOT NULL,
@@ -64,12 +64,12 @@ CREATE TABLE solicitudEstados (
 );
 CREATE TABLE diagnosticos (
 	idDiagnostico INT AUTO_INCREMENT NOT NULL,
-    tipoDeMantenimiento VARCHAR(45),
-    fechaAtencion DATE,
-    diagnosticoPreliminar LONGTEXT,
-    fechaSolicitud DATE,
-    costoEstimado DOUBLE,
-    propuestaSolucion LONGTEXT,
+    tipoDeMantenimiento VARCHAR(45) NOT NULL,
+    fechaAtencion DATE NOT NULL,
+    diagnosticoPreliminar LONGTEXT NOT NULL,
+    fechaSolicitud DATE NOT NULL,
+    costoEstimado FLOAT NOT NULL,
+    propuestaSolucion LONGTEXT NOT NULL,
     idSolicitudDiagnostico INT,
     PRIMARY KEY (idDiagnostico)
 );
@@ -136,5 +136,6 @@ FOREIGN KEY(idRefaccion)
 REFERENCES refacciones(idRefaccion) ON DELETE CASCADE;
 
 INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, telefono, direccion, correo, contrasenia, privilegiado)
-VALUES ('pedro', 'lopez', 'Gomez', 2281814657, 'centro', 'pedro@gmail.com', 123456, true);
+VALUES ('pedro', 'lopez', 'Gomez', 2281814657, 'centro', 'pedro@gmail.com', 123456, true), 
+		('1', '1', '1', 1, '1', '1', 1, true);
 INSERT INTO estados (nombre) VALUES ('PENDIENTE'), ('ACEPTADA'), ('RECHAZADA');

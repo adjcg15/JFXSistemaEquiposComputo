@@ -157,6 +157,7 @@ public class GenerarDiagnosticoController implements Initializable {
        Utilidades.mostrarDialogoSimple("Informacion Actualizada",
                "La información se ha modificado correctamente", 
                Alert.AlertType.INFORMATION);
+       actualizarListView();
         
     }
     
@@ -343,5 +344,14 @@ public class GenerarDiagnosticoController implements Initializable {
             && !tfFecha.getText().isEmpty();
         
         return camposValidos && campoCosto && tipoMantenimiento;
+    }
+    
+    private void actualizarListView() {
+    listaSolicitudes.clear(); 
+    cargarListaSolicitudes(); 
+    
+        if (!listaSolicitudes.isEmpty()) {
+            lvSolicitudes.getSelectionModel().selectFirst();
+        }
     }
  }
