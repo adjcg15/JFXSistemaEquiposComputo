@@ -13,6 +13,7 @@ import jfxsistemaequiposcomputo.pojo.Solicitud;
 import jfxsistemaequiposcomputo.pojo.SolicitudConUsuarioYEquipo;
 import jfxsistemaequiposcomputo.pojo.Usuario;
 import jfxsistemaequiposcomputo.utils.Constantes;
+import jfxsistemaequiposcomputo.utils.Utilidades;
 
 public class SolicitudesDAO {
     public static int crearSolicitud(Solicitud solicitud) {
@@ -182,5 +183,61 @@ public class SolicitudesDAO {
         }
         
         return listaSolicitudesRespuesta;
+    }
+    
+    public static int actualizarEstadoSolicitud(String nombreEstado, int idSolicitud){
+        int respuesta = Constantes.OPERACION_EXITOSA;
+        int idSolicitudEstado = recuperarIdSolicitudEstadoActiva(idSolicitud);
+        int idEstado = EstadosDAO.obtenerIdEstadoPorNombre(nombreEstado);
+        
+        int respuestaDesactivar = desactivarSolicitudAnterior(idSolicitudEstado);
+        if(respuestaDesactivar != Constantes.OPERACION_EXITOSA){
+            return respuestaDesactivar;
+        }
+        
+        return respuesta;
+    }
+    
+    public static int recuperarIdSolicitudEstadoActiva(int idSolicitud){
+        int idSolicitudEstado = -1;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "SELECT idsolicitudEstado FROM solicitudestados"
+                        + " WHERE activo = true AND idSolicitudDiagnostico = ?;";
+                PreparedStatement sentenciaPreparada = conexionBD.prepareStatement(sentencia);
+                sentenciaPreparada.setInt(1, idSolicitud);
+                ResultSet idRecuperado  = sentenciaPreparada.executeQuery();
+                if(idRecuperado.next()){
+                    idSolicitudEstado = idRecuperado.getInt("idsolicitudEstado");
+                }
+                conexionBD.close();
+            }catch(SQLException e){
+                idSolicitudEstado = -1;
+            }
+        }else{
+            idSolicitudEstado = -1;
+        }
+        return idSolicitudEstado;
+    }
+    
+    public static int desactivarSolicitudAnterior(int idSolicitudEstado){
+        int respuesta = Constantes.OPERACION_EXITOSA;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String desactivarAnterior = "UPDATE solicitudestados SET fechaFin = ?,"
+                        + " activo = false WHERE idSOlicitudEstado = ?;";
+                PreparedStatement sentenciaPreparada = conexionBD.prepareStatement(desactivarAnterior);
+                sentenciaPreparada.setString(1, Utilidades.fechaActualFormatoMySQL());
+                sentenciaPreparada.setInt(2, idSolicitudEstado);
+                conexionBD.close();
+            }catch(SQLException e){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
     }
 }
