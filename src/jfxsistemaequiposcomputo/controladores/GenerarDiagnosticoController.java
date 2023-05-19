@@ -96,13 +96,18 @@ public class GenerarDiagnosticoController implements Initializable {
     private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
     private Diagnostico diagnostico = new Diagnostico();
     private EquipoComputo equipo = new EquipoComputo();
+    EquipoComputo nuevoEquipoComputo = new EquipoComputo();
     
     private String tipoMantenimiento;
     private int idSolicitud;
     private String fechaSolicitud;
     private float costoEstimado;
+    private float tamanioPantalla;
+    private int memoriaRAM;
+    
     private SolicitudConUsuarioYEquipo solicitudCompletaSeleccionada 
             = new SolicitudConUsuarioYEquipo();
+    
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -153,12 +158,44 @@ public class GenerarDiagnosticoController implements Initializable {
 
     @FXML
     private void clicBtnGuardarCambios(ActionEvent event) {
-       obtenerInformacionEquipos();
-       Utilidades.mostrarDialogoSimple("Informacion Actualizada",
-               "La información se ha modificado correctamente", 
-               Alert.AlertType.INFORMATION);
-       actualizarListView();
+       int idSolicitudDiagnostico = 
+                solicitudCompletaSeleccionada.getSolicitud().getIdSolicitud();
+        int idUsuario = 
+                solicitudCompletaSeleccionada.getUsuario().getIdUsuario();
         
+        boolean camposValidos = validarCamposGuardarCambios();
+        if(camposValidos) {
+            obtenerInformacionEquipos();
+            int respuestaCreación = EquiposComputoDAO.crearEquipoComputo
+        (nuevoEquipoComputo, idUsuario, idSolicitudDiagnostico);
+            switch(respuestaCreación) {
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error de conexión",
+                        "Ocurrió un error al guardar los datos, intente más tarde", 
+                        Alert.AlertType.ERROR
+                        );
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error en la creación",
+                        "Ocurrió un error al guardar los datos, intente más tarde", 
+                        Alert.AlertType.WARNING
+                    );
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Diagnostico guardado",
+                        "El diagnóstico se ha guardado correctamente", 
+                        Alert.AlertType.INFORMATION
+                    );
+                    break;
+            }
+        } else {
+            System.out.println("valores incorrectos");
+        }
+        actualizarListView();
+       
     }
     
     @FXML
@@ -237,9 +274,9 @@ public class GenerarDiagnosticoController implements Initializable {
         
         tfMarca.setText(equipo.getMarca());
         tfModelo.setText(equipo.getModelo()); 
-        tfTamañoPantalla.setText(equipo.getTamanioPantalla()); 
+        tfTamañoPantalla.setText(String.valueOf(equipo.getTamanioPantalla())); 
         tfProcesador.setText(equipo.getProcesador());
-        tfMemoriaRAM.setText(equipo.getMemoriaRAM());
+        tfMemoriaRAM.setText(String.valueOf(equipo.getMemoriaRAM()));
         tfSO.setText(equipo.getSistemaOperativo());
         tfUsuarioSO.setText(equipo.getUsuarioSO());
         tfUsuarioSO.setEditable(true);
@@ -300,27 +337,22 @@ public class GenerarDiagnosticoController implements Initializable {
         });
     }
     private void obtenerInformacionEquipos(){
-        EquipoComputo nuevoEquipoComputo = new EquipoComputo();
+        //EquipoComputo nuevoEquipoComputo = new EquipoComputo();
         EquipoComputo equipoRecuperado = solicitudCompletaSeleccionada.getEquipo();
         
         nuevoEquipoComputo.setTipo(equipoRecuperado.getTipo());
         nuevoEquipoComputo.setIncluyeCargador(equipoRecuperado.isIncluyeCargador());
         nuevoEquipoComputo.setModelo(tfModelo.getText());
         nuevoEquipoComputo.setSistemaOperativo(tfSO.getText());
-        nuevoEquipoComputo.setTamanioPantalla(tfTamañoPantalla.getText());
+        nuevoEquipoComputo.setTamanioPantalla(tamanioPantalla);
         nuevoEquipoComputo.setContraseniaSO(tfContraseniaSO.getText());
         nuevoEquipoComputo.setProcesador(tfProcesador.getText());
-        nuevoEquipoComputo.setMemoriaRAM(tfMemoriaRAM.getText());
+        nuevoEquipoComputo.setMemoriaRAM(memoriaRAM);
         nuevoEquipoComputo.setMarca(tfMarca.getText());
         nuevoEquipoComputo.setFechaRegistro(equipoRecuperado.getFechaRegistro());
         nuevoEquipoComputo.setImagen(equipoRecuperado.getImagen());
         nuevoEquipoComputo.setUsuarioSO(tfUsuarioSO.getText());
-        int idSolicitudDiagnostico = 
-                solicitudCompletaSeleccionada.getSolicitud().getIdSolicitud();
-        int idUsuario = 
-                solicitudCompletaSeleccionada.getUsuario().getIdUsuario();
-        EquiposComputoDAO.crearEquipoComputo(nuevoEquipoComputo, idUsuario, idSolicitudDiagnostico);
-    
+        
     }
     
     private boolean validarCampos(){
@@ -354,4 +386,31 @@ public class GenerarDiagnosticoController implements Initializable {
             lvSolicitudes.getSelectionModel().selectFirst();
         }
     }
+    
+    private boolean validarCamposGuardarCambios(){
+        boolean campoTamañoPantalla = true;
+        boolean camposMemoriaRAM = true;
+        try{
+            tamanioPantalla = Float.parseFloat(tfTamañoPantalla.getText());           
+        }catch(NumberFormatException nfe){
+            tfTamañoPantalla.setText("");
+            Utilidades.mostrarDialogoSimple
+        ("Error", "Debe ingresar un valor numerico para el tamaño de pantalla", 
+                Alert.AlertType.WARNING);
+            campoTamañoPantalla=false;
+          }
+        try{
+            memoriaRAM = Integer.parseInt(tfMemoriaRAM.getText());          
+        }catch(NumberFormatException nfe){
+            tfMemoriaRAM.setText("");
+            Utilidades.mostrarDialogoSimple
+        ("Error", "Debe ingresar un valor numerico para la memoria RAM", 
+                Alert.AlertType.WARNING);
+            camposMemoriaRAM = false;
+  
+        }
+        return campoTamañoPantalla && camposMemoriaRAM;
+    }
+    
+    
  }

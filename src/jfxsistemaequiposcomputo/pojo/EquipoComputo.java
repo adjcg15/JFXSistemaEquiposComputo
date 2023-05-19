@@ -9,18 +9,18 @@ public class EquipoComputo {
     private byte[] imagen;
     private boolean incluyeCargador;
     private String marca;
-    private String memoriaRAM;
+    private Integer memoriaRAM;
     private String modelo;
     private String procesador;
     private String sistemaOperativo;
-    private String tamanioPantalla;
+    private Float tamanioPantalla;
     private String tipo;
     private String usuarioSO;
 
     public EquipoComputo() {
     }
 
-    public EquipoComputo(String contraseniaSO, String fechaRegistro, int idEquipoComputo, int idSolicitud, int idUsuario, byte[] imagen, boolean incluyeCargador, String marca, String memoriaRAM, String modelo, String procesador, String sistemaOperativo, String tamanioPantalla, String tipo, String usuarioSO) {
+    public EquipoComputo(String contraseniaSO, String fechaRegistro, int idEquipoComputo, int idSolicitud, int idUsuario, byte[] imagen, boolean incluyeCargador, String marca, Integer memoriaRAM, String modelo, String procesador, String sistemaOperativo, Float tamanioPantalla, String tipo, String usuarioSO) {
         this.contraseniaSO = contraseniaSO;
         this.fechaRegistro = fechaRegistro;
         this.idEquipoComputo = idEquipoComputo;
@@ -70,7 +70,7 @@ public class EquipoComputo {
         return marca;
     }
 
-    public String getMemoriaRAM() {
+    public Integer getMemoriaRAM() {
         return memoriaRAM;
     }
 
@@ -86,7 +86,7 @@ public class EquipoComputo {
         return sistemaOperativo;
     }
 
-    public String getTamanioPantalla() {
+    public Float getTamanioPantalla() {
         return tamanioPantalla;
     }
 
@@ -130,7 +130,7 @@ public class EquipoComputo {
         this.marca = marca;
     }
 
-    public void setMemoriaRAM(String memoriaRAM) {
+    public void setMemoriaRAM(Integer memoriaRAM) {
         this.memoriaRAM = memoriaRAM;
     }
 
@@ -146,7 +146,7 @@ public class EquipoComputo {
         this.sistemaOperativo = sistemaOperativo;
     }
 
-    public void setTamanioPantalla(String tamanioPantalla) {
+    public void setTamanioPantalla(Float tamanioPantalla) {
         this.tamanioPantalla = tamanioPantalla;
     }
 

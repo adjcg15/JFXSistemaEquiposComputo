@@ -167,10 +167,10 @@ public class SolicitudesDAO {
                     equipo.setIncluyeCargador(resultado.getBoolean("incluyeCargador"));
                     equipo.setModelo(resultado.getString("modelo"));
                     equipo.setSistemaOperativo(resultado.getString("sistemaOperativo"));
-                    equipo.setTamanioPantalla(resultado.getString("tamanioPantalla"));
+                    equipo.setTamanioPantalla(resultado.getFloat("tamanioPantalla"));
                     equipo.setContraseniaSO(resultado.getString("contraseniaEquipo"));
                     equipo.setProcesador(resultado.getString("procesador"));
-                    equipo.setMemoriaRAM(resultado.getString("memoria"));
+                    equipo.setMemoriaRAM(resultado.getInt("memoria"));
                     equipo.setMarca(resultado.getString("marca"));
                     equipo.setFechaRegistro(resultado.getString("fechaRegistro"));
                     equipo.setImagen(resultado.getBytes("fotoEquipo"));

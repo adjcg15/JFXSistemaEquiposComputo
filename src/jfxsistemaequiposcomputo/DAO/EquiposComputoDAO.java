@@ -27,10 +27,10 @@ public class EquiposComputoDAO {
                 crearEquipoSentenciaPreparada.setBoolean(2, nuevoEquipo.isIncluyeCargador());
                 crearEquipoSentenciaPreparada.setString(3, nuevoEquipo.getModelo());
                 crearEquipoSentenciaPreparada.setString(4, nuevoEquipo.getSistemaOperativo());
-                crearEquipoSentenciaPreparada.setString(5, nuevoEquipo.getTamanioPantalla());
+                crearEquipoSentenciaPreparada.setFloat(5, nuevoEquipo.getTamanioPantalla());
                 crearEquipoSentenciaPreparada.setString(6, nuevoEquipo.getContraseniaSO());
                 crearEquipoSentenciaPreparada.setString(7, nuevoEquipo.getProcesador());
-                crearEquipoSentenciaPreparada.setString(8, nuevoEquipo.getMemoriaRAM());
+                crearEquipoSentenciaPreparada.setInt(8, nuevoEquipo.getMemoriaRAM());
                 crearEquipoSentenciaPreparada.setString(9, nuevoEquipo.getMarca());
                 crearEquipoSentenciaPreparada.setString(10, Utilidades.fechaActualFormatoMySQL());
                 crearEquipoSentenciaPreparada.setBytes(11, nuevoEquipo.getImagen());
@@ -72,10 +72,10 @@ public class EquiposComputoDAO {
                 nuevoEquipoSentencia.setBoolean(2, nuevoEquipo.isIncluyeCargador());
                 nuevoEquipoSentencia.setString(3, nuevoEquipo.getModelo());
                 nuevoEquipoSentencia.setString(4, nuevoEquipo.getSistemaOperativo());
-                nuevoEquipoSentencia.setString(5, nuevoEquipo.getTamanioPantalla());
+                nuevoEquipoSentencia.setFloat(5, nuevoEquipo.getTamanioPantalla());
                 nuevoEquipoSentencia.setString(6, nuevoEquipo.getContraseniaSO());
                 nuevoEquipoSentencia.setString(7, nuevoEquipo.getProcesador());
-                nuevoEquipoSentencia.setString(8, nuevoEquipo.getMemoriaRAM());
+                nuevoEquipoSentencia.setInt(8, nuevoEquipo.getMemoriaRAM());
                 nuevoEquipoSentencia.setString(9, nuevoEquipo.getMarca());
                 nuevoEquipoSentencia.setString(10, nuevoEquipo.getFechaRegistro());
                 nuevoEquipoSentencia.setBytes(11, nuevoEquipo.getImagen());

@@ -176,9 +176,11 @@ public class RegistrarEquipoController implements Initializable {
         equipo.setIncluyeCargador(cboxIncluyeCargador.isSelected());
         equipo.setMarca(tfMarca.getText());
         equipo.setModelo(tfModelo.getText());
-        equipo.setTamanioPantalla(tfTamañoPantalla.getText());
+        tfTamañoPantalla.setText(String.valueOf(equipo.getTamanioPantalla())); 
+        tfMemoriaRAM.setText(String.valueOf(equipo.getMemoriaRAM()));
+        
         equipo.setProcesador(tfProcesador.getText());
-        equipo.setMemoriaRAM(tfMemoriaRAM.getText());
+        
         equipo.setSistemaOperativo(tfSO.getText());
         equipo.setUsuarioSO(tfUsuarioSO.getText());
         equipo.setContraseniaSO(tfContraseniaSO.getText());
