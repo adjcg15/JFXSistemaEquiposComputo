@@ -228,12 +228,12 @@
                   <Font size="14.0" />
                </font>
             </RadioButton>
-            <Button layoutX="568.0" layoutY="565.0" mnemonicParsing="false" onAction="#clicBtnCancelar" style="-fx-background-color: F61C1C; -fx-cursor: hand;" text="Cancelar" textFill="#fffafa">
+            <Button layoutX="560.0" layoutY="566.0" mnemonicParsing="false" onAction="#clicBtnRechazar" style="-fx-background-color: F61C1C; -fx-cursor: hand;" text="Rechazar" textFill="#fffafa">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="660.0" layoutY="565.0" mnemonicParsing="false" onAction="#clicBtnGuardar" style="-fx-background-color: #0775A4; -fx-cursor: hand;" text="Guardar" textFill="WHITE">
+            <Button layoutX="653.0" layoutY="566.0" mnemonicParsing="false" onAction="#clicBtnFinalizar" style="-fx-background-color: #0775A4; -fx-cursor: hand;" text="Finalizar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

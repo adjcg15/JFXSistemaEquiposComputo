@@ -199,18 +199,15 @@ public class GenerarDiagnosticoController implements Initializable {
     }
     
     @FXML
-    private void clicBtnCancelar(ActionEvent event) {
-        paneDetalles.setVisible(false);
-        tfDiagnostico.setText("");
-        tfPropuesta.setText("");
-        tfCosto.setText("");
-        tfFecha.setText("");
-        rbCorrectivo.setSelected(false);
-        rbPreventivo.setSelected(false);
+    private void clicBtnRechazar(ActionEvent event) {
+        SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_RECHAZADA, 
+                            idSolicitud);
+        limpiarPaneDetalles();
+        actualizarListView();
     }
 
     @FXML
-    private void clicBtnGuardar(ActionEvent event) {
+    private void clicBtnFinalizar(ActionEvent event) {
         boolean camposValidos = validarCampos();
         if(camposValidos) {
             establecerDiagnostico();
@@ -236,8 +233,10 @@ public class GenerarDiagnosticoController implements Initializable {
                         "El diagnóstico se ha guardado correctamente", 
                         Alert.AlertType.INFORMATION
                     );
-                    Stage escenarioPrincipal = (Stage) tfDiagnostico.getScene().getWindow();
-                    escenarioPrincipal.close();
+                    SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_ACEPTADA, 
+                            idSolicitud);
+                    limpiarPaneDetalles();
+                    actualizarListView();
                     break;
             }
         } else {
@@ -385,6 +384,16 @@ public class GenerarDiagnosticoController implements Initializable {
         if (!listaSolicitudes.isEmpty()) {
             lvSolicitudes.getSelectionModel().selectFirst();
         }
+    }
+    
+    private void limpiarPaneDetalles(){
+        paneDetalles.setVisible(false);
+        tfDiagnostico.setText("");
+        tfPropuesta.setText("");
+        tfCosto.setText("");
+        tfFecha.setText("");
+        rbCorrectivo.setSelected(false);
+        rbPreventivo.setSelected(false);
     }
     
     private boolean validarCamposGuardarCambios(){

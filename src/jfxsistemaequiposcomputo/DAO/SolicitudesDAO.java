@@ -205,6 +205,11 @@ public class SolicitudesDAO {
             return respuestaDesactivar;
         }
         
+        int respuestaAsociacion = EstadosDAO.asociarEstadoSolicitudAceptadaRechazada(idSolicitud, idEstado);
+        if(respuestaAsociacion != Constantes.OPERACION_EXITOSA){
+            return respuestaAsociacion;
+        }
+        
         return respuesta;
     }
     
@@ -214,7 +219,7 @@ public class SolicitudesDAO {
         if(conexionBD != null){
             try{
                 String sentencia = "SELECT idsolicitudEstado FROM solicitudestados"
-                        + " WHERE activo = true AND idSolicitudDiagnostico = ?;";
+                        + " WHERE activo = true AND idSolicitudDiagnostico = ?";
                 PreparedStatement sentenciaPreparada = conexionBD.prepareStatement(sentencia);
                 sentenciaPreparada.setInt(1, idSolicitud);
                 ResultSet idRecuperado  = sentenciaPreparada.executeQuery();
@@ -237,10 +242,14 @@ public class SolicitudesDAO {
         if(conexionBD != null){
             try{
                 String desactivarAnterior = "UPDATE solicitudestados SET fechaFin = ?,"
-                        + " activo = false WHERE idSOlicitudEstado = ?;";
+                        + " activo = false WHERE idSolicitudEstado = ?";
                 PreparedStatement sentenciaPreparada = conexionBD.prepareStatement(desactivarAnterior);
                 sentenciaPreparada.setString(1, Utilidades.fechaActualFormatoMySQL());
                 sentenciaPreparada.setInt(2, idSolicitudEstado);
+                int solicitudAfectada = sentenciaPreparada.executeUpdate();
+                if(solicitudAfectada != 1) {
+                    respuesta = Constantes.ERROR_CONSULTA;
+                }
                 conexionBD.close();
             }catch(SQLException e){
                 respuesta = Constantes.ERROR_CONSULTA;

@@ -80,4 +80,46 @@ public class EstadosDAO {
         
         return codigoRespuesta;
     }
+    
+    public static int asociarEstadoSolicitudAceptadaRechazada(int idSolicitud, int idEstado){
+        int codigoRespuesta = Constantes.OPERACION_EXITOSA;
+        
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String crearEstadoSolicitud = "INSERT INTO solicitudestados "
+                    + "(fechaInicio, fechaFin, activo, idSolicitudDiagnostico, idEstado) "
+                    + "VALUES (?, ?, ?, ?, ?)";
+                
+                PreparedStatement asociarEstadoSentenciaPreparada = 
+                    conexionBD.prepareStatement(crearEstadoSolicitud);
+                asociarEstadoSentenciaPreparada.setString(
+                    1, 
+                    Utilidades.fechaActualFormatoMySQL()
+                );
+                asociarEstadoSentenciaPreparada.setString(
+                    2, 
+                    Utilidades.fechaActualFormatoMySQL()
+                );
+                asociarEstadoSentenciaPreparada.setBoolean(3, true);
+                asociarEstadoSentenciaPreparada.setInt(4, idSolicitud);
+                asociarEstadoSentenciaPreparada.setInt(5, idEstado);
+                
+                int estadosSolicitudAfectados 
+                    = asociarEstadoSentenciaPreparada.executeUpdate();
+                if(estadosSolicitudAfectados != 1) {
+                    codigoRespuesta = Constantes.ERROR_CONSULTA;
+                }
+                
+                conexionBD.close();
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+                codigoRespuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            codigoRespuesta = Constantes.ERROR_CONEXION;
+        }
+        
+        return codigoRespuesta;        
+    }
 }
