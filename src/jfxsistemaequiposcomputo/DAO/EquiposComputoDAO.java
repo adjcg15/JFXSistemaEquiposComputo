@@ -11,7 +11,6 @@ import jfxsistemaequiposcomputo.utils.Utilidades;
 public class EquiposComputoDAO {
     public static int asociarSolicitudEquipo(EquipoComputo nuevoEquipo) {
         int codigoRespuesta = Constantes.OPERACION_EXITOSA;
-        
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try{
@@ -56,4 +55,54 @@ public class EquiposComputoDAO {
         
         return codigoRespuesta;
     }
-}
+    public static int crearEquipoComputo(EquipoComputo nuevoEquipo, int idUsuario, int idSolicitudDiagnostico){
+        int respuesta; 
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String crearNuevoEquipo  = "INSERT INTO equiposdecomputo "
+                    + "(tipo, incluyeCargador, modelo, sistemaOperativo, "
+                    + "tamanioPantalla, contraseniaEquipo, procesador, "
+                    + "memoria, marca, fechaRegistro, fotoEquipo, "
+                    + "usuarioSO, idUsuario, idSolicitudDiagnostico) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
+                PreparedStatement nuevoEquipoSentencia = conexionBD.prepareStatement(crearNuevoEquipo);
+                nuevoEquipoSentencia.setString(1, nuevoEquipo.getTipo());
+                nuevoEquipoSentencia.setBoolean(2, nuevoEquipo.isIncluyeCargador());
+                nuevoEquipoSentencia.setString(3, nuevoEquipo.getModelo());
+                nuevoEquipoSentencia.setString(4, nuevoEquipo.getSistemaOperativo());
+                nuevoEquipoSentencia.setString(5, nuevoEquipo.getTamanioPantalla());
+                nuevoEquipoSentencia.setString(6, nuevoEquipo.getContraseniaSO());
+                nuevoEquipoSentencia.setString(7, nuevoEquipo.getProcesador());
+                nuevoEquipoSentencia.setString(8, nuevoEquipo.getMemoriaRAM());
+                nuevoEquipoSentencia.setString(9, nuevoEquipo.getMarca());
+                nuevoEquipoSentencia.setString(10, nuevoEquipo.getFechaRegistro());
+                nuevoEquipoSentencia.setBytes(11, nuevoEquipo.getImagen());
+                nuevoEquipoSentencia.setString(12, nuevoEquipo.getUsuarioSO());
+                nuevoEquipoSentencia.setInt(13, idUsuario);
+                nuevoEquipoSentencia.setInt(14, idSolicitudDiagnostico);
+                int filasAfectadas = nuevoEquipoSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+                
+                
+            }catch (SQLException e){
+                e.printStackTrace();
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+            
+        }
+        System.out.println(respuesta);
+        return respuesta;
+    }
+    
+        
+        
+    }
+
+
+
+
