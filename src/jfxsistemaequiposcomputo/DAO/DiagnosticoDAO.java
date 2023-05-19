@@ -37,6 +37,13 @@ public class DiagnosticoDAO {
                     respuesta = Constantes.ERROR_CONSULTA;
                 }
                 
+                int respuestaActualizacion = 
+                        SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_ACEPTADA, 
+                                diagnostico.getIdSolicitudDiagnostico());
+                if(respuestaActualizacion != Constantes.OPERACION_EXITOSA){
+                    return respuestaActualizacion;
+                }
+                
                 conexionBD.close();
             }catch(SQLException ex){
                 ex.printStackTrace();

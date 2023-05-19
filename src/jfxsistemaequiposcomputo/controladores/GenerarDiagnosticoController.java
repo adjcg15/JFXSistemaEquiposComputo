@@ -200,10 +200,34 @@ public class GenerarDiagnosticoController implements Initializable {
     
     @FXML
     private void clicBtnRechazar(ActionEvent event) {
-        SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_RECHAZADA, 
+        int respuestaRechazo = 
+                SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_RECHAZADA, 
                             idSolicitud);
-        limpiarPaneDetalles();
-        actualizarListView();
+        switch(respuestaRechazo) {
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple(
+                    "Error de conexión",
+                    "Ocurrió un error al rechazar la solicitud, intente más tarde", 
+                    Alert.AlertType.ERROR
+                    );
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple(
+                    "Error en la consulta",
+                    "Ocurrió un error al rechazar la solicitud, intente más tarde", 
+                    Alert.AlertType.WARNING
+                );
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple(
+                    "Solicitud rechazada",
+                    "La solicitud se ha rechazado correctamente", 
+                    Alert.AlertType.INFORMATION
+                );
+                limpiarPaneDetalles();
+                actualizarListView();
+                break;
+        }       
     }
 
     @FXML
@@ -233,8 +257,6 @@ public class GenerarDiagnosticoController implements Initializable {
                         "El diagnóstico se ha guardado correctamente", 
                         Alert.AlertType.INFORMATION
                     );
-                    SolicitudesDAO.actualizarEstadoSolicitud(Constantes.ESTADO_SOLICITUD_ACEPTADA, 
-                            idSolicitud);
                     limpiarPaneDetalles();
                     actualizarListView();
                     break;
