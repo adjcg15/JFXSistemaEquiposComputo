@@ -131,6 +131,11 @@ public class RegistrarEquipoController implements Initializable {
         
         boolean camposValidos = validarSolicitud(solicitudCompleta);
         if (camposValidos) {
+            solicitudCompleta.getEquipo().setMemoriaRAM(Integer.parseInt(tfMemoriaRAM.getText()));
+            if(!tfTamañoPantalla.getText().isEmpty()) {
+                solicitudCompleta.getEquipo().setTamanioPantalla(Float.parseFloat(tfMemoriaRAM.getText()));
+            }
+            
             int respuestaCreación 
                 = SolicitudesDAO.crearSolicitudConUsuarioYEquipo(solicitudCompleta);
             switch(respuestaCreación) {
@@ -162,7 +167,9 @@ public class RegistrarEquipoController implements Initializable {
         } else {
             Utilidades.mostrarDialogoSimple(
                 "Campos obligatorios", 
-                "Por favor complete los campos obligatorios", 
+                "Por favor complete los campos obligatorios. La RAM debe ser un número "
+                + " y en caso de agregar un tamaño de pantalla, también debe ser "
+                + " un número",
                 Alert.AlertType.WARNING
             );
         } 
@@ -176,9 +183,6 @@ public class RegistrarEquipoController implements Initializable {
         equipo.setIncluyeCargador(cboxIncluyeCargador.isSelected());
         equipo.setMarca(tfMarca.getText());
         equipo.setModelo(tfModelo.getText());
-        tfTamañoPantalla.setText(String.valueOf(equipo.getTamanioPantalla())); 
-        tfMemoriaRAM.setText(String.valueOf(equipo.getMemoriaRAM()));
-        
         equipo.setProcesador(tfProcesador.getText());
         
         equipo.setSistemaOperativo(tfSO.getText());
@@ -198,18 +202,36 @@ public class RegistrarEquipoController implements Initializable {
         escenarioPrincipal.close();
     }
     
-    public static boolean validarSolicitud(SolicitudConUsuarioYEquipo solicitudCompleta) {
+    public boolean validarSolicitud(SolicitudConUsuarioYEquipo solicitudCompleta) {
         Solicitud solicitud = solicitudCompleta.getSolicitud();
-        EquipoComputo equipo = solicitudCompleta.getEquipo();
+        EquipoComputo equipoSolicitud = solicitudCompleta.getEquipo();
         
-        boolean incluyeCargador = equipo.isIncluyeCargador();
-        String tipoEquipo = equipo.getTipo();
-        String marca = equipo.getMarca();
-        String modelo = equipo.getModelo();
-        String sistemaOperativo = equipo.getSistemaOperativo();
-        String usuarioSO = equipo.getUsuarioSO();
-        String contraseniaSO = equipo.getContraseniaSO();
-        byte[] imagen = equipo.getImagen();
+        boolean incluyeCargador = equipoSolicitud.isIncluyeCargador();
+        String tipoEquipo = equipoSolicitud.getTipo();
+        String marca = equipoSolicitud.getMarca();
+        String modelo = equipoSolicitud.getModelo();
+        String sistemaOperativo = equipoSolicitud.getSistemaOperativo();
+        String usuarioSO = equipoSolicitud.getUsuarioSO();
+        String contraseniaSO = equipoSolicitud.getContraseniaSO();
+        byte[] imagen = equipoSolicitud.getImagen();
+        
+        boolean memoriaValida = true, 
+                tamanioPantallaValido = true;
+        try{
+            if(!tfTamañoPantalla.getText().isEmpty()) {
+                float tamanioPantalla = Float.parseFloat(tfTamañoPantalla.getText());
+            }
+        }catch(NumberFormatException nfe){
+            tfTamañoPantalla.setText("");
+            tamanioPantallaValido = false;
+        }
+        
+        try{
+            int memoriaRAM = Integer.parseInt(tfMemoriaRAM.getText());
+        }catch(NumberFormatException nfe){
+            tfMemoriaRAM.setText("");
+            memoriaValida = false;
+        }
         
         String observaciones = solicitud.getObservaciones();
         
@@ -220,11 +242,13 @@ public class RegistrarEquipoController implements Initializable {
             && sistemaOperativo != null
             && usuarioSO != null
             && contraseniaSO != null
-            && imagen != null;
+            && imagen != null
+            && memoriaValida
+            && tamanioPantallaValido;
 
         boolean camposSolicitudValidos =
             observaciones != null && !observaciones.isEmpty();
         
-    return camposTecnicosValidos && camposSolicitudValidos;
+        return camposTecnicosValidos && camposSolicitudValidos;
     }
 }

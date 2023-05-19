@@ -132,7 +132,8 @@ public class SolicitudesDAO {
                     + "INNER JOIN solicitudestados ON solicitudesdiagnostico.idSolicitudDiagnostico = " 
                     + "solicitudestados.idSolicitudEstado "
                     + "INNER JOIN usuarios ON solicitudesdiagnostico.idUsuario = usuarios.idUsuario "
-                    + "WHERE solicitudestados.activo = TRUE";
+                    + "WHERE solicitudestados.activo = TRUE "
+                    + "AND solicitudestados.idEstado = 1";
                 
                 PreparedStatement sentenciaPreparada 
                     = conexion.prepareStatement(consulta);
