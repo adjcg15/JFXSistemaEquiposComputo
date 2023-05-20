@@ -21,7 +21,7 @@ public class SolicitudesDAOTest {
         solicitud.setIdUsuario(2); // Debe ser un ID registrado en la BD
         solicitud.setObservaciones("Prueba");
         
-        int respuestaEsperada = 49; //Se debe verificar en la BD cuál es el siguiente ID
+        int respuestaEsperada = 23; //Se debe verificar en la BD cuál es el siguiente ID
         int respuestaRecibida = SolicitudesDAO.crearSolicitud(solicitud);
         assertEquals(respuestaEsperada, respuestaRecibida);
     }
@@ -43,9 +43,9 @@ public class SolicitudesDAOTest {
         equipo.setIncluyeCargador(true);
         equipo.setMarca("Prueba");
         equipo.setModelo("Prueba");
-        equipo.setTamanioPantalla("Prueba");
+        equipo.setTamanioPantalla(12.5F);
         equipo.setProcesador("Prueba");
-        equipo.setMemoriaRAM("Prueba");
+        equipo.setMemoriaRAM(6);
         equipo.setSistemaOperativo("Prueba");
         equipo.setUsuarioSO("Prueba");
         equipo.setContraseniaSO("Prueba");

@@ -20,7 +20,7 @@ public class EstadosDAOTest {
     @Test
     public void testAsociarEstadoSolicitud() {
         System.out.println("asociarEstadoSolicitud");
-        int idSolicitud = 20; // Debe ser in ID existente en la BD
+        int idSolicitud = 1; // Debe ser in ID existente en la BD
         int idEstado = 1; // Debe ser in ID existente en la BD
         int respuestaEsperada = Constantes.OPERACION_EXITOSA;
         int respuestaRecibida = EstadosDAO.asociarEstadoSolicitud(idSolicitud, idEstado);

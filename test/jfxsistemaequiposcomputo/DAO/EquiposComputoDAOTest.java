@@ -19,14 +19,14 @@ public class EquiposComputoDAOTest {
         byte[] imagen = {1, 2, 3, 4};
         
         equipo.setIdUsuario(2); //Debe ser un ID existente en la BD
-        equipo.setIdSolicitud(20); //Debe ser un ID existente en la BD
+        equipo.setIdSolicitud(2); //Debe ser un ID existente en la BD
         equipo.setTipo("Prueba");
         equipo.setIncluyeCargador(true);
         equipo.setMarca("Prueba");
         equipo.setModelo("Prueba");
-        equipo.setTamanioPantalla("Prueba");
+        equipo.setTamanioPantalla(12.6F);
         equipo.setProcesador("Prueba");
-        equipo.setMemoriaRAM("Prueba");
+        equipo.setMemoriaRAM(8);
         equipo.setSistemaOperativo("Prueba");
         equipo.setUsuarioSO("Prueba");
         equipo.setContraseniaSO("Prueba");
