@@ -1,11 +1,221 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.vistas.AdministrarMantenimientoController">
-    
+<AnchorPane id="AnchorPane" prefHeight="702.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfxsistemaequiposcomputo.controladores.AdministrarMantenimientoController">
+   <children>
+      <Pane fx:id="paneDetalles" layoutX="184.0" layoutY="65.0" prefHeight="637.0" prefWidth="767.0">
+         <children>
+            <ImageView fx:id="ivFoto" fitHeight="202.0" fitWidth="340.0" layoutX="32.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lbModeloEquipo" layoutX="396.0" prefHeight="32.0" prefWidth="278.0" text="*Información modelo*">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="397.0" layoutY="30.0" text="Diagnostico preliminar:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbDiagnosticoPreliminar" alignment="TOP_LEFT" layoutX="396.0" layoutY="50.0" prefHeight="43.0" prefWidth="347.0" style="-fx-border-color: gray; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="492.0" layoutY="162.0" text="*Campo obligatorio si desea guardar" textFill="RED">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="7.0" text="Mantenimiento">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <Label fx:id="lbTipoMantenimiento" layoutX="162.0" layoutY="7.0" text="*Tipo*">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <Label fx:id="lbPropuestaSolucion" alignment="TOP_LEFT" layoutX="396.0" layoutY="115.0" prefHeight="43.0" prefWidth="347.0" style="-fx-border-color: gray; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="397.0" layoutY="95.0" text="Propuesta de solución:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="397.0" layoutY="158.0" text="Comentarios:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfComentarios" alignment="TOP_LEFT" layoutX="396.0" layoutY="178.0" prefHeight="35.0" prefWidth="347.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+            <Button layoutX="624.0" layoutY="213.0" mnemonicParsing="false" onAction="#clicBtnGuardarComentario" prefHeight="30.0" prefWidth="119.0" style="-fx-background-color: #0775A4; -fx-cursor: hand;" text="Guardar Comentario" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER" layoutX="22.0" layoutY="251.0" prefHeight="20.0" prefWidth="723.0" style="-fx-background-color: #EAEAEA;" text="ESTADO DEL MANTENIMIENTO">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbDiagnostico" layoutX="60.0" layoutY="271.0" text="Diagnóstico">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbMantenimiento" layoutX="238.0" layoutY="271.0" text="Mantenimiento">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbRevision" layoutX="447.0" layoutY="271.0" text="Revisión">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFinalizado" layoutX="630.0" layoutY="271.0" text="Finalizado">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaInicioDiagnostico" alignment="CENTER" layoutX="25.0" layoutY="312.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaInicioMantenimiento" alignment="CENTER" layoutX="215.0" layoutY="312.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaInicioRevision" alignment="CENTER" layoutX="400.0" layoutY="312.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaFinDiagnostico1" alignment="CENTER" layoutX="25.0" layoutY="362.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="292.0" text="Fecha de inicio">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="342.0" text="Fecha de finalización">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaFinMantenimiento" alignment="CENTER" layoutX="215.0" layoutY="362.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="215.0" layoutY="292.0" text="Fecha de inicio">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="400.0" layoutY="292.0" text="Fecha de inicio">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="588.0" layoutY="320.0" text="Fecha de finalización">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaFinRevision" alignment="CENTER" layoutX="400.0" layoutY="362.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaFinFinalizado" alignment="CENTER" layoutX="588.0" layoutY="340.0" prefHeight="27.0" prefWidth="154.0" style="-fx-border-color: #EAEAEA; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="215.0" layoutY="342.0" text="Fecha de finalización">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="400.0" layoutY="342.0" text="Fecha de finalización">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnPasarEstado" layoutX="27.0" layoutY="390.0" mnemonicParsing="false" onAction="#clicBtnPasarEstado" prefHeight="30.0" prefWidth="119.0" style="-fx-background-color: #0775A4; -fx-cursor: hand;" text="Pasar a ..." textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER" layoutX="22.0" layoutY="426.0" prefHeight="20.0" prefWidth="723.0" style="-fx-background-color: #EAEAEA;" text="REFACCIONES">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbTipoRefaccion" layoutX="22.0" layoutY="481.0" prefHeight="30.0" prefWidth="190.0" />
+            <ComboBox fx:id="cbNombreRefaccion" layoutX="23.0" layoutY="543.0" prefHeight="30.0" prefWidth="190.0" />
+            <Label layoutX="25.0" layoutY="461.0" text="Tipo de refaccion">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="523.0" text="Nombre">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="245.0" layoutY="509.0" mnemonicParsing="false" onAction="#clicBtnAgregar" style="-fx-background-color: #525252;" text="Agregar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+            <Label layoutX="474.0" layoutY="448.0" text="Lista de refacciones:">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tvListaRefacciones" layoutX="369.0" layoutY="474.0" prefHeight="138.0" prefWidth="370.0">
+              <columns>
+                <TableColumn fx:id="colNombreRefaccion" prefWidth="185.0" text="Nombre" />
+                <TableColumn fx:id="colTipoRefaccion" prefWidth="185.0" text="Tipo" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+      <Label layoutX="5.0" layoutY="22.0" text="Lista de Equipos">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+      <ListView fx:id="lvSolicitudes" layoutY="65.0" onMouseClicked="#clicSeleccionarSolicitud" prefHeight="637.0" prefWidth="184.0" />
+      <Label fx:id="lbTituloSeccion" layoutX="251.0" layoutY="21.0" text="MANTENIMIENTO DE EQUIPO">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="201.0" layoutY="23.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+         <image>
+            <Image url="@../recursos/flecha-hacia-atras.png" />
+         </image>
+      </ImageView>
+   </children>
 </AnchorPane>
