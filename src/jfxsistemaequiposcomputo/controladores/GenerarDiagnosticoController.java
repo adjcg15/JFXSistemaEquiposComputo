@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -25,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
 import javax.imageio.ImageIO;
 import jfxsistemaequiposcomputo.DAO.DiagnosticoDAO;
 import jfxsistemaequiposcomputo.DAO.EquiposComputoDAO;
@@ -82,15 +86,13 @@ public class GenerarDiagnosticoController implements Initializable {
     @FXML
     private TextField tfCosto;
     @FXML
-    private TextField tfFecha;
-    @FXML
     private RadioButton rbPreventivo;
     @FXML
     private RadioButton rbCorrectivo;
     @FXML
-    private Label lbTituloSeccion;
-    @FXML
     private ToggleGroup tgTipoMantenimiento;
+    @FXML
+    private DatePicker dpFechaAtencion;
 
     private Usuario usuario;
     private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
@@ -107,7 +109,6 @@ public class GenerarDiagnosticoController implements Initializable {
     
     private SolicitudConUsuarioYEquipo solicitudCompletaSeleccionada 
             = new SolicitudConUsuarioYEquipo();
-    
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -282,6 +283,9 @@ public class GenerarDiagnosticoController implements Initializable {
     
     private void mostrarSolicitud(int posicion){
         paneDetalles.setVisible(true);
+        dpFechaAtencion.setEditable(false);
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dpFechaAtencion.setConverter(new LocalDateStringConverter(formatter1, null));
         
         EquipoComputo equipo = listaSolicitudes.get(posicion).getEquipo();
         Usuario usuario = listaSolicitudes.get(posicion).getUsuario();
@@ -339,7 +343,7 @@ public class GenerarDiagnosticoController implements Initializable {
        diagnostico.setDiagnosticoPreliminar(tfDiagnostico.getText());
        diagnostico.setPropuestaSolucion(tfPropuesta.getText());
        diagnostico.setCostoEstimado(costoEstimado);
-       diagnostico.setFechaAtencion(tfFecha.getText());
+       diagnostico.setFechaAtencion(obtenerFechaAtencion());
        diagnostico.setTipoDeMantenimiento(tipoMantenimiento);
        diagnostico.setFechaSolicitud(fechaSolicitud);
        diagnostico.setIdSolicitudDiagnostico(idSolicitud);
@@ -358,7 +362,6 @@ public class GenerarDiagnosticoController implements Initializable {
         });
     }
     private void obtenerInformacionEquipos(){
-        //EquipoComputo nuevoEquipoComputo = new EquipoComputo();
         EquipoComputo equipoRecuperado = solicitudCompletaSeleccionada.getEquipo();
         
         nuevoEquipoComputo.setTipo(equipoRecuperado.getTipo());
@@ -394,7 +397,7 @@ public class GenerarDiagnosticoController implements Initializable {
         camposValidos = 
             !tfDiagnostico.getText().isEmpty()
             && !tfPropuesta.getText().isEmpty()
-            && !tfFecha.getText().isEmpty();
+            && dpFechaAtencion.getValue() != null;
         
         return camposValidos && campoCosto && tipoMantenimiento;
     }
@@ -413,7 +416,7 @@ public class GenerarDiagnosticoController implements Initializable {
         tfDiagnostico.setText("");
         tfPropuesta.setText("");
         tfCosto.setText("");
-        tfFecha.setText("");
+        dpFechaAtencion.setValue(null);
         rbCorrectivo.setSelected(false);
         rbPreventivo.setSelected(false);
     }
@@ -442,6 +445,13 @@ public class GenerarDiagnosticoController implements Initializable {
         }
         return campoTamañoPantalla && camposMemoriaRAM;
     }
-    
-    
- }
+    private String obtenerFechaAtencion(){
+        String fechaAtencion = null;
+        
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha = dpFechaAtencion.getValue();
+        fechaAtencion = fecha.format(formatter2);
+        
+        return fechaAtencion;
+    }
+}

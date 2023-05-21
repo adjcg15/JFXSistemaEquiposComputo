@@ -200,16 +200,12 @@
                   <Font size="15.0" />
                </font>
             </Label>
+            <DatePicker fx:id="dpFechaAtencion" layoutX="571.0" layoutY="502.0" prefHeight="39.0" prefWidth="171.0" />
             <Label layoutX="571.0" layoutY="483.0" text="Fecha de atención" textFill="#6e6e6e">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="tfFecha" layoutX="571.0" layoutY="504.0" prefHeight="31.0" prefWidth="168.0">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </TextField>
             <Label layoutX="399.0" layoutY="540.0" text="Tipo de mantenimiento" textFill="#6e6e6e">
                <font>
                   <Font size="15.0" />
@@ -266,7 +262,7 @@
          </font>
       </Label>
       <ListView fx:id="lvSolicitudes" layoutY="65.0" onMouseClicked="#clicSeleccionarSolicitud" prefHeight="637.0" prefWidth="184.0" />
-      <Label fx:id="lbTituloSeccion" layoutX="251.0" layoutY="21.0" text="SOLICITUD DE DIAGNÓSTICO">
+      <Label layoutX="251.0" layoutY="21.0" text="SOLICITUD DE DIAGNÓSTICO">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
