@@ -9,4 +9,8 @@ public class Constantes {
     public static final String ESTADO_SOLICITUD_PENDIENTE = "PENDIENTE";
     public static final String ESTADO_SOLICITUD_ACEPTADA  = "ACEPTADA";
     public static final String ESTADO_SOLICITUD_RECHAZADA = "RECHAZADA";
+    public static final String ESTADO_SOLICITUD_DIAGNOSTICO = "DIAGNOSTICO";
+    public static final String ESTADO_SOLICITUD_MANTENIMIENTO = "MANTENIMIENTO";
+    public static final String ESTADO_SOLICITUD_REVISION = "REVISION";
+    public static final String ESTADO_SOLICITUD_FINALIZADO = "FINALIZADO";
 }

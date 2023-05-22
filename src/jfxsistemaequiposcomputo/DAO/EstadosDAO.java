@@ -83,7 +83,6 @@ public class EstadosDAO {
     
     public static int asociarEstadoSolicitudAceptadaRechazada(int idSolicitud, int idEstado){
         int codigoRespuesta = Constantes.OPERACION_EXITOSA;
-        
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try{
@@ -121,5 +120,46 @@ public class EstadosDAO {
         }
         
         return codigoRespuesta;        
+    }
+    
+    public static int asociarEstadoSolicitudEnDiagnostico(String fechaIncio, int idSolicitud, String nombreEstado) {
+        int codigoRespuesta = Constantes.OPERACION_EXITOSA;
+        int idEstado = obtenerIdEstadoPorNombre(nombreEstado);
+        
+        int idSolicitudEstado = SolicitudesDAO.recuperarIdSolicitudEstadoActiva(idSolicitud);
+        int respuestaDesactivar = SolicitudesDAO.desactivarSolicitudAnterior(idSolicitudEstado);
+        if(respuestaDesactivar != Constantes.OPERACION_EXITOSA){
+            return respuestaDesactivar;
+        }
+        
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String crearEstadoSolicitud = "INSERT INTO solicitudestados "
+                    + "(fechaInicio, activo, idSolicitudDiagnostico, idEstado) "
+                    + "VALUES (?, ?, ?, ?)";
+                
+                PreparedStatement asociarEstadoSentenciaPreparada = 
+                    conexionBD.prepareStatement(crearEstadoSolicitud);
+                asociarEstadoSentenciaPreparada.setString(1, fechaIncio);
+                asociarEstadoSentenciaPreparada.setBoolean(2, true);
+                asociarEstadoSentenciaPreparada.setInt(3, idSolicitud);
+                asociarEstadoSentenciaPreparada.setInt(4, idEstado);
+                
+                int estadosSolicitudAfectados 
+                    = asociarEstadoSentenciaPreparada.executeUpdate();
+                if(estadosSolicitudAfectados != 1) {
+                    codigoRespuesta = Constantes.ERROR_CONSULTA;
+                }
+                
+                conexionBD.close();
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+                codigoRespuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            codigoRespuesta = Constantes.ERROR_CONEXION;
+        }
+        return codigoRespuesta;
     }
 }
