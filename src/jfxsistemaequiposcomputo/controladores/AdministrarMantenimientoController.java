@@ -2,9 +2,12 @@ package jfxsistemaequiposcomputo.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -15,6 +18,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import jfxsistemaequiposcomputo.DAO.MantenimientosDAO;
+import jfxsistemaequiposcomputo.pojo.ListaMantenimientosRespuesta;
+import jfxsistemaequiposcomputo.pojo.MantenimientoConEquipoYDiagnostico;
+import jfxsistemaequiposcomputo.utils.Constantes;
+import jfxsistemaequiposcomputo.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -38,7 +46,7 @@ public class AdministrarMantenimientoController implements Initializable {
     @FXML
     private TextField tfComentarios;
     @FXML
-    private ListView<?> lvSolicitudes;
+    private ListView<MantenimientoConEquipoYDiagnostico> lvMantenimientos;
     @FXML
     private Label lbTituloSeccion;
     @FXML
@@ -75,11 +83,42 @@ public class AdministrarMantenimientoController implements Initializable {
     private TableColumn<?, ?> colNombreRefaccion;
     @FXML
     private TableColumn<?, ?> colTipoRefaccion;
+    
+    ObservableList<MantenimientoConEquipoYDiagnostico> listaMantenimientos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        cargarListaMantenimientos();
     }    
+    
+    private void cargarListaMantenimientos() {
+        listaMantenimientos = FXCollections.observableArrayList();
+        
+        ListaMantenimientosRespuesta respuestaBD 
+            = MantenimientosDAO.recuperarMantenimientosConEquipoYDiagnostico();
+        switch(respuestaBD.getCodigoRespuesta()) {
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple(
+                    "Sin conexión", 
+                    "Lo sentimos, por el momento "
+                    + "no tiene conexión para acceder a la información", 
+                        Alert.AlertType.ERROR
+                );
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple(
+                    "No fue posible cargar los datos", 
+                    "Hubo un error al cargar la información"
+                    + ", por favor intente más tarde", 
+                    Alert.AlertType.ERROR
+                );
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                listaMantenimientos.addAll(respuestaBD.getMantenimientosCompletos());
+                lvMantenimientos.setItems(listaMantenimientos);
+                break;
+        }
+    }
 
     @FXML
     private void clicSeleccionarSolicitud(MouseEvent event) {
