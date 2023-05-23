@@ -7,15 +7,17 @@ public class MantenimientoConEquipoYDiagnostico {
     private EquipoComputo equipo;
     private Diagnostico diagnostico;
     private ArrayList<Estado> estados;
+    private ArrayList<Refaccion> refacciones;
 
     public MantenimientoConEquipoYDiagnostico() {
     }
 
-    public MantenimientoConEquipoYDiagnostico(Mantenimiento mantenimiento, EquipoComputo equipo, Diagnostico diagnostico, ArrayList<Estado> estados) {
+    public MantenimientoConEquipoYDiagnostico(Mantenimiento mantenimiento, EquipoComputo equipo, Diagnostico diagnostico, ArrayList<Estado> estados, ArrayList<Refaccion> refacciones) {
         this.mantenimiento = mantenimiento;
         this.equipo = equipo;
         this.diagnostico = diagnostico;
         this.estados = estados;
+        this.refacciones = refacciones;
     }
 
     public Mantenimiento getMantenimiento() {
@@ -32,6 +34,10 @@ public class MantenimientoConEquipoYDiagnostico {
     
     public ArrayList<Estado> getEstados() {
         return estados;
+    }
+    
+    public ArrayList<Refaccion> getRefacciones() {
+        return refacciones;
     }
 
     public void setMantenimiento(Mantenimiento mantenimiento) {
@@ -50,10 +56,13 @@ public class MantenimientoConEquipoYDiagnostico {
         this.estados = estados;
     }
     
+    public void setRefacciones(ArrayList<Refaccion> refacciones) {
+        this.refacciones = refacciones;
+    }
+    
     @Override
     public String toString() {
         if(equipo != null && !equipo.getModelo().equals("")) {
-            System.out.println(equipo.getModelo().toUpperCase());
             return "Mantenimiento de equipo " + equipo.getModelo().toUpperCase();
         }
         

@@ -11,6 +11,7 @@ import jfxsistemaequiposcomputo.pojo.EquipoComputo;
 import jfxsistemaequiposcomputo.pojo.Estado;
 import jfxsistemaequiposcomputo.pojo.ListaEstadosRespuesta;
 import jfxsistemaequiposcomputo.pojo.ListaMantenimientosRespuesta;
+import jfxsistemaequiposcomputo.pojo.ListaRefaccionesRespuesta;
 import jfxsistemaequiposcomputo.pojo.Mantenimiento;
 import jfxsistemaequiposcomputo.pojo.MantenimientoConEquipoYDiagnostico;
 import jfxsistemaequiposcomputo.utils.Constantes;
@@ -109,19 +110,28 @@ public class MantenimientosDAO {
                         conexion.close();
                         return listaMantenimientosRespuesta;
                     }
-                    System.out.println("ESTADOS LONG: " + respuestaEstados.getEstados().size());
                     mantenimientoCompleto.setEstados(respuestaEstados.getEstados());
+                    
+                    ListaRefaccionesRespuesta respuestaRefacciones = 
+                        RefaccionesDAO.recuperarRefaccionesMantenimiento(
+                            mantenimiento.getIdMantenimiento()
+                        );
+                    if(respuestaRefacciones.getCodigoRespuesta() != Constantes.OPERACION_EXITOSA) {
+                        listaMantenimientosRespuesta.setCodigoRespuesta(
+                            respuestaRefacciones.getCodigoRespuesta()
+                        );
+                        conexion.close();
+                        return listaMantenimientosRespuesta;
+                    }
+                    mantenimientoCompleto.setRefacciones(respuestaRefacciones.getRefacciones());
                     
                     listaMantenimientos.add(mantenimientoCompleto);
                 }
                 
-                System.out.println(listaMantenimientos.size());
                 listaMantenimientosRespuesta
                     .setMantenimientosCompletos(listaMantenimientos);
                 conexion.close();
-                System.out.println("TODO OOOOOOOOOOOK");
             } catch (SQLException ex) {
-                System.err.println("ALGO SALIÓ MUY MAL!!!");
                 System.err.println(ex.getMessage());
                 listaMantenimientosRespuesta
                     .setCodigoRespuesta(Constantes.ERROR_CONSULTA); 
