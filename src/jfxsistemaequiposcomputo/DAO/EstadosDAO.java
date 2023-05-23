@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import jfxsistemaequiposcomputo.modelo.ConexionBD;
+import jfxsistemaequiposcomputo.pojo.Estado;
+import jfxsistemaequiposcomputo.pojo.ListaEstadosRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
 
@@ -161,5 +164,50 @@ public class EstadosDAO {
             codigoRespuesta = Constantes.ERROR_CONEXION;
         }
         return codigoRespuesta;
+    }
+    
+    public static ListaEstadosRespuesta recuperarEstadosMantenimiento(int idSolicitudDiagnostico) {
+        ListaEstadosRespuesta estadosRespuesta = new ListaEstadosRespuesta();
+        estadosRespuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+        
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String consulta = 
+                    "SELECT estados.idEstado, fechaInicio, fechaFin, activo, nombre "
+                    + "FROM solicitudestados "
+                    + "INNER JOIN estados ON estados.idEstado = solicitudestados.idEstado "
+                    + "WHERE idSolicitudDiagnostico = ?";
+                
+                PreparedStatement sentenciaPreparada = 
+                    conexionBD.prepareStatement(consulta);
+                sentenciaPreparada.setInt(1, idSolicitudDiagnostico);
+                
+                ResultSet respuesta = sentenciaPreparada.executeQuery();
+                
+                ArrayList<Estado> estados = new ArrayList();
+                while(respuesta.next()) {
+                    Estado estado = new Estado();
+                    
+                   estado.setIdEstado(respuesta.getInt("idEstado"));
+                   estado.setFechaInicio(respuesta.getString("fechaInicio"));
+                   estado.setFechaFin(respuesta.getString("fechaFin"));
+                   estado.setNombre(respuesta.getString("nombre"));
+                   estado.setActivo(respuesta.getBoolean("activo"));
+                   
+                   estados.add(estado);
+                }
+                
+                estadosRespuesta.setEstados(estados);
+                conexionBD.close();
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+                estadosRespuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }
+        } else {
+            estadosRespuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+        }
+        
+        return estadosRespuesta;
     }
 }

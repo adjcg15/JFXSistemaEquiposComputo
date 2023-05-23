@@ -1,17 +1,21 @@
 package jfxsistemaequiposcomputo.pojo;
 
+import java.util.ArrayList;
+
 public class MantenimientoConEquipoYDiagnostico {
     private Mantenimiento mantenimiento;
     private EquipoComputo equipo;
     private Diagnostico diagnostico;
+    private ArrayList<Estado> estados;
 
     public MantenimientoConEquipoYDiagnostico() {
     }
 
-    public MantenimientoConEquipoYDiagnostico(Mantenimiento mantenimiento, EquipoComputo equipo, Diagnostico diagnostico) {
+    public MantenimientoConEquipoYDiagnostico(Mantenimiento mantenimiento, EquipoComputo equipo, Diagnostico diagnostico, ArrayList<Estado> estados) {
         this.mantenimiento = mantenimiento;
         this.equipo = equipo;
         this.diagnostico = diagnostico;
+        this.estados = estados;
     }
 
     public Mantenimiento getMantenimiento() {
@@ -25,6 +29,10 @@ public class MantenimientoConEquipoYDiagnostico {
     public Diagnostico getDiagnostico() {
         return diagnostico;
     }
+    
+    public ArrayList<Estado> getEstados() {
+        return estados;
+    }
 
     public void setMantenimiento(Mantenimiento mantenimiento) {
         this.mantenimiento = mantenimiento;
@@ -36,6 +44,10 @@ public class MantenimientoConEquipoYDiagnostico {
 
     public void setDiagnostico(Diagnostico diagnostico) {
         this.diagnostico = diagnostico;
+    }
+    
+    public void setEstados(ArrayList<Estado> estados) {
+        this.estados = estados;
     }
     
     @Override

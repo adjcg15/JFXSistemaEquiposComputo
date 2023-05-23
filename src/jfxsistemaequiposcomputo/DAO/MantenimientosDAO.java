@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import jfxsistemaequiposcomputo.modelo.ConexionBD;
 import jfxsistemaequiposcomputo.pojo.Diagnostico;
 import jfxsistemaequiposcomputo.pojo.EquipoComputo;
+import jfxsistemaequiposcomputo.pojo.Estado;
+import jfxsistemaequiposcomputo.pojo.ListaEstadosRespuesta;
 import jfxsistemaequiposcomputo.pojo.ListaMantenimientosRespuesta;
 import jfxsistemaequiposcomputo.pojo.Mantenimiento;
 import jfxsistemaequiposcomputo.pojo.MantenimientoConEquipoYDiagnostico;
@@ -55,6 +57,7 @@ public class MantenimientosDAO {
                     = "SELECT mantenimientos.idMantenimiento, mantenimientos.comentario, "
                     + "diagnosticos.idDiagnostico, diagnosticos.tipoDeMantenimiento, "
                     + "diagnosticos.diagnosticoPreliminar, diagnosticos.propuestaSolucion, "
+                    + "diagnosticos.idSolicitudDiagnostico, "
                     + "ultimosequipos.idEquipoDeComputo, ultimosequipos.fotoEquipo, "
                     + "ultimosequipos.modelo "
                     + "FROM mantenimientos "
@@ -86,6 +89,7 @@ public class MantenimientosDAO {
                     diagnostico.setTipoDeMantenimiento(resultado.getString("tipoDeMantenimiento"));
                     diagnostico.setDiagnosticoPreliminar(resultado.getString("diagnosticoPreliminar"));
                     diagnostico.setPropuestaSolucion(resultado.getString("propuestaSolucion"));
+                    diagnostico.setIdSolicitudDiagnostico(resultado.getInt("idSolicitudDiagnostico"));
                     mantenimientoCompleto.setDiagnostico(diagnostico);
                     
                     EquipoComputo equipo = new EquipoComputo();
@@ -93,6 +97,20 @@ public class MantenimientosDAO {
                     equipo.setImagen(resultado.getBytes("fotoEquipo"));
                     equipo.setModelo(resultado.getString("modelo"));
                     mantenimientoCompleto.setEquipo(equipo);
+                    
+                    ListaEstadosRespuesta respuestaEstados = 
+                        EstadosDAO.recuperarEstadosMantenimiento(
+                            diagnostico.getIdSolicitudDiagnostico()
+                        );
+                    if(respuestaEstados.getCodigoRespuesta() != Constantes.OPERACION_EXITOSA) {
+                        listaMantenimientosRespuesta.setCodigoRespuesta(
+                            respuestaEstados.getCodigoRespuesta()
+                        );
+                        conexion.close();
+                        return listaMantenimientosRespuesta;
+                    }
+                    System.out.println("ESTADOS LONG: " + respuestaEstados.getEstados().size());
+                    mantenimientoCompleto.setEstados(respuestaEstados.getEstados());
                     
                     listaMantenimientos.add(mantenimientoCompleto);
                 }
