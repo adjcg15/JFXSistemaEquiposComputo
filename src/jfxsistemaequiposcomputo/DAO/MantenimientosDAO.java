@@ -54,21 +54,19 @@ public class MantenimientosDAO {
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null){
             try {
-                String consulta 
-                    = "SELECT mantenimientos.idMantenimiento, mantenimientos.comentario, "
-                    + "diagnosticos.idDiagnostico, diagnosticos.tipoDeMantenimiento, "
-                    + "diagnosticos.diagnosticoPreliminar, diagnosticos.propuestaSolucion, "
-                    + "diagnosticos.idSolicitudDiagnostico, "
-                    + "ultimosequipos.idEquipoDeComputo, ultimosequipos.fotoEquipo, "
-                    + "ultimosequipos.modelo "
-                    + "FROM mantenimientos "
-                    + "INNER JOIN diagnosticos ON mantenimientos.idDiagnostico = diagnosticos.idDiagnostico "
-                    + "INNER JOIN ( "
-                    + "SELECT idSolicitudDiagnostico, modelo, fotoEquipo, MAX(idEquipoDeComputo) AS idEquipoDeComputo "
-                    + "FROM equiposdecomputo GROUP BY idSolicitudDiagnostico "
-                    + ") AS ultimosequipos "
-                    + "ON diagnosticos.idSolicitudDiagnostico = ultimosequipos.idSolicitudDiagnostico";
-                
+                String consulta = "SELECT mantenimientos.idMantenimiento, mantenimientos.comentario, "
+                        + "diagnosticos.idDiagnostico, diagnosticos.tipoDeMantenimiento, "
+                        + "diagnosticos.diagnosticoPreliminar, diagnosticos.propuestaSolucion, "
+                        + "diagnosticos.idSolicitudDiagnostico, ultimosequipos.idEquipoDeComputo, "
+                        + "equiposdecomputo.fotoEquipo, equiposdecomputo.modelo "
+                        + "FROM mantenimientos INNER JOIN diagnosticos "
+                        + "ON mantenimientos.idDiagnostico = diagnosticos.idDiagnostico "
+                        + "INNER JOIN (SELECT idSolicitudDiagnostico, MAX(idEquipoDeComputo) "
+                        + "AS idEquipoDeComputo FROM equiposdecomputo GROUP BY "
+                        + "idSolicitudDiagnostico) AS ultimosequipos "
+                        + "ON diagnosticos.idSolicitudDiagnostico = ultimosequipos.idSolicitudDiagnostico "
+                        + "INNER JOIN equiposdecomputo ON equiposdecomputo.idEquipoDeComputo "
+                        + "= ultimosequipos.idEquipoDeComputo";
                 PreparedStatement sentenciaPreparada 
                     = conexion.prepareStatement(consulta);
                 ResultSet resultado = sentenciaPreparada.executeQuery();
