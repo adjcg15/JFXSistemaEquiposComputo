@@ -37,9 +37,9 @@
                <font>
                   <Font size="19.0" />
                </font></Label>
-            <Label fx:id="lbTipoMantenimiento" layoutX="162.0" layoutY="7.0" text="*Tipo*">
+            <Label fx:id="lbTipoMantenimiento" layoutX="176.0" layoutY="7.0" text="*Tipo*">
                <font>
-                  <Font size="19.0" />
+                  <Font name="System Bold" size="19.0" />
                </font></Label>
             <Label fx:id="lbPropuestaSolucion" alignment="TOP_LEFT" layoutX="396.0" layoutY="115.0" prefHeight="43.0" prefWidth="347.0" style="-fx-border-color: gray; -fx-border-radius: 4;" textFill="#6e6e6e" wrapText="true">
                <font>

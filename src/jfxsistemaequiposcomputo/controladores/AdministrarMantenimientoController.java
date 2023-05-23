@@ -1,9 +1,13 @@
 package jfxsistemaequiposcomputo.controladores;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,10 +19,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import jfxsistemaequiposcomputo.DAO.MantenimientosDAO;
+import jfxsistemaequiposcomputo.pojo.Diagnostico;
+import jfxsistemaequiposcomputo.pojo.EquipoComputo;
 import jfxsistemaequiposcomputo.pojo.ListaMantenimientosRespuesta;
 import jfxsistemaequiposcomputo.pojo.MantenimientoConEquipoYDiagnostico;
 import jfxsistemaequiposcomputo.utils.Constantes;
@@ -85,10 +94,15 @@ public class AdministrarMantenimientoController implements Initializable {
     private TableColumn<?, ?> colTipoRefaccion;
     
     ObservableList<MantenimientoConEquipoYDiagnostico> listaMantenimientos;
+    private EquipoComputo equipo = new EquipoComputo();
+    private Diagnostico diagnostico = new Diagnostico();
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarListaMantenimientos();
+        paneDetalles.setVisible(false);
+        lvMantenimientos.setOnMouseClicked(this::clicSeleccionarSolicitud);
     }    
     
     private void cargarListaMantenimientos() {
@@ -122,10 +136,51 @@ public class AdministrarMantenimientoController implements Initializable {
 
     @FXML
     private void clicSeleccionarSolicitud(MouseEvent event) {
+        int posicion = lvMantenimientos.getSelectionModel().getSelectedIndex();
+        if(posicion != -1){
+            mostrarSolicitud(posicion);
+        }else{
+            paneDetalles.setVisible(false);
+        }
     }
-
+    
+    private void mostrarSolicitud(int posicion){
+        paneDetalles.setVisible(true);
+        MantenimientoConEquipoYDiagnostico mantenimiento = listaMantenimientos.get(posicion);
+        lbDiagnosticoPreliminar.setText(mantenimiento.getDiagnostico().getDiagnosticoPreliminar());
+        lbPropuestaSolucion.setText(mantenimiento.getDiagnostico().getPropuestaSolucion()); 
+        lbTipoMantenimiento.setText(mantenimiento.getDiagnostico().getTipoDeMantenimiento());
+        lbModeloEquipo.setText(mantenimiento.getEquipo().getModelo());
+        mostrarImagenEquipo(mantenimiento.getEquipo().getImagen());
+        
+        
+    }
+    
+    private void mostrarImagenEquipo(byte[] fotoEquipo) {
+        if (fotoEquipo != null) {
+            try {
+                ByteArrayInputStream bis = new ByteArrayInputStream(fotoEquipo);
+                BufferedImage bufferedImage = ImageIO.read(bis);
+                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                ivFoto.setImage(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Utilidades.mostrarDialogoSimple(
+                "Error",
+                "No fue posible cargar la imagen, intente más tarde",
+                Alert.AlertType.ERROR
+            );
+            ivFoto.setImage(null);
+        }
+    
+    }
+    
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
+        Stage escenarioPrincipal = (Stage) tfComentarios.getScene().getWindow();
+        escenarioPrincipal.close();
     }
 
     @FXML
