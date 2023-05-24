@@ -141,4 +141,40 @@ public class MantenimientosDAO {
         
         return listaMantenimientosRespuesta;
     }
-}
+    
+    public static int guardarComentario(int idDiagnostico, String comentario) {
+        int codigoRespuesta = Constantes.OPERACION_EXITOSA;
+        Connection conexion = ConexionBD.abrirConexionBD();
+        if (conexion != null){
+            try {
+                String consulta = "UPDATE mantenimientos SET comentario = ? WHERE idDiagnostico = ?";
+                PreparedStatement actualizarComentarioSentenciaPreparada = conexion.prepareStatement(consulta);
+                actualizarComentarioSentenciaPreparada.setString(1, comentario);
+                actualizarComentarioSentenciaPreparada.setInt(2, idDiagnostico);
+
+                int registrosActualizados = actualizarComentarioSentenciaPreparada.executeUpdate();
+                if(registrosActualizados != 1) {
+                    codigoRespuesta = Constantes.ERROR_CONSULTA;
+                }
+
+                conexion.close();
+            } catch(SQLException e) {
+                System.out.println(e.getMessage());
+                codigoRespuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            codigoRespuesta = Constantes.ERROR_CONEXION;
+        }
+
+        return codigoRespuesta;
+    }
+
+     
+  }
+
+    
+
+    
+
+    
+
