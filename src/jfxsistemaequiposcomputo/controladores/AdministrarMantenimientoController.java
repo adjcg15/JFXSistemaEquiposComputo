@@ -87,6 +87,8 @@ public class AdministrarMantenimientoController implements Initializable {
     @FXML
     private Button btnPasarEstado;
     @FXML
+    private Button BtnGuardarComentario;
+    @FXML
     private ComboBox<?> cbTipoRefaccion;
     @FXML
     private ComboBox<?> cbNombreRefaccion;
@@ -241,13 +243,13 @@ public class AdministrarMantenimientoController implements Initializable {
 
     @FXML
     private void clicBtnGuardarComentario(ActionEvent event) {
-    int posicion = lvMantenimientos.getSelectionModel().getSelectedIndex();
-    if (posicion != -1) {
+        int posicion = lvMantenimientos.getSelectionModel().getSelectedIndex();
+        if (posicion != -1) {
         MantenimientoConEquipoYDiagnostico mantenimientos = listaMantenimientos.get(posicion);
         int idDiagnostico = mantenimientos.getDiagnostico().getIdDiagnostico();
         String comentario = tfComentarios.getText();
 
-        if (!comentario.isEmpty()) {
+        if (comentario != null && !comentario.isEmpty()) {
             int resultado = MantenimientosDAO.guardarComentario(idDiagnostico, comentario);
 
             switch (resultado) {
@@ -255,7 +257,7 @@ public class AdministrarMantenimientoController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Comentario guardado", 
                             "El comentario se ha guardado correctamente.", 
                             Alert.AlertType.INFORMATION);
-                    //btnGuardarComentario.setDisable(true); 
+                    BtnGuardarComentario.setDisable(true);
                     break;
 
                 case Constantes.ERROR_CONEXION:
@@ -275,12 +277,12 @@ public class AdministrarMantenimientoController implements Initializable {
                     "Debes ingresar un comentario.", 
                     Alert.AlertType.WARNING);
         }
-    } else {
-        System.out.println("Error");
+        } else {
+            System.out.println("Error: No se ha seleccionado un elemento en lvMantenimientos.");
+        }
     }
-    actualizarListView();
-}
 
+    
     @FXML
     private void clicBtnPasarEstado(ActionEvent event) {
         String nombreEstado;
