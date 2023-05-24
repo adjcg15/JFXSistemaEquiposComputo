@@ -138,4 +138,21 @@ REFERENCES refacciones(idRefaccion) ON DELETE CASCADE;
 INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, telefono, direccion, correo, contrasenia, privilegiado)
 VALUES ('pedro', 'lopez', 'Gomez', 2281814657, 'centro', 'pedro@gmail.com', 123456, true), 
 		('1', '1', '1', 1, '1', '1', 1, true);
-INSERT INTO estados (nombre) VALUES ('PENDIENTE'), ('ACEPTADA'), ('RECHAZADA');
+INSERT INTO estados (nombre) VALUES ('PENDIENTE'), ('ACEPTADA'), ('RECHAZADA'), ('DIAGNOSTICO'), ('REVISION'), ('FINALIZADO');
+INSERT INTO tiporefacciones (nombre) VALUES ('Memoria RAM'), ('SSD'), ('HDD'), ('Tarjeta Madre'), ('Procesador'), ('Monitor');
+INSERT INTO refacciones (stock, nombre, idTipoRefaccion) VALUES 
+	(10, 'Sony 16GB', 1),
+    (4, 'Samsung 8GB', 1),
+    (6, 'HP 16GB', 1),
+    (7, 'Lenovo 256GB', 2),
+    (4, 'Samsung 256GB', 2),
+    (2, 'Alcatel 256GB', 2),
+    (8, 'Apple 256GB', 2),
+    (6, 'Nose 1TB', 3),
+    (10, 'Asus', 4),
+    (3, 'Rysen 5500u', 5),
+    (4, 'Sony 14in', 6);
+    
+    
+    
+    

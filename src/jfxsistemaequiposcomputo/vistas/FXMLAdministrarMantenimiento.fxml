@@ -193,7 +193,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <TableView fx:id="tvListaRefacciones" layoutX="369.0" layoutY="474.0" prefHeight="138.0" prefWidth="370.0">
+            <TableView fx:id="tvListaRefacciones" layoutX="369.0" layoutY="474.0" prefHeight="138.0" prefWidth="372.0">
               <columns>
                 <TableColumn fx:id="colNombreRefaccion" prefWidth="185.0" text="Nombre" />
                 <TableColumn fx:id="colTipoRefaccion" prefWidth="185.0" text="Tipo" />
