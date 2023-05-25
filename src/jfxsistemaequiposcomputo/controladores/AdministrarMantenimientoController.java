@@ -390,34 +390,45 @@ public class AdministrarMantenimientoController implements Initializable {
        
     @FXML
     private void clicBtnAgregar(ActionEvent event) {
-        int idRefaccion = cbNombreRefaccion.getValue().getIdRefaccion();
-        int idMantenimiento = mantenimiento.getMantenimiento().getIdMantenimiento();
-        int respuestaAsociacion = RefaccionesDAO.asociarRefaccionMantenimiento(idMantenimiento, idRefaccion);
-        switch(respuestaAsociacion) {
-            case Constantes.ERROR_CONEXION:
-                Utilidades.mostrarDialogoSimple(
-                    "Error de conexión",
-                    "Ocurrió un error al asociar los datos, intente más tarde", 
-                    Alert.AlertType.ERROR
+        boolean esValido = validarSeleccionRefaccion();
+        if(esValido == true){
+            int idRefaccion = cbNombreRefaccion.getValue().getIdRefaccion();
+            int idMantenimiento = mantenimiento.getMantenimiento().getIdMantenimiento();
+            int respuestaAsociacion = RefaccionesDAO.asociarRefaccionMantenimiento(idMantenimiento, idRefaccion);
+            switch(respuestaAsociacion) {
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error de conexión",
+                        "Ocurrió un error al asociar los datos, intente más tarde", 
+                        Alert.AlertType.ERROR
+                        );
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Error en la creación",
+                        "Ocurrió un error al asociar los datos, intente más tarde", 
+                        Alert.AlertType.WARNING
                     );
-                break;
-            case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple(
-                    "Error en la creación",
-                    "Ocurrió un error al asociar los datos, intente más tarde", 
-                    Alert.AlertType.WARNING
-                );
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                Utilidades.mostrarDialogoSimple(
-                    "Refaccion agregada",
-                    "La refacción se ha guardado correctamente", 
-                    Alert.AlertType.INFORMATION
-                );
-                cargarInformacionTabla();
-                cbTipoRefaccion.setValue(null);
-                cbNombreRefaccion.setValue(null);
-                break;
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple(
+                        "Refaccion agregada",
+                        "La refacción se ha guardado correctamente", 
+                        Alert.AlertType.INFORMATION
+                    );
+                    cargarInformacionTabla();
+                    cbTipoRefaccion.setValue(null);
+                    cbNombreRefaccion.setValue(null);
+                    break;
+            }    
+        }else{
+            Utilidades.mostrarDialogoSimple(
+                        "Error al agregar la refacción",
+                        "Debe seleccionar el tipo de refacción y la refacción", 
+                        Alert.AlertType.WARNING
+                    );
+            cbTipoRefaccion.setValue(null);
+            cbNombreRefaccion.setValue(null);
         }
     }
     
