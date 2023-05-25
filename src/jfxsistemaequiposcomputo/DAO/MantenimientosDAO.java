@@ -55,18 +55,21 @@ public class MantenimientosDAO {
         if (conexion != null){
             try {
                 String consulta = "SELECT mantenimientos.idMantenimiento, mantenimientos.comentario, "
-                        + "diagnosticos.idDiagnostico, diagnosticos.tipoDeMantenimiento, "
-                        + "diagnosticos.diagnosticoPreliminar, diagnosticos.propuestaSolucion, "
-                        + "diagnosticos.idSolicitudDiagnostico, ultimosequipos.idEquipoDeComputo, "
-                        + "equiposdecomputo.fotoEquipo, equiposdecomputo.modelo "
-                        + "FROM mantenimientos INNER JOIN diagnosticos "
-                        + "ON mantenimientos.idDiagnostico = diagnosticos.idDiagnostico "
-                        + "INNER JOIN (SELECT idSolicitudDiagnostico, MAX(idEquipoDeComputo) "
-                        + "AS idEquipoDeComputo FROM equiposdecomputo GROUP BY "
-                        + "idSolicitudDiagnostico) AS ultimosequipos "
-                        + "ON diagnosticos.idSolicitudDiagnostico = ultimosequipos.idSolicitudDiagnostico "
-                        + "INNER JOIN equiposdecomputo ON equiposdecomputo.idEquipoDeComputo "
-                        + "= ultimosequipos.idEquipoDeComputo";
+                    + "diagnosticos.idDiagnostico, diagnosticos.tipoDeMantenimiento, "
+                    + "diagnosticos.diagnosticoPreliminar, diagnosticos.propuestaSolucion, "
+                    + "diagnosticos.idSolicitudDiagnostico, ultimosequipos.idEquipoDeComputo, "
+                    + "equiposdecomputo.fotoEquipo, equiposdecomputo.modelo "
+                    + "FROM mantenimientos INNER JOIN diagnosticos "
+                    + "ON mantenimientos.idDiagnostico = diagnosticos.idDiagnostico "
+                    + "INNER JOIN (SELECT idSolicitudDiagnostico, MAX(idEquipoDeComputo) "
+                    + "AS idEquipoDeComputo FROM equiposdecomputo GROUP BY "
+                    + "idSolicitudDiagnostico) AS ultimosequipos "
+                    + "ON diagnosticos.idSolicitudDiagnostico = ultimosequipos.idSolicitudDiagnostico "
+                    + "INNER JOIN equiposdecomputo ON equiposdecomputo.idEquipoDeComputo "
+                    + "= ultimosequipos.idEquipoDeComputo "
+                    + "INNER JOIN solicitudestados ON "
+                    + "diagnosticos.idSolicitudDiagnostico = solicitudestados.idSolicitudDiagnostico "
+                    + "WHERE solicitudestados.activo = TRUE AND solicitudestados.idEstado <> 7";
                 PreparedStatement sentenciaPreparada 
                     = conexion.prepareStatement(consulta);
                 ResultSet resultado = sentenciaPreparada.executeQuery();

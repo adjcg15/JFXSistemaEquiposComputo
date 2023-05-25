@@ -112,6 +112,7 @@ public class AdministrarMantenimientoController implements Initializable {
     private LocalDate fechaFin;
     private List<Label> labelsFechaInicio = new ArrayList<>();
     private List<Label> labelsFechaFin = new ArrayList<>();
+
     
     String estadoActual = null;
 
@@ -160,6 +161,7 @@ public class AdministrarMantenimientoController implements Initializable {
             paneDetalles.setVisible(false);
         }
     }
+
     
     private void mostrarSolicitud(int posicion){
         lbFechaInicioDiagnostico.setText(null);
@@ -263,19 +265,20 @@ public class AdministrarMantenimientoController implements Initializable {
     private void clicBtnGuardarComentario(ActionEvent event) {
         int posicion = lvMantenimientos.getSelectionModel().getSelectedIndex();
         if (posicion != -1) {
-        MantenimientoConEquipoYDiagnostico mantenimientos = listaMantenimientos.get(posicion);
-        int idDiagnostico = mantenimientos.getDiagnostico().getIdDiagnostico();
+        MantenimientoConEquipoYDiagnostico mantenimiento = listaMantenimientos.get(posicion);
+        int idDiagnostico = mantenimiento.getDiagnostico().getIdDiagnostico();
         String comentario = tfComentarios.getText();
 
         if (comentario != null && !comentario.isEmpty()) {
             int resultado = MantenimientosDAO.guardarComentario(idDiagnostico, comentario);
-
+            
             switch (resultado) {
                 case Constantes.OPERACION_EXITOSA:
-                    Utilidades.mostrarDialogoSimple("Comentario guardado", 
-                            "El comentario se ha guardado correctamente.", 
+                    Utilidades.mostrarDialogoSimple("Comentario guardado",
+                            "El comentario se ha guardado correctamente.",
                             Alert.AlertType.INFORMATION);
-                    BtnGuardarComentario.setDisable(true);
+                    tfComentarios.setText(comentario);
+                    actualizarListView();
                     break;
 
                 case Constantes.ERROR_CONEXION:
@@ -291,27 +294,31 @@ public class AdministrarMantenimientoController implements Initializable {
                     break;
             }
         } else {
-            Utilidades.mostrarDialogoSimple("Comentario vacío",
-                    "Debes ingresar un comentario.", 
-                    Alert.AlertType.WARNING);
-        }
+            Utilidades.mostrarDialogoSimple("Comentario vacío", 
+                    "Debes ingresar un comentario.", Alert.AlertType.WARNING);
+            }
         } else {
             System.out.println("Error: No se ha seleccionado un elemento en lvMantenimientos.");
         }
+        actualizarListView();
     }
     
     @FXML
-    private void clicBtnPasarEstado(ActionEvent event) {
+    private void clicBtnPasarEstado(ActionEvent event) { 
         String nombreEstado;
+        actualizarListView();
         switch(estadoActual) {
                 case Constantes.ESTADO_SOLICITUD_DIAGNOSTICO:
                     nombreEstado = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
+                    
                     break;
                 case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
                     nombreEstado = Constantes.ESTADO_SOLICITUD_REVISION;
+                   
                     break;
                 case Constantes.ESTADO_SOLICITUD_REVISION:
                     nombreEstado = Constantes.ESTADO_SOLICITUD_FINALIZADO;
+                    
                     break;
                 default:
                     return;
@@ -323,7 +330,7 @@ public class AdministrarMantenimientoController implements Initializable {
                         mantenimiento.getDiagnostico().getIdSolicitudDiagnostico());
         
         if(respuestaActualizacion == Constantes.OPERACION_EXITOSA) {
-            System.out.println("error");
+            System.out.println("realizado");
             
             LocalDate fechaActual = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -333,15 +340,25 @@ public class AdministrarMantenimientoController implements Initializable {
                 estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
                 lbFechaFinDiagnostico1.setText(fechaActualFormateada);
                 lbFechaInicioMantenimiento.setText(fechaActualFormateada);
+                
+                
             } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_MANTENIMIENTO)) {
                 estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
                 lbFechaFinMantenimiento.setText(fechaActualFormateada);
                 lbFechaInicioRevision.setText(fechaActualFormateada);
+                
+              
             } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_REVISION)) {
                 estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
                 lbFechaFinRevision.setText(fechaActualFormateada);
                 lbFechaFinFinalizado.setText(fechaActualFormateada);
                 btnPasarEstado.setDisable(true);
+                Utilidades.mostrarDialogoSimple("Mantenimiento finalizado",
+                            "El mantenimiento ha concluído correctamente.",
+                            Alert.AlertType.INFORMATION);
+                 paneDetalles.setVisible(false);
+                
+                
             } 
             
             switch(estadoActual) {
@@ -351,12 +368,15 @@ public class AdministrarMantenimientoController implements Initializable {
                 case Constantes.ESTADO_SOLICITUD_REVISION:
                     btnPasarEstado.setText("Pasar a Finalizar");
                     break;
+                case Constantes.ESTADO_SOLICITUD_FINALIZADO:
+                    btnPasarEstado.setText("Pasar a finalizado");
+                    break;
             }
         }
         
         actualizarListView();
-        
-    }  
+    }
+    
     private void actualizarListView() {
     listaMantenimientos.clear(); 
     cargarListaMantenimientos(); 
@@ -365,6 +385,8 @@ public class AdministrarMantenimientoController implements Initializable {
             lvMantenimientos.getSelectionModel().selectFirst();
         }
     }
+    
+
        
     @FXML
     private void clicBtnAgregar(ActionEvent event) {
