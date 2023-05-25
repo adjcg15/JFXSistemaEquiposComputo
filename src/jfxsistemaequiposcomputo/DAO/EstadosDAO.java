@@ -90,8 +90,8 @@ public class EstadosDAO {
         if(conexionBD != null){
             try{
                 String crearEstadoSolicitud = "INSERT INTO solicitudestados "
-                    + "(fechaInicio, fechaFin, activo, idSolicitudDiagnostico, idEstado) "
-                    + "VALUES (?, ?, ?, ?, ?)";
+                    + "(fechaInicio, activo, idSolicitudDiagnostico, idEstado) "
+                    + "VALUES (?, ?, ?, ?)";
                 
                 PreparedStatement asociarEstadoSentenciaPreparada = 
                     conexionBD.prepareStatement(crearEstadoSolicitud);
@@ -99,13 +99,9 @@ public class EstadosDAO {
                     1, 
                     Utilidades.fechaActualFormatoMySQL()
                 );
-                asociarEstadoSentenciaPreparada.setString(
-                    2, 
-                    Utilidades.fechaActualFormatoMySQL()
-                );
-                asociarEstadoSentenciaPreparada.setBoolean(3, true);
-                asociarEstadoSentenciaPreparada.setInt(4, idSolicitud);
-                asociarEstadoSentenciaPreparada.setInt(5, idEstado);
+                asociarEstadoSentenciaPreparada.setBoolean(2, true);
+                asociarEstadoSentenciaPreparada.setInt(3, idSolicitud);
+                asociarEstadoSentenciaPreparada.setInt(4, idEstado);
                 
                 int estadosSolicitudAfectados 
                     = asociarEstadoSentenciaPreparada.executeUpdate();
@@ -210,4 +206,5 @@ public class EstadosDAO {
         
         return estadosRespuesta;
     }
+    
 }
