@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -23,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,18 +33,19 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import jfxsistemaequiposcomputo.DAO.MantenimientosDAO;
+import jfxsistemaequiposcomputo.DAO.RefaccionesDAO;
+import jfxsistemaequiposcomputo.DAO.TipoRefaccionesDAO;
 import jfxsistemaequiposcomputo.DAO.SolicitudesDAO;
 import jfxsistemaequiposcomputo.pojo.Estado;
 import jfxsistemaequiposcomputo.pojo.ListaMantenimientosRespuesta;
+import jfxsistemaequiposcomputo.pojo.ListaRefaccionesRespuesta;
+import jfxsistemaequiposcomputo.pojo.ListaTipoRefaccionesRespuesta;
 import jfxsistemaequiposcomputo.pojo.MantenimientoConEquipoYDiagnostico;
+import jfxsistemaequiposcomputo.pojo.Refaccion;
+import jfxsistemaequiposcomputo.pojo.TipoRefaccion;
 import jfxsistemaequiposcomputo.utils.Constantes;
 import jfxsistemaequiposcomputo.utils.Utilidades;
 
-/**
- * FXML Controller class
- *
- * @author rodri
- */
 public class AdministrarMantenimientoController implements Initializable {
 
     @FXML
@@ -89,22 +93,26 @@ public class AdministrarMantenimientoController implements Initializable {
     @FXML
     private Button BtnGuardarComentario;
     @FXML
-    private ComboBox<?> cbTipoRefaccion;
+    private ComboBox<TipoRefaccion> cbTipoRefaccion;
     @FXML
-    private ComboBox<?> cbNombreRefaccion;
+    private ComboBox<Refaccion> cbNombreRefaccion;
     @FXML
-    private TableView<?> tvListaRefacciones;
+    private TableView<Refaccion> tvListaRefacciones;
     @FXML
-    private TableColumn<?, ?> colNombreRefaccion;
+    private TableColumn colNombreRefaccion;
     @FXML
-    private TableColumn<?, ?> colTipoRefaccion;
+    private TableColumn colTipoRefaccion;
     
     ObservableList<MantenimientoConEquipoYDiagnostico> listaMantenimientos;
+    private ObservableList<TipoRefaccion> tiporefacciones;
+    private ObservableList<Refaccion> refacciones;
+    private ObservableList<Refaccion> refaccionesTabla;
+    private MantenimientoConEquipoYDiagnostico mantenimiento = new MantenimientoConEquipoYDiagnostico();
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private List<Label> labelsFechaInicio = new ArrayList<>();
     private List<Label> labelsFechaFin = new ArrayList<>();
-    MantenimientoConEquipoYDiagnostico mantenimiento = null;
+    
     String estadoActual = null;
 
     @Override
@@ -112,7 +120,6 @@ public class AdministrarMantenimientoController implements Initializable {
         cargarListaMantenimientos();
         paneDetalles.setVisible(false);
         lvMantenimientos.setOnMouseClicked(this::clicSeleccionarSolicitud);
-     
     }    
     
     private void cargarListaMantenimientos() {
@@ -166,6 +173,15 @@ public class AdministrarMantenimientoController implements Initializable {
         btnPasarEstado.setText("Pasar a mantenimiento");
         
         paneDetalles.setVisible(true);
+        cargarInformacionTipoRefacciones();
+        cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
+            @Override
+            public void changed(ObservableValue<? extends TipoRefaccion> observable, TipoRefaccion oldValue, TipoRefaccion newValue) {
+                if(newValue != null){
+                    cargarInformacionRefacciones(newValue.getIdTipoRefaccion());
+                }
+            }
+        });
         mantenimiento = listaMantenimientos.get(posicion);
         lbDiagnosticoPreliminar.setText(mantenimiento.getDiagnostico().getDiagnosticoPreliminar());
         lbPropuestaSolucion.setText(mantenimiento.getDiagnostico().getPropuestaSolucion()); 
@@ -212,6 +228,8 @@ public class AdministrarMantenimientoController implements Initializable {
         
         btnPasarEstado.setText("Pasar a " + estadoActual);
          
+        configurarTabla();
+        cargarInformacionTabla();
     }
     
     private void mostrarImagenEquipo(byte[] fotoEquipo) {
@@ -281,7 +299,6 @@ public class AdministrarMantenimientoController implements Initializable {
             System.out.println("Error: No se ha seleccionado un elemento en lvMantenimientos.");
         }
     }
-
     
     @FXML
     private void clicBtnPasarEstado(ActionEvent event) {
@@ -305,9 +322,7 @@ public class AdministrarMantenimientoController implements Initializable {
                 SolicitudesDAO.actualizarEstadoSolicitud(nombreEstado, 
                         mantenimiento.getDiagnostico().getIdSolicitudDiagnostico());
         
-        if(respuestaActualizacion != Constantes.OPERACION_EXITOSA) {
-            
-        } else {
+        if(respuestaActualizacion == Constantes.OPERACION_EXITOSA) {
             System.out.println("error");
             
             LocalDate fechaActual = LocalDate.now();
@@ -337,8 +352,6 @@ public class AdministrarMantenimientoController implements Initializable {
                     btnPasarEstado.setText("Pasar a Finalizar");
                     break;
             }
-
-            
         }
         
         actualizarListView();
@@ -355,6 +368,91 @@ public class AdministrarMantenimientoController implements Initializable {
        
     @FXML
     private void clicBtnAgregar(ActionEvent event) {
+        int idRefaccion = cbNombreRefaccion.getValue().getIdRefaccion();
+        int idMantenimiento = mantenimiento.getMantenimiento().getIdMantenimiento();
+        int respuestaAsociacion = RefaccionesDAO.asociarRefaccionMantenimiento(idMantenimiento, idRefaccion);
+        switch(respuestaAsociacion) {
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple(
+                    "Error de conexión",
+                    "Ocurrió un error al asociar los datos, intente más tarde", 
+                    Alert.AlertType.ERROR
+                    );
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple(
+                    "Error en la creación",
+                    "Ocurrió un error al asociar los datos, intente más tarde", 
+                    Alert.AlertType.WARNING
+                );
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple(
+                    "Refaccion agregada",
+                    "La refacción se ha guardado correctamente", 
+                    Alert.AlertType.INFORMATION
+                );
+                cargarInformacionTabla();
+                cbTipoRefaccion.setValue(null);
+                cbNombreRefaccion.setValue(null);
+                break;
+        }
     }
     
-  }
+    private void cargarInformacionTipoRefacciones(){
+        tiporefacciones = FXCollections.observableArrayList();
+        ListaTipoRefaccionesRespuesta tipoRefaccionesRespuesta = TipoRefaccionesDAO.obtenerTipoRefacciones();
+        switch(tipoRefaccionesRespuesta.getCodigoRespuesta()){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Sin conexión", "Por el momento no hay conexión", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error al cargar los datos", "Hubo un error al cargar la información", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                tiporefacciones.addAll(tipoRefaccionesRespuesta.getTipoRefacciones());
+                cbTipoRefaccion.setItems(tiporefacciones);
+                break;
+        }        
+    }
+    
+    private void cargarInformacionRefacciones(int idTipoRefaccion){
+        refacciones = FXCollections.observableArrayList();
+        ListaRefaccionesRespuesta refaccionesRespuesta = RefaccionesDAO.obtenerRefacciones(idTipoRefaccion);
+        switch(refaccionesRespuesta.getCodigoRespuesta()){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Sin conexión", "Por el momento no hay conexión", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error al cargar los datos", "Hubo un error al cargar la información", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                refacciones.addAll(refaccionesRespuesta.getRefacciones());
+                cbNombreRefaccion.setItems(refacciones);
+                break;
+        }        
+    }
+    
+      private void configurarTabla(){
+        colNombreRefaccion.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colTipoRefaccion.setCellValueFactory(new PropertyValueFactory("tipoRefaccion"));
+    }
+    
+    private void cargarInformacionTabla(){
+        int idMantenimiento = mantenimiento.getMantenimiento().getIdMantenimiento();
+        refaccionesTabla = FXCollections.observableArrayList();
+        ListaRefaccionesRespuesta respuestaBD = RefaccionesDAO.recuperarRefaccionesMantenimiento(idMantenimiento);
+        switch(respuestaBD.getCodigoRespuesta()){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Sin conexión", "Por el momento no hay conexión", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error al cargar los datos", "Hubo un error al cargar la información", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                refaccionesTabla.addAll(respuestaBD.getRefacciones());
+                tvListaRefacciones.setItems(refaccionesTabla);
+                break;    
+        }
+    }
+}
