@@ -488,4 +488,12 @@ public class AdministrarMantenimientoController implements Initializable {
                 break;    
         }
     }
+    
+    private boolean validarSeleccionRefaccion(){
+        boolean esValido = true;
+        if(cbNombreRefaccion.getValue() == null || cbTipoRefaccion.getValue() == null){
+            esValido = false;
+        }
+        return esValido;
+    }
 }
