@@ -112,6 +112,7 @@ public class AdministrarMantenimientoController implements Initializable {
     private LocalDate fechaFin;
     private List<Label> labelsFechaInicio = new ArrayList<>();
     private List<Label> labelsFechaFin = new ArrayList<>();
+
     
     String estadoActual = null;
 
@@ -160,6 +161,7 @@ public class AdministrarMantenimientoController implements Initializable {
             paneDetalles.setVisible(false);
         }
     }
+
     
     private void mostrarSolicitud(int posicion){
         lbFechaInicioDiagnostico.setText(null);
@@ -351,6 +353,10 @@ public class AdministrarMantenimientoController implements Initializable {
                 lbFechaFinRevision.setText(fechaActualFormateada);
                 lbFechaFinFinalizado.setText(fechaActualFormateada);
                 btnPasarEstado.setDisable(true);
+                Utilidades.mostrarDialogoSimple("Mantenimiento finalizado",
+                            "El mantenimiento ha concluído correctamente.",
+                            Alert.AlertType.INFORMATION);
+                 paneDetalles.setVisible(false);
                 
                 
             } 
@@ -379,6 +385,8 @@ public class AdministrarMantenimientoController implements Initializable {
             lvMantenimientos.getSelectionModel().selectFirst();
         }
     }
+    
+
        
     @FXML
     private void clicBtnAgregar(ActionEvent event) {
