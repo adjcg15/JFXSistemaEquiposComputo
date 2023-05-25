@@ -199,7 +199,7 @@ public class AdministrarMantenimientoController implements Initializable {
         if(estados.size() >= 3) {
             Estado diagnostico = estados.get(2);
             lbFechaInicioDiagnostico.setText(diagnostico.getFechaInicio());
-            if(!diagnostico.getFechaFin().isEmpty()) {
+            if(diagnostico.getFechaFin() != null && !diagnostico.getFechaFin().isEmpty()) {
                 lbFechaFinDiagnostico1.setText(diagnostico.getFechaFin());
                 estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
             }
@@ -207,18 +207,18 @@ public class AdministrarMantenimientoController implements Initializable {
             if(estados.size() >= 4){
                 Estado estadoMantenimiento = estados.get(3);
                 lbFechaInicioMantenimiento.setText(estadoMantenimiento.getFechaInicio());
-                if(!estadoMantenimiento.getFechaFin().isEmpty()) {
+                if(estadoMantenimiento.getFechaFin() != null && !estadoMantenimiento.getFechaFin().isEmpty()) {
                     lbFechaFinMantenimiento.setText(estadoMantenimiento.getFechaFin());
                     estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
                 }
             }
             
             if(estados.size() >= 5){
-                Estado revisión = estados.get(4);
-                lbFechaInicioRevision.setText(revisión.getFechaInicio());
-                if(!revisión.getFechaFin().isEmpty()) {
-                    lbFechaFinRevision.setText(revisión.getFechaFin());
-                    lbFechaFinFinalizado.setText(revisión.getFechaFin());
+                Estado revision = estados.get(4);
+                lbFechaInicioRevision.setText(revision.getFechaInicio());
+                if(revision.getFechaFin() != null && !revision.getFechaFin().isEmpty()) {
+                    lbFechaFinRevision.setText(revision.getFechaFin());
+                    lbFechaFinFinalizado.setText(revision.getFechaFin());
                     estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
                     btnPasarEstado.setDisable(true);
                 }
