@@ -112,7 +112,7 @@ public class AdministrarMantenimientoController implements Initializable {
     private LocalDate fechaFin;
     private List<Label> labelsFechaInicio = new ArrayList<>();
     private List<Label> labelsFechaFin = new ArrayList<>();
-    String estadoActual = null;
+    String estadoActual;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -168,8 +168,7 @@ public class AdministrarMantenimientoController implements Initializable {
         lbFechaInicioRevision.setText(null);
         lbFechaFinRevision.setText(null);
         lbFechaFinFinalizado.setText(null);
-        btnPasarEstado.setDisable(false);    
-        btnPasarEstado.setText("Pasar a Mantenimiento");
+        btnPasarEstado.setDisable(false);  
         paneDetalles.setVisible(true);
         cargarInformacionTipoRefacciones();
         cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
@@ -218,6 +217,7 @@ public class AdministrarMantenimientoController implements Initializable {
             btnPasarEstado.setDisable(estadoActual.equals
             (Constantes.ESTADO_SOLICITUD_FINALIZADO));  
         }
+        btnPasarEstado.setText(obtenerTextoBotonPasarEstado(estadoActual));
         configurarTabla();
         cargarInformacionTabla();
     }
@@ -462,4 +462,15 @@ public class AdministrarMantenimientoController implements Initializable {
         }
         return esValido;
     }
-}
+    
+    private String obtenerTextoBotonPasarEstado(String estado) {
+        switch (estado) {
+            case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
+                return "Pasar a Revisión";
+            case Constantes.ESTADO_SOLICITUD_REVISION:
+                return "Pasar a Finalizado";
+            default:
+                return "Pasar a Mantenimiento";
+            }
+        }
+    }
