@@ -169,7 +169,7 @@ public class AdministrarMantenimientoController implements Initializable {
         lbFechaFinRevision.setText(null);
         lbFechaFinFinalizado.setText(null);
         btnPasarEstado.setDisable(false);    
-        btnPasarEstado.setText("Pasar a mantenimiento");
+        btnPasarEstado.setText("Pasar a Mantenimiento");
         paneDetalles.setVisible(true);
         cargarInformacionTipoRefacciones();
         cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
@@ -218,7 +218,6 @@ public class AdministrarMantenimientoController implements Initializable {
             btnPasarEstado.setDisable(estadoActual.equals
             (Constantes.ESTADO_SOLICITUD_FINALIZADO));  
         }
-        btnPasarEstado.setText("Pasar a " + estadoActual);
         configurarTabla();
         cargarInformacionTabla();
     }
@@ -337,7 +336,7 @@ public class AdministrarMantenimientoController implements Initializable {
                 btnPasarEstado.setText("Pasar a Revision");
                 break;
             case Constantes.ESTADO_SOLICITUD_REVISION:
-                btnPasarEstado.setText("Pasar a Finalizar");
+                btnPasarEstado.setText("Pasar a Finalizado");
                 break;
             case Constantes.ESTADO_SOLICITUD_FINALIZADO:
                 btnPasarEstado.setText("Pasar a finalizado");
