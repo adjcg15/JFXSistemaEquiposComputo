@@ -112,8 +112,6 @@ public class AdministrarMantenimientoController implements Initializable {
     private LocalDate fechaFin;
     private List<Label> labelsFechaInicio = new ArrayList<>();
     private List<Label> labelsFechaFin = new ArrayList<>();
-
-    
     String estadoActual = null;
 
     @Override
@@ -162,7 +160,6 @@ public class AdministrarMantenimientoController implements Initializable {
         }
     }
 
-    
     private void mostrarSolicitud(int posicion){
         lbFechaInicioDiagnostico.setText(null);
         lbFechaFinDiagnostico1.setText(null);
@@ -173,7 +170,6 @@ public class AdministrarMantenimientoController implements Initializable {
         lbFechaFinFinalizado.setText(null);
         btnPasarEstado.setDisable(false);    
         btnPasarEstado.setText("Pasar a mantenimiento");
-        
         paneDetalles.setVisible(true);
         cargarInformacionTipoRefacciones();
         cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
@@ -191,9 +187,7 @@ public class AdministrarMantenimientoController implements Initializable {
         lbModeloEquipo.setText(mantenimiento.getEquipo().getModelo());
         tfComentarios.setText(mantenimiento.getMantenimiento().getComentario());
         mostrarImagenEquipo(mantenimiento.getEquipo().getImagen());
-        
         ArrayList<Estado> estados = mantenimiento.getEstados();
-        
         estadoActual = Constantes.ESTADO_SOLICITUD_DIAGNOSTICO;
         
         if(estados.size() >= 3) {
@@ -203,7 +197,6 @@ public class AdministrarMantenimientoController implements Initializable {
                 lbFechaFinDiagnostico1.setText(diagnostico.getFechaFin());
                 estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
             }
-            
             if(estados.size() >= 4){
                 Estado estadoMantenimiento = estados.get(3);
                 lbFechaInicioMantenimiento.setText(estadoMantenimiento.getFechaInicio());
@@ -212,7 +205,6 @@ public class AdministrarMantenimientoController implements Initializable {
                     estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
                 }
             }
-            
             if(estados.size() >= 5){
                 Estado revision = estados.get(4);
                 lbFechaInicioRevision.setText(revision.getFechaInicio());
@@ -223,28 +215,25 @@ public class AdministrarMantenimientoController implements Initializable {
                     btnPasarEstado.setDisable(true);
                 }
             }
-            
-            btnPasarEstado.setDisable(estadoActual.equals(Constantes.ESTADO_SOLICITUD_FINALIZADO));
-            
+            btnPasarEstado.setDisable(estadoActual.equals
+            (Constantes.ESTADO_SOLICITUD_FINALIZADO));  
         }
-        
         btnPasarEstado.setText("Pasar a " + estadoActual);
-         
         configurarTabla();
         cargarInformacionTabla();
     }
     
     private void mostrarImagenEquipo(byte[] fotoEquipo) {
         if (fotoEquipo != null) {
-            try {
+            try{
                 ByteArrayInputStream bis = new ByteArrayInputStream(fotoEquipo);
                 BufferedImage bufferedImage = ImageIO.read(bis);
                 Image image = SwingFXUtils.toFXImage(bufferedImage, null);
                 ivFoto.setImage(image);
-            } catch (IOException e) {
+            }catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
+        }else{
             Utilidades.mostrarDialogoSimple(
                 "Error",
                 "No fue posible cargar la imagen, intente más tarde",
@@ -252,7 +241,6 @@ public class AdministrarMantenimientoController implements Initializable {
             );
             ivFoto.setImage(null);
         }
-    
     }
     
     @FXML
@@ -265,13 +253,11 @@ public class AdministrarMantenimientoController implements Initializable {
     private void clicBtnGuardarComentario(ActionEvent event) {
         int posicion = lvMantenimientos.getSelectionModel().getSelectedIndex();
         if (posicion != -1) {
-        MantenimientoConEquipoYDiagnostico mantenimiento = listaMantenimientos.get(posicion);
-        int idDiagnostico = mantenimiento.getDiagnostico().getIdDiagnostico();
-        String comentario = tfComentarios.getText();
-
+            MantenimientoConEquipoYDiagnostico mantenimiento = listaMantenimientos.get(posicion);
+            int idDiagnostico = mantenimiento.getDiagnostico().getIdDiagnostico();
+            String comentario = tfComentarios.getText();
         if (comentario != null && !comentario.isEmpty()) {
             int resultado = MantenimientosDAO.guardarComentario(idDiagnostico, comentario);
-            
             switch (resultado) {
                 case Constantes.OPERACION_EXITOSA:
                     Utilidades.mostrarDialogoSimple("Comentario guardado",
@@ -280,24 +266,22 @@ public class AdministrarMantenimientoController implements Initializable {
                     tfComentarios.setText(comentario);
                     actualizarListView();
                     break;
-
                 case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple("Error de conexión", 
                             "No se puede establecer conexión con la base de datos.", 
                             Alert.AlertType.ERROR);
                     break;
-
                 default:
                     Utilidades.mostrarDialogoSimple("Error al guardar", 
                             "Ha ocurrido un error al guardar el comentario.",
                             Alert.AlertType.ERROR);
                     break;
             }
-        } else {
+        }else{
             Utilidades.mostrarDialogoSimple("Comentario vacío", 
                     "Debes ingresar un comentario.", Alert.AlertType.WARNING);
             }
-        } else {
+        }else{
             System.out.println("Error: No se ha seleccionado un elemento en lvMantenimientos.");
         }
         actualizarListView();
@@ -308,86 +292,69 @@ public class AdministrarMantenimientoController implements Initializable {
         String nombreEstado;
         actualizarListView();
         switch(estadoActual) {
-                case Constantes.ESTADO_SOLICITUD_DIAGNOSTICO:
-                    nombreEstado = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
-                    
-                    break;
-                case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
-                    nombreEstado = Constantes.ESTADO_SOLICITUD_REVISION;
-                   
-                    break;
-                case Constantes.ESTADO_SOLICITUD_REVISION:
-                    nombreEstado = Constantes.ESTADO_SOLICITUD_FINALIZADO;
-                    
-                    break;
-                default:
-                    return;
+            case Constantes.ESTADO_SOLICITUD_DIAGNOSTICO:
+                nombreEstado = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
+                break;
+            case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
+                nombreEstado = Constantes.ESTADO_SOLICITUD_REVISION;
+                break;
+            case Constantes.ESTADO_SOLICITUD_REVISION:
+                nombreEstado = Constantes.ESTADO_SOLICITUD_FINALIZADO;
+                break;
+            default:
+                return;
         }
-        
-        
         int respuestaActualizacion = 
-                SolicitudesDAO.actualizarEstadoSolicitud(nombreEstado, 
-                        mantenimiento.getDiagnostico().getIdSolicitudDiagnostico());
-        
+            SolicitudesDAO.actualizarEstadoSolicitud(nombreEstado,
+                    mantenimiento.getDiagnostico().getIdSolicitudDiagnostico());
         if(respuestaActualizacion == Constantes.OPERACION_EXITOSA) {
             System.out.println("realizado");
-            
             LocalDate fechaActual = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String fechaActualFormateada = fechaActual.format(formatter);
-
             if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_DIAGNOSTICO)) {
                 estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
                 lbFechaFinDiagnostico1.setText(fechaActualFormateada);
-                lbFechaInicioMantenimiento.setText(fechaActualFormateada);
-                
+                lbFechaInicioMantenimiento.setText(fechaActualFormateada);   
                 
             } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_MANTENIMIENTO)) {
                 estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
                 lbFechaFinMantenimiento.setText(fechaActualFormateada);
                 lbFechaInicioRevision.setText(fechaActualFormateada);
                 
-              
             } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_REVISION)) {
                 estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
                 lbFechaFinRevision.setText(fechaActualFormateada);
                 lbFechaFinFinalizado.setText(fechaActualFormateada);
                 btnPasarEstado.setDisable(true);
                 Utilidades.mostrarDialogoSimple("Mantenimiento finalizado",
-                            "El mantenimiento ha concluído correctamente.",
-                            Alert.AlertType.INFORMATION);
-                 paneDetalles.setVisible(false);
-                
-                
-            } 
-            
-            switch(estadoActual) {
-                case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
-                    btnPasarEstado.setText("Pasar a Revision");
-                    break;
-                case Constantes.ESTADO_SOLICITUD_REVISION:
-                    btnPasarEstado.setText("Pasar a Finalizar");
-                    break;
-                case Constantes.ESTADO_SOLICITUD_FINALIZADO:
-                    btnPasarEstado.setText("Pasar a finalizado");
-                    break;
+                        "El mantenimiento ha concluído correctamente.",
+                        Alert.AlertType.INFORMATION);
+                paneDetalles.setVisible(false);   
+            }  
+        switch(estadoActual) {
+            case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
+                btnPasarEstado.setText("Pasar a Revision");
+                break;
+            case Constantes.ESTADO_SOLICITUD_REVISION:
+                btnPasarEstado.setText("Pasar a Finalizar");
+                break;
+            case Constantes.ESTADO_SOLICITUD_FINALIZADO:
+                btnPasarEstado.setText("Pasar a finalizado");
+                break;
             }
         }
-        
         actualizarListView();
     }
     
     private void actualizarListView() {
-    listaMantenimientos.clear(); 
-    cargarListaMantenimientos(); 
-    
-        if (!listaMantenimientos.isEmpty()) {
+        listaMantenimientos.clear(); 
+        cargarListaMantenimientos(); 
+        if(!listaMantenimientos.isEmpty()) {
             lvMantenimientos.getSelectionModel().selectFirst();
         }
     }
-    
-
-       
+        
     @FXML
     private void clicBtnAgregar(ActionEvent event) {
         boolean esValido = validarSeleccionRefaccion();
