@@ -91,11 +91,15 @@ public class AdministrarMantenimientoController implements Initializable {
     private TableColumn colTipoRefaccion;
     
     ObservableList<MantenimientoConEquipoYDiagnostico> listaMantenimientos;
-    private ObservableList<TipoRefaccion> tiporefacciones;
-    private ObservableList<Refaccion> refacciones;
+    private ObservableList<TipoRefaccion> tiporefacciones = FXCollections.observableArrayList();
+    private ObservableList<Refaccion> refacciones = FXCollections.observableArrayList();
     private ObservableList<Refaccion> refaccionesTabla;
     private MantenimientoConEquipoYDiagnostico mantenimiento = new MantenimientoConEquipoYDiagnostico();
     String estadoActual;
+    @FXML
+    private Label lbErrorTipoRefaccion;
+    @FXML
+    private Label lbErrorRefaccion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -153,15 +157,37 @@ public class AdministrarMantenimientoController implements Initializable {
         lbFechaFinFinalizado.setText(null);
         btnPasarEstado.setDisable(false);  
         paneDetalles.setVisible(true);
+        cbTipoRefaccion.setDisable(false);
+        cbNombreRefaccion.setDisable(false);
+        lbErrorTipoRefaccion.setText("");
+        lbErrorRefaccion.setText("");
         cargarInformacionTipoRefacciones();
-        cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
-            @Override
-            public void changed(ObservableValue<? extends TipoRefaccion> observable, TipoRefaccion oldValue, TipoRefaccion newValue) {
-                if(newValue != null){
-                    cargarInformacionRefacciones(newValue.getIdTipoRefaccion());
+        if(tiporefacciones.isEmpty()){
+            cbTipoRefaccion.setDisable(true);
+            cbNombreRefaccion.setDisable(true);
+            lbErrorTipoRefaccion.setText("No hay refacciones registradas");
+            lbErrorRefaccion.setText("No hay refacciones registradas");
+        }else{
+            cbTipoRefaccion.valueProperty().addListener(new ChangeListener<TipoRefaccion>(){
+                @Override
+                public void changed(ObservableValue<? extends TipoRefaccion> observable, TipoRefaccion oldValue, TipoRefaccion newValue) {
+                    if(newValue != null){
+                        cargarInformacionRefacciones(newValue.getIdTipoRefaccion());
+                        if(refacciones.isEmpty()){
+                            cbNombreRefaccion.setDisable(true);
+                            lbErrorRefaccion.setText("No hay refacciones registradas de ese tipo");
+                        }else{
+                            cbNombreRefaccion.setDisable(false);
+                            lbErrorRefaccion.setText("");
+                        }
+                    }
                 }
+            });
+            if(cbTipoRefaccion.getValue() == null){
+                cbNombreRefaccion.setDisable(true);
+                lbErrorRefaccion.setText("Debe seleccionar un tipo de refacción");
             }
-        });
+        }
         mantenimiento = listaMantenimientos.get(posicion);
         lbDiagnosticoPreliminar.setText(mantenimiento.getDiagnostico().getDiagnosticoPreliminar());
         lbPropuestaSolucion.setText(mantenimiento.getDiagnostico().getPropuestaSolucion()); 

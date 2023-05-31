@@ -172,13 +172,13 @@
                </font>
             </Label>
             <ComboBox fx:id="cbTipoRefaccion" layoutX="22.0" layoutY="481.0" prefHeight="30.0" prefWidth="190.0" />
-            <ComboBox fx:id="cbNombreRefaccion" layoutX="23.0" layoutY="543.0" prefHeight="30.0" prefWidth="190.0" />
+            <ComboBox fx:id="cbNombreRefaccion" layoutX="22.0" layoutY="560.0" prefHeight="30.0" prefWidth="190.0" />
             <Label layoutX="25.0" layoutY="461.0" text="Tipo de refaccion">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="523.0" text="Nombre">
+            <Label layoutX="24.0" layoutY="540.0" text="Nombre">
                <font>
                   <Font size="14.0" />
                </font>
@@ -193,12 +193,22 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
+            <Label fx:id="lbErrorTipoRefaccion" layoutX="25.0" layoutY="508.0" prefHeight="13.0" prefWidth="185.0" textFill="RED">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Label>
             <TableView fx:id="tvListaRefacciones" layoutX="369.0" layoutY="474.0" prefHeight="138.0" prefWidth="372.0">
               <columns>
                 <TableColumn fx:id="colNombreRefaccion" prefWidth="185.0" text="Nombre" />
                 <TableColumn fx:id="colTipoRefaccion" prefWidth="185.0" text="Tipo" />
               </columns>
             </TableView>
+            <Label fx:id="lbErrorRefaccion" layoutX="23.0" layoutY="588.0" prefHeight="13.0" prefWidth="185.0" textFill="RED">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Label layoutX="5.0" layoutY="22.0" text="Lista de Equipos">
