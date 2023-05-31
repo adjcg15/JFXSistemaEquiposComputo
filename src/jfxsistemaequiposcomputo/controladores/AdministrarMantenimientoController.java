@@ -7,7 +7,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -65,16 +64,6 @@ public class AdministrarMantenimientoController implements Initializable {
     @FXML
     private ListView<MantenimientoConEquipoYDiagnostico> lvMantenimientos;
     @FXML
-    private Label lbTituloSeccion;
-    @FXML
-    private Label lbDiagnostico;
-    @FXML
-    private Label lbMantenimiento;
-    @FXML
-    private Label lbRevision;
-    @FXML
-    private Label lbFinalizado;
-    @FXML
     private Label lbFechaInicioDiagnostico;
     @FXML
     private Label lbFechaInicioMantenimiento;
@@ -91,8 +80,6 @@ public class AdministrarMantenimientoController implements Initializable {
     @FXML
     private Button btnPasarEstado;
     @FXML
-    private Button BtnGuardarComentario;
-    @FXML
     private ComboBox<TipoRefaccion> cbTipoRefaccion;
     @FXML
     private ComboBox<Refaccion> cbNombreRefaccion;
@@ -108,10 +95,6 @@ public class AdministrarMantenimientoController implements Initializable {
     private ObservableList<Refaccion> refacciones;
     private ObservableList<Refaccion> refaccionesTabla;
     private MantenimientoConEquipoYDiagnostico mantenimiento = new MantenimientoConEquipoYDiagnostico();
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
-    private List<Label> labelsFechaInicio = new ArrayList<>();
-    private List<Label> labelsFechaFin = new ArrayList<>();
     String estadoActual;
 
     @Override
@@ -385,6 +368,7 @@ public class AdministrarMantenimientoController implements Initializable {
                     cargarInformacionTabla();
                     cbTipoRefaccion.setValue(null);
                     cbNombreRefaccion.setValue(null);
+                    cargarInformacionRefacciones(-1);
                     break;
             }    
         }else{
