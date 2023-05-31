@@ -45,7 +45,7 @@ public class RegistrarEquipoController implements Initializable {
     @FXML
     private TextField tfModelo;
     @FXML
-    private TextField tfTamañoPantalla;
+    private TextField tfTamanioPantalla;
     @FXML
     private TextField tfProcesador;
     @FXML
@@ -132,13 +132,11 @@ public class RegistrarEquipoController implements Initializable {
         boolean camposValidos = validarSolicitud(solicitudCompleta);
         if (camposValidos) {
             solicitudCompleta.getEquipo().setMemoriaRAM(Integer.parseInt(tfMemoriaRAM.getText()));
-            if(!tfTamañoPantalla.getText().isEmpty()) {
-                solicitudCompleta.getEquipo().setTamanioPantalla(Float.parseFloat(tfMemoriaRAM.getText()));
-            }
+            solicitudCompleta.getEquipo().setTamanioPantalla(Float.parseFloat(tfTamanioPantalla.getText()));
             
-            int respuestaCreación 
+            int respuestaCreacion 
                 = SolicitudesDAO.crearSolicitudConUsuarioYEquipo(solicitudCompleta);
-            switch(respuestaCreación) {
+            switch(respuestaCreacion) {
                 case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple(
                         "Error de conexión",
@@ -206,7 +204,6 @@ public class RegistrarEquipoController implements Initializable {
         Solicitud solicitud = solicitudCompleta.getSolicitud();
         EquipoComputo equipoSolicitud = solicitudCompleta.getEquipo();
         
-        boolean incluyeCargador = equipoSolicitud.isIncluyeCargador();
         String tipoEquipo = equipoSolicitud.getTipo();
         String marca = equipoSolicitud.getMarca();
         String modelo = equipoSolicitud.getModelo();
@@ -218,11 +215,11 @@ public class RegistrarEquipoController implements Initializable {
         boolean memoriaValida = true, 
                 tamanioPantallaValido = true;
         try{
-            if(!tfTamañoPantalla.getText().isEmpty()) {
-                float tamanioPantalla = Float.parseFloat(tfTamañoPantalla.getText());
+            if(!tfTamanioPantalla.getText().isEmpty()) {
+                float tamanioPantalla = Float.parseFloat(tfTamanioPantalla.getText());
             }
         }catch(NumberFormatException nfe){
-            tfTamañoPantalla.setText("");
+            tfTamanioPantalla.setText("");
             tamanioPantallaValido = false;
         }
         

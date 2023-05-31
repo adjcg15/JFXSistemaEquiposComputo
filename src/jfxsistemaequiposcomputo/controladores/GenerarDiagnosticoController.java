@@ -60,7 +60,7 @@ public class GenerarDiagnosticoController implements Initializable {
     @FXML
     private TextField tfProcesador;
     @FXML
-    private TextField tfTamañoPantalla;
+    private TextField tfTamanioPantalla;
     @FXML
     private TextField tfModelo;
     @FXML
@@ -94,11 +94,9 @@ public class GenerarDiagnosticoController implements Initializable {
     @FXML
     private DatePicker dpFechaAtencion;
 
-    private Usuario usuario;
     private ObservableList<SolicitudConUsuarioYEquipo> listaSolicitudes;
     private Diagnostico diagnostico = new Diagnostico();
-    private EquipoComputo equipo = new EquipoComputo();
-    EquipoComputo nuevoEquipoComputo = new EquipoComputo();
+    private EquipoComputo nuevoEquipoComputo = new EquipoComputo();
     
     private String tipoMantenimiento;
     private int idSolicitud;
@@ -109,10 +107,6 @@ public class GenerarDiagnosticoController implements Initializable {
     
     private SolicitudConUsuarioYEquipo solicitudCompletaSeleccionada 
             = new SolicitudConUsuarioYEquipo();
-    
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -299,7 +293,7 @@ public class GenerarDiagnosticoController implements Initializable {
         
         tfMarca.setText(equipo.getMarca());
         tfModelo.setText(equipo.getModelo()); 
-        tfTamañoPantalla.setText(String.valueOf(equipo.getTamanioPantalla())); 
+        tfTamanioPantalla.setText(String.valueOf(equipo.getTamanioPantalla())); 
         tfProcesador.setText(equipo.getProcesador());
         tfMemoriaRAM.setText(String.valueOf(equipo.getMemoriaRAM()));
         tfSO.setText(equipo.getSistemaOperativo());
@@ -425,9 +419,9 @@ public class GenerarDiagnosticoController implements Initializable {
         boolean campoTamañoPantalla = true;
         boolean camposMemoriaRAM = true;
         try{
-            tamanioPantalla = Float.parseFloat(tfTamañoPantalla.getText());           
+            tamanioPantalla = Float.parseFloat(tfTamanioPantalla.getText());           
         }catch(NumberFormatException nfe){
-            tfTamañoPantalla.setText("");
+            tfTamanioPantalla.setText("");
             Utilidades.mostrarDialogoSimple
         ("Error", "Debe ingresar un valor numerico para el tamaño de pantalla", 
                 Alert.AlertType.WARNING);
@@ -448,9 +442,9 @@ public class GenerarDiagnosticoController implements Initializable {
     private String obtenerFechaAtencion(){
         String fechaAtencion = null;
         
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fecha = dpFechaAtencion.getValue();
-        fechaAtencion = fecha.format(formatter2);
+        fechaAtencion = fecha.format(formatter);
         
         return fechaAtencion;
     }

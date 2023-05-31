@@ -84,7 +84,7 @@ public class EstadosDAO {
         return codigoRespuesta;
     }
     
-    public static int asociarEstadoSolicitudAceptadaRechazada(int idSolicitud, int idEstado){
+    public static int asociarNuevoEstadoSolicitud(int idSolicitud, int idEstado){
         int codigoRespuesta = Constantes.OPERACION_EXITOSA;
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){

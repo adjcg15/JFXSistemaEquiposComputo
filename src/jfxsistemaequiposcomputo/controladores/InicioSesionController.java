@@ -44,8 +44,8 @@ public class InicioSesionController implements Initializable {
 
     @FXML
     private void clicIngresar(ActionEvent event)throws IOException{
-        lbErrorCorreo.setText(" ");
-        lbErrorContrasenia.setText(" ");
+        lbErrorCorreo.setText("");
+        lbErrorContrasenia.setText("");
         validarInformacionCampos();
     }
     

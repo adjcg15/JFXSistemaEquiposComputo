@@ -203,7 +203,7 @@ public class SolicitudesDAO {
             return respuestaDesactivar;
         }
         
-        int respuestaAsociacion = EstadosDAO.asociarEstadoSolicitudAceptadaRechazada(idSolicitud, idEstado);
+        int respuestaAsociacion = EstadosDAO.asociarNuevoEstadoSolicitud(idSolicitud, idEstado);
         if(respuestaAsociacion != Constantes.OPERACION_EXITOSA){
             return respuestaAsociacion;
         }

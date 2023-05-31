@@ -36,9 +36,22 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clicCerrarSesion(MouseEvent event) {
-        Stage escenarioPrincipal = 
-            (Stage) paneModuloPrivilegiado.getScene().getWindow();
-        escenarioPrincipal.close();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass()
+                    .getResource("/jfxsistemaequiposcomputo/vistas/FXMLInicioSesion.fxml")
+            );
+            Parent root = loader.load();
+            Stage escenarioBase = (Stage) paneModuloPrivilegiado.getScene().getWindow();
+            Scene currentScene = escenarioBase.getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            Utilidades.mostrarDialogoSimple(
+                "Error en la redirección",
+                "No se pudo salir del sistema, intente más tarde",
+                Alert.AlertType.ERROR
+            );
+        }
     }
 
     @FXML
@@ -73,32 +86,13 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clicRedirigirGenerarDiagnostico(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass()
-                    .getResource("/jfxsistemaequiposcomputo/vistas/FXMLGenerarDiagnostico.fxml")
-            );
-            Parent root = loader.load();
-            GenerarDiagnosticoController generarDiagnosticoController 
-                = loader.getController();
-
-            generarDiagnosticoController.setUsuario(usuario);
-            
-            Stage nuevoEscenario = new Stage();
-            Scene nuevaEscena = new Scene(root);
-            nuevoEscenario.setScene(nuevaEscena);
-            nuevoEscenario.setTitle("Generar diagnóstico");
-            nuevoEscenario.initModality(Modality.APPLICATION_MODAL);
-            nuevoEscenario.showAndWait();
-        } catch (Exception e) {
-            System.out.println(e);
-            Utilidades.mostrarDialogoSimple(
-                "Error en la redirección",
-                "Por el momento no se puede ingresar al módulo"
-                + ", intente más tarde",
-                Alert.AlertType.ERROR
-            );
-        }
+        Stage escenarioMantenimiento = new Stage();
+        escenarioMantenimiento.setScene(
+            Utilidades.inicializarEscena("vistas/FXMLGenerarDiagnostico.fxml")
+        );
+        escenarioMantenimiento.setTitle("Generar diagnostico");
+        escenarioMantenimiento.initModality(Modality.APPLICATION_MODAL);
+        escenarioMantenimiento.showAndWait();
     }
 
     @FXML

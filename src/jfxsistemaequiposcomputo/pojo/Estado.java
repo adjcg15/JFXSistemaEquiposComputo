@@ -1,12 +1,17 @@
 package jfxsistemaequiposcomputo.pojo;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Estado {
     private boolean activo;
     private String fechaInicio;
     private String fechaFin;
     private int idEstado;
     private String nombre;
-
+    
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    
     public Estado() {
     }
 
@@ -43,11 +48,19 @@ public class Estado {
     }
 
     public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
+        LocalDate fechaLocalDate = LocalDate.parse(fechaInicio);
+        String fechaConvertida = fechaLocalDate.format(formatter);
+        this.fechaInicio = fechaConvertida;
     }
 
     public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+        if(fechaFin != null){
+            LocalDate fechaLocalDate = LocalDate.parse(fechaFin);
+            String fechaFinConvertida = fechaLocalDate.format(formatter);
+            this.fechaFin = fechaFinConvertida;
+        }else{
+            this.fechaFin = fechaFin;
+        }
     }
 
     public void setIdEstado(int idEstado) {
