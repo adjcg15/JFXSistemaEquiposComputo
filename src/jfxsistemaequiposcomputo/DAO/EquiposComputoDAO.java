@@ -97,11 +97,8 @@ public class EquiposComputoDAO {
         }
         System.out.println(respuesta);
         return respuesta;
-    }
-    
-        
-        
-    }
+    }     
+ }
 
 
 

@@ -180,14 +180,19 @@ public class GenerarDiagnosticoController implements Initializable {
                     break;
                 case Constantes.OPERACION_EXITOSA:
                     Utilidades.mostrarDialogoSimple(
-                        "Diagnostico guardado",
-                        "El diagnóstico se ha guardado correctamente", 
+                        "Información actualizada",
+                        "La información del equipo se ha actualizado correctamente", 
                         Alert.AlertType.INFORMATION
                     );
                     break;
             }
         } else {
-            System.out.println("valores incorrectos");
+            Utilidades.mostrarDialogoSimple(
+                "Verificar información", 
+                "Por favor complete los campos y verifique que los valores "
+                 + "ingresados en tamaño pantalla y memoria RAM sean numéricos",
+                Alert.AlertType.WARNING
+            );
         }
         actualizarListView();
        
@@ -399,7 +404,6 @@ public class GenerarDiagnosticoController implements Initializable {
     private void actualizarListView() {
     listaSolicitudes.clear(); 
     cargarListaSolicitudes(); 
-    
         if (!listaSolicitudes.isEmpty()) {
             lvSolicitudes.getSelectionModel().selectFirst();
         }
@@ -415,30 +419,31 @@ public class GenerarDiagnosticoController implements Initializable {
         rbPreventivo.setSelected(false);
     }
     
-    private boolean validarCamposGuardarCambios(){
+    private boolean validarCamposGuardarCambios() {
         boolean campoTamañoPantalla = true;
         boolean camposMemoriaRAM = true;
-        try{
-            tamanioPantalla = Float.parseFloat(tfTamanioPantalla.getText());           
-        }catch(NumberFormatException nfe){
+        TextField[] camposRequeridos = {tfMarca, tfTamanioPantalla, tfModelo,
+            tfProcesador, tfMemoriaRAM, tfSO, tfUsuarioSO, tfContraseniaSO};
+        for (TextField campo : camposRequeridos) {
+            if (campo.getText().isEmpty()) {
+                return false;
+            }
+        }
+        try {
+            tamanioPantalla = Float.parseFloat(tfTamanioPantalla.getText());
+        } catch(NumberFormatException nfe) {
             tfTamanioPantalla.setText("");
-            Utilidades.mostrarDialogoSimple
-        ("Error", "Debe ingresar un valor numerico para el tamaño de pantalla", 
-                Alert.AlertType.WARNING);
-            campoTamañoPantalla=false;
-          }
-        try{
-            memoriaRAM = Integer.parseInt(tfMemoriaRAM.getText());          
-        }catch(NumberFormatException nfe){
+            campoTamañoPantalla = false;
+        }
+        try {
+            memoriaRAM = Integer.parseInt(tfMemoriaRAM.getText());
+        } catch(NumberFormatException nfe) {
             tfMemoriaRAM.setText("");
-            Utilidades.mostrarDialogoSimple
-        ("Error", "Debe ingresar un valor numerico para la memoria RAM", 
-                Alert.AlertType.WARNING);
             camposMemoriaRAM = false;
-  
         }
         return campoTamañoPantalla && camposMemoriaRAM;
     }
+
     private String obtenerFechaAtencion(){
         String fechaAtencion = null;
         
