@@ -171,7 +171,6 @@ public class AdministrarMantenimientoController implements Initializable {
         lbErrorTipoRefaccion.setText("");
         lbErrorRefaccion.setText("");
 
-
         cargarInformacionTipoRefacciones();
         if(tiporefacciones.isEmpty()){
             cbTipoRefaccion.setDisable(true);
@@ -415,7 +414,9 @@ public class AdministrarMantenimientoController implements Initializable {
                     cargarInformacionTabla();
                     cbTipoRefaccion.setValue(null);
                     cbNombreRefaccion.setValue(null);
-                    cargarInformacionRefacciones(-1);
+                    mostrarSolicitud(
+                            lvMantenimientos.getSelectionModel().getSelectedIndex()
+                    );
                     break;
             }    
         }else{

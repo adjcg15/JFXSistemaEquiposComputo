@@ -1,21 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package jfxsistemaequiposcomputo.DAO;
-
 import jfxsistemaequiposcomputo.pojo.ListaRefaccionesRespuesta;
 import jfxsistemaequiposcomputo.utils.Constantes;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author dnava
- */
 public class RefaccionesDAOTest {
+    @Test
+    public void testAsociarRefaccionMantenimiento() {
+        System.out.println("Asociado de refacción a mantenimiento");
+        
+        /* Ambos parámetros deben ser ID de registros dentro de la  BD, el 
+         * primero de un mantenimiento, el segundo de una refacción
+         */
+        int codigoRespuesta = 
+            RefaccionesDAO.asociarRefaccionMantenimiento(1, 12);
+        int codigoEsperado = Constantes.OPERACION_EXITOSA;
+        
+        Assert.assertEquals(codigoEsperado, codigoRespuesta);
+    }
     
-    public RefaccionesDAOTest() {
+    @Test
+    public void testObtenerRefacciones() {
+        System.out.println("Obtener refacciones por tipo de refacción");
+        
+        /* El parámetro debe ser un id válido de un tipo de refacción registrado
+         * en BD
+         */
+        ListaRefaccionesRespuesta respuesta = 
+            RefaccionesDAO.obtenerRefacciones(1);
+        int codigoRespuesta = respuesta.getCodigoRespuesta();
+        int codigoEsperado = Constantes.OPERACION_EXITOSA;
+        
+        Assert.assertEquals(codigoEsperado, codigoRespuesta);
+    }
+    
+    @Test
+    public void testRecuperarRefaccionesDeMantenimiento() {
+        System.out.println("Recuperar refacciones de mantenimiento");
+        
+        /* El parámetro debe ser un id válido de un mantenimiento registrado
+         * en BD
+         */
+        ListaRefaccionesRespuesta respuesta = 
+            RefaccionesDAO.recuperarRefaccionesMantenimiento(1);
+        int codigoRespuesta = respuesta.getCodigoRespuesta();
+        int codigoEsperado = Constantes.OPERACION_EXITOSA;
+        
+        Assert.assertEquals(codigoEsperado, codigoRespuesta);
     }
 
     @Test
@@ -23,6 +54,6 @@ public class RefaccionesDAOTest {
         System.out.println("recuperarRefaccionesMantenimiento");
         int idMantenimiento = 0;
         ListaRefaccionesRespuesta result = RefaccionesDAO.recuperarRefaccionesMantenimiento(idMantenimiento);
-        assertEquals(Constantes.OPERACION_EXITOSA, result.getCodigoRespuesta());
+        Assert.assertEquals(Constantes.OPERACION_EXITOSA, result.getCodigoRespuesta());
     }
 }
