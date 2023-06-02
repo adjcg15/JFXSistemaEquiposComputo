@@ -70,4 +70,17 @@ public class SolicitudesDAOTest {
         int respuestaRecibida = SolicitudesDAO.crearSolicitudConUsuarioYEquipo(solicitudCompleta);
         assertEquals(respuestaEsperada, respuestaRecibida);
     }
+    
+    @Test 
+    public void testActualizarEstadoDeSolicitud() {
+        System.out.println("Actualizar estado de solicitud");
+        
+        int codigoRespuesta = SolicitudesDAO.actualizarEstadoSolicitud(
+            Constantes.ESTADO_SOLICITUD_REVISION,
+            6
+        );
+        int codigoEsperado = Constantes.OPERACION_EXITOSA;
+        
+        assertEquals(codigoEsperado, codigoRespuesta);
+    }
 }
