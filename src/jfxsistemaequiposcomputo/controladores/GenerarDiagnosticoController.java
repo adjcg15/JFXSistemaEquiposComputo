@@ -385,6 +385,10 @@ public class GenerarDiagnosticoController implements Initializable {
         
         try{
             costoEstimado = Float.parseFloat(tfCosto.getText());
+            if(costoEstimado < 0){
+                tfCosto.setText("");
+                campoCosto = false;
+            }
         }catch(NumberFormatException nfe){
             tfCosto.setText("");
             Utilidades.mostrarDialogoSimple("Error de entrada", 
