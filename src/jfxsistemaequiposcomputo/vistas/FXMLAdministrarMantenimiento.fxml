@@ -71,22 +71,22 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="60.0" layoutY="271.0" text="Diagnóstico">
+            <Label fx:id="lbDiagnostico" layoutX="60.0" layoutY="271.0" text="Diagnóstico">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="238.0" layoutY="271.0" text="Mantenimiento">
+            <Label fx:id="lbMantenimiento" layoutX="238.0" layoutY="271.0" text="Mantenimiento">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="447.0" layoutY="271.0" text="Revisión">
+            <Label fx:id="lbRevision" layoutX="447.0" layoutY="271.0" text="Revisión">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="630.0" layoutY="271.0" text="Finalizado">
+            <Label fx:id="lbFinalizado" layoutX="630.0" layoutY="271.0" text="Finalizado">
                <font>
                   <Font size="16.0" />
                </font>

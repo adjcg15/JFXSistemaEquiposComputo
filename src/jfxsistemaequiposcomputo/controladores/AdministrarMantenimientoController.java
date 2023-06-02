@@ -89,17 +89,26 @@ public class AdministrarMantenimientoController implements Initializable {
     private TableColumn colNombreRefaccion;
     @FXML
     private TableColumn colTipoRefaccion;
+    @FXML
+    private Label lbErrorTipoRefaccion;
+    @FXML
+    private Label lbErrorRefaccion;
+    @FXML
+    private Label lbDiagnostico;
+    @FXML
+    private Label lbMantenimiento;
+    @FXML
+    private Label lbRevision;
+    @FXML
+    private Label lbFinalizado;
+
     
     ObservableList<MantenimientoConEquipoYDiagnostico> listaMantenimientos;
     private ObservableList<TipoRefaccion> tiporefacciones = FXCollections.observableArrayList();
     private ObservableList<Refaccion> refacciones = FXCollections.observableArrayList();
     private ObservableList<Refaccion> refaccionesTabla;
     private MantenimientoConEquipoYDiagnostico mantenimiento = new MantenimientoConEquipoYDiagnostico();
-    String estadoActual;
-    @FXML
-    private Label lbErrorTipoRefaccion;
-    @FXML
-    private Label lbErrorRefaccion;
+    String estadoActual;   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -161,6 +170,8 @@ public class AdministrarMantenimientoController implements Initializable {
         cbNombreRefaccion.setDisable(false);
         lbErrorTipoRefaccion.setText("");
         lbErrorRefaccion.setText("");
+
+
         cargarInformacionTipoRefacciones();
         if(tiporefacciones.isEmpty()){
             cbTipoRefaccion.setDisable(true);
@@ -204,6 +215,7 @@ public class AdministrarMantenimientoController implements Initializable {
             if(diagnostico.getFechaFin() != null && !diagnostico.getFechaFin().isEmpty()) {
                 lbFechaFinDiagnostico1.setText(diagnostico.getFechaFin());
                 estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
+                cambiarColorEtapaActual();
             }
             if(estados.size() >= 4){
                 Estado estadoMantenimiento = estados.get(3);
@@ -211,6 +223,7 @@ public class AdministrarMantenimientoController implements Initializable {
                 if(estadoMantenimiento.getFechaFin() != null && !estadoMantenimiento.getFechaFin().isEmpty()) {
                     lbFechaFinMantenimiento.setText(estadoMantenimiento.getFechaFin());
                     estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
+                    cambiarColorEtapaActual();
                 }
             }
             if(estados.size() >= 5){
@@ -221,6 +234,7 @@ public class AdministrarMantenimientoController implements Initializable {
                     lbFechaFinFinalizado.setText(revision.getFechaFin());
                     estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
                     btnPasarEstado.setDisable(true);
+                    cambiarColorEtapaActual();
                 }
             }
             btnPasarEstado.setDisable(estadoActual.equals
@@ -229,6 +243,7 @@ public class AdministrarMantenimientoController implements Initializable {
         btnPasarEstado.setText(obtenerTextoBotonPasarEstado(estadoActual));
         configurarTabla();
         cargarInformacionTabla();
+        cambiarColorEtapaActual();
     }
     
     private void mostrarImagenEquipo(byte[] fotoEquipo) {
@@ -281,13 +296,14 @@ public class AdministrarMantenimientoController implements Initializable {
                     break;
                 default:
                     Utilidades.mostrarDialogoSimple("Error al guardar", 
-                            "Ha ocurrido un error al guardar el comentario.",
+                            "Ha ocurrido un error al guardar el comentario, "
+                                    + "inténtelo más tarde",
                             Alert.AlertType.ERROR);
                     break;
             }
         }else{
             Utilidades.mostrarDialogoSimple("Comentario vacío", 
-                    "Debes ingresar un comentario.", Alert.AlertType.WARNING);
+                    "Por favor ingresa un comentario", Alert.AlertType.WARNING);
             }
         }else{
             System.out.println("Error: No se ha seleccionado un elemento en lvMantenimientos.");
@@ -304,7 +320,7 @@ public class AdministrarMantenimientoController implements Initializable {
                 nombreEstado = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
                 break;
             case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
-                nombreEstado = Constantes.ESTADO_SOLICITUD_REVISION;
+                nombreEstado = Constantes.ESTADO_SOLICITUD_REVISION;         
                 break;
             case Constantes.ESTADO_SOLICITUD_REVISION:
                 nombreEstado = Constantes.ESTADO_SOLICITUD_FINALIZADO;
@@ -320,26 +336,30 @@ public class AdministrarMantenimientoController implements Initializable {
             LocalDate fechaActual = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String fechaActualFormateada = fechaActual.format(formatter);
-            if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_DIAGNOSTICO)) {
-                estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
-                lbFechaFinDiagnostico1.setText(fechaActualFormateada);
-                lbFechaInicioMantenimiento.setText(fechaActualFormateada);   
-                
-            } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_MANTENIMIENTO)) {
-                estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
-                lbFechaFinMantenimiento.setText(fechaActualFormateada);
-                lbFechaInicioRevision.setText(fechaActualFormateada);
-                
-            } else if(estadoActual.equals(Constantes.ESTADO_SOLICITUD_REVISION)) {
-                estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
-                lbFechaFinRevision.setText(fechaActualFormateada);
-                lbFechaFinFinalizado.setText(fechaActualFormateada);
-                btnPasarEstado.setDisable(true);
+            switch (estadoActual) {
+                case Constantes.ESTADO_SOLICITUD_DIAGNOSTICO:
+                    estadoActual = Constantes.ESTADO_SOLICITUD_MANTENIMIENTO;
+                    lbFechaFinDiagnostico1.setText(fechaActualFormateada);
+                    lbFechaInicioMantenimiento.setText(fechaActualFormateada);
+                    break;
+                case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
+                    estadoActual = Constantes.ESTADO_SOLICITUD_REVISION;
+                    lbFechaFinMantenimiento.setText(fechaActualFormateada);
+                    lbFechaInicioRevision.setText(fechaActualFormateada);
+                    break;
+                case Constantes.ESTADO_SOLICITUD_REVISION:
+                    estadoActual = Constantes.ESTADO_SOLICITUD_FINALIZADO;
+                    lbFechaFinRevision.setText(fechaActualFormateada);
+                    lbFechaFinFinalizado.setText(fechaActualFormateada);
+                    btnPasarEstado.setDisable(true);
                 Utilidades.mostrarDialogoSimple("Mantenimiento finalizado",
-                        "El mantenimiento ha concluído correctamente.",
-                        Alert.AlertType.INFORMATION);
-                paneDetalles.setVisible(false);   
-            }  
+                    "El mantenimiento ha concluído correctamente.",  
+                    Alert.AlertType.INFORMATION);
+                    paneDetalles.setVisible(false);
+                    break;
+                default:
+                    break;
+            }
         switch(estadoActual) {
             case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
                 btnPasarEstado.setText("Pasar a Revision");
@@ -353,6 +373,7 @@ public class AdministrarMantenimientoController implements Initializable {
             }
         }
         actualizarListView();
+        cambiarColorEtapaActual();
     }
     
     private void actualizarListView() {
@@ -482,5 +503,29 @@ public class AdministrarMantenimientoController implements Initializable {
             default:
                 return "Pasar a Mantenimiento";
             }
+    }
+    
+    private void cambiarColorEtapaActual() {
+        lbDiagnostico.setTextFill(javafx.scene.paint.Color.BLACK);
+        lbMantenimiento.setTextFill(javafx.scene.paint.Color.BLACK);
+        lbRevision.setTextFill(javafx.scene.paint.Color.BLACK);
+        lbFinalizado.setTextFill(javafx.scene.paint.Color.BLACK);
+        
+        switch (estadoActual) {
+            case Constantes.ESTADO_SOLICITUD_DIAGNOSTICO:
+                lbDiagnostico.setTextFill(javafx.scene.paint.Color.BLUE); 
+                break;
+            case Constantes.ESTADO_SOLICITUD_MANTENIMIENTO:
+                lbMantenimiento.setTextFill(javafx.scene.paint.Color.BLUE); 
+                break;
+            case Constantes.ESTADO_SOLICITUD_REVISION:
+                lbRevision.setTextFill(javafx.scene.paint.Color.BLUE); 
+                break;
+            case Constantes.ESTADO_SOLICITUD_FINALIZADO:
+                lbFinalizado.setTextFill(javafx.scene.paint.Color.BLUE); 
+                break;
+            default:
+                break;
         }
     }
+  }
