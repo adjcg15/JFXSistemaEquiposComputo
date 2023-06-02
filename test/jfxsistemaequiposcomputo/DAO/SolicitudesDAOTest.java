@@ -1,6 +1,7 @@
 package jfxsistemaequiposcomputo.DAO;
 
 import jfxsistemaequiposcomputo.pojo.EquipoComputo;
+import jfxsistemaequiposcomputo.pojo.ListaSolicitudesRespuesta;
 import jfxsistemaequiposcomputo.pojo.Solicitud;
 import jfxsistemaequiposcomputo.pojo.SolicitudConUsuarioYEquipo;
 import jfxsistemaequiposcomputo.pojo.Usuario;
@@ -82,5 +83,25 @@ public class SolicitudesDAOTest {
         int codigoEsperado = Constantes.OPERACION_EXITOSA;
         
         assertEquals(codigoEsperado, codigoRespuesta);
+    }
+
+    @Test
+    public void testRecuperarSolicitudesConUsuarioYEquipo() {
+        System.out.println("recuperarSolicitudesConUsuarioYEquipo");
+        ListaSolicitudesRespuesta recuperarSolicitud = new ListaSolicitudesRespuesta();
+        recuperarSolicitud.setCodigoRespuesta(1);
+        ListaSolicitudesRespuesta respuestaRecibida = SolicitudesDAO.recuperarSolicitudesConUsuarioYEquipo();
+        assertEquals(200, respuestaRecibida.getCodigoRespuesta());
+    }
+
+
+    @Test
+    public void testActualizarEstadoSolicitud() {
+        System.out.println("actualizarEstadoSolicitud");
+        String nombreEstado = "ACEPTADA";
+        int idSolicitud = 2;
+        int resultadoEsperado = 501; // se testea un caso negativo
+        int resultadoObtenido = SolicitudesDAO.actualizarEstadoSolicitud(nombreEstado, idSolicitud);
+        assertEquals(resultadoEsperado, resultadoObtenido);
     }
 }

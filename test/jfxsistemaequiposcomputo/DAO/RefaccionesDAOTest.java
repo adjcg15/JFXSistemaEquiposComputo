@@ -48,4 +48,12 @@ public class RefaccionesDAOTest {
         
         Assert.assertEquals(codigoEsperado, codigoRespuesta);
     }
+
+    @Test
+    public void testRecuperarRefaccionesMantenimiento() {
+        System.out.println("recuperarRefaccionesMantenimiento");
+        int idMantenimiento = 0;
+        ListaRefaccionesRespuesta result = RefaccionesDAO.recuperarRefaccionesMantenimiento(idMantenimiento);
+        Assert.assertEquals(Constantes.OPERACION_EXITOSA, result.getCodigoRespuesta());
+    }
 }
